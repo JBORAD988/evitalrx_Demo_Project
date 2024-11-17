@@ -17,7 +17,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-
     AppRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
