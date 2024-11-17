@@ -44,11 +44,7 @@ export class LoginComponent implements OnInit {
 
 
   toggleEyeIconVisibility() {
-
-
        this.visibility =  true ;
-
-
     // this.visibility = this.visibility === false ? true : false;
   }
 
@@ -70,7 +66,7 @@ export class LoginComponent implements OnInit {
       this.route.navigate(['/auth/login']);
     })
     console.log('register')
-    console.log(this.loginForm.value)
+
 
   }
 
