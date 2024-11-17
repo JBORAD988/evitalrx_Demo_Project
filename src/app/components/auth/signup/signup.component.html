@@ -12,8 +12,16 @@
 <mat-form-field class="example-full-width">
           <input matInput placeholder="Email">
         </mat-form-field>
-<mat-form-field class="example-full-width">
-          <input matInput placeholder="Password">
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="Password"
+            [type]="type"
+            formControlName="password"
+          />
+          <span  matSuffix (click)="hideShowPass()" style="cursor: pointer; padding-right: 5px;" >
+            <i class="fa {{eyeIcon}}" style="font-size: 20px;"></i>
+          </span>
         </mat-form-field>
 
 </mat-card-content>

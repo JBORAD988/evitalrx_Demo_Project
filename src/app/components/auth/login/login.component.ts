@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     })
 
-    this.visibility === false ;
+    this.visibility = false ;
 
   }
 
@@ -43,14 +43,11 @@ export class LoginComponent implements OnInit {
   }
 
 
-  toggleEyeIconVisibility(field:string) {
-    console.log(field)
-    if(field === 'passwd') {
-       this.visibility ===  true ;
-    }
-    if(field === 'user') {
-     this.visibility === false ;
-    }
+  toggleEyeIconVisibility() {
+
+
+       this.visibility =  true ;
+
 
     // this.visibility = this.visibility === false ? true : false;
   }

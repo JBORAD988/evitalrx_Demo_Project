@@ -7,18 +7,18 @@
   <form class="example-form" [formGroup]="loginForm">
         <mat-card-content>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Username" formControlName="username" (click)="toggleEyeIconVisibility('user')">
+            <input matInput placeholder="Username" formControlName="username" >
           </mat-form-field>
           <mat-form-field class="example-full-width">
             <input
               matInput
               placeholder="Password"
               [type]="type"
-              (click)="toggleEyeIconVisibility('passwd')"
+              (click)="toggleEyeIconVisibility()"
               formControlName="password"
             />
-            <span *ngIf="visibility" matSuffix (click)="hideShowPass()" style="cursor: pointer;" >
-              <i class="fa {{eyeIcon}}"></i>
+            <span *ngIf="visibility" matSuffix (click)="hideShowPass()" style="cursor: pointer;padding-right: 5px;" >
+              <i class="fa {{eyeIcon}}"  style="font-size: 20px;"></i>
             </span>
           </mat-form-field>
 
