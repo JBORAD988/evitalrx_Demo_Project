@@ -1,1 +1,34 @@
-<p>header works!</p>
+<mat-toolbar color="primary">
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Evitalrx</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>favorite</mat-icon>
+  </button>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon>share</mat-icon>
+  </button>
+</mat-toolbar>
+
+
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item routerLink="/home">
+    <mat-icon>home</mat-icon>
+    <span>Home</span>
+  </button>
+  <button mat-menu-item routerLink="/order">
+    <mat-icon>shopping_cart</mat-icon>
+    <span>Order</span>
+  </button>
+  <button mat-menu-item routerLink="/login">
+    <mat-icon>login</mat-icon>
+    <span>Login</span>
+  </button>
+  <button mat-menu-item routerLink="/signup">
+    <mat-icon>person_add</mat-icon>
+    <span>Sign Up</span>
+  </button>
+</mat-menu>

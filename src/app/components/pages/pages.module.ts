@@ -5,17 +5,20 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { OrdersComponent } from './orders/orders.component';
+import { MaterialModule } from 'src/app/modules/material/material.module';
 
 
 @NgModule({
   declarations: [
     PagesComponent,
     DashboardComponent,
-    OrdersComponent
+    OrdersComponent,
+
   ],
   imports: [
     CommonModule,
-    PagesRoutingModule
+    PagesRoutingModule,
+    MaterialModule
   ]
 })
 export class PagesModule { }
