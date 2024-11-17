@@ -1,10 +1,83 @@
-import { Component } from '@angular/core';
+import { log } from './../../../../../node_modules/@grpc/grpc-js/src/logging';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
+
+  type: string = "password"
+  isText: boolean = false;
+  eyeIcon: string = 'fa-eye-slash'
+  visibility: Boolean = true;
+
+  isLogginIn: boolean = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private fireauth: AuthenticationService,
+    private route: Router,
+  ) {}
+
+  ngOnInit(): void {
+
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required, Validators.email],
+      password: ['', Validators.required]
+    })
+
+    this.visibility === false ;
+
+  }
+
+  hideShowPass() {
+    this.isText = !this.isText;
+    this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
+    this.isText ? this.type = "text" : this.type = "password"
+
+  }
+
+
+  toggleEyeIconVisibility(field:string) {
+    console.log(field)
+    if(field === 'passwd') {
+       this.visibility ===  true ;
+    }
+    if(field === 'user') {
+     this.visibility === false ;
+    }
+
+    // this.visibility = this.visibility === false ? true : false;
+  }
+
+
+
+
+  onSubmit() {
+
+    this.isLogginIn = true
+    this.fireauth.signIn({
+      email: this.loginForm.value.username,
+      password: this.loginForm.value.password
+    }).subscribe(() => {
+      this.fireauth.sendtoken()
+      console.log('Logged In Successfully! ');
+      this.route.navigate(['/']);
+    }, error => {
+      this.isLogginIn = false
+      this.route.navigate(['/auth/login']);
+    })
+    console.log('register')
+    console.log(this.loginForm.value)
+
+  }
+
+
 
 }
