@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { SharedStatusService } from 'src/app/Services/shared-status.service';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private fireauth: AuthenticationService,
     private route: Router,
+    private sharedDataService: SharedStatusService
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +62,7 @@ export class LoginComponent implements OnInit {
     }).subscribe(() => {
       this.fireauth.sendtoken()
       console.log('Logged In Successfully! ');
+      this.sharedDataService.setLoginStatus(true);
       this.route.navigate(['/']);
     }, error => {
       this.isLogginIn = false

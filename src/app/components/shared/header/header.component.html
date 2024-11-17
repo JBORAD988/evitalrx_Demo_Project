@@ -15,20 +15,25 @@
 
 
 <mat-menu #menu="matMenu">
-  <div mat-menu-item (click)="routeThePage('home')">
+  <div mat-menu-item *ngIf="!isLoggedIn" (click)="routeThePage('login')">
+    <mat-icon>login</mat-icon>
+    <span>Login</span>
+  </div>
+  <div mat-menu-item *ngIf="!isLoggedIn" (click)="routeThePage('signup')">
+    <mat-icon>person_add</mat-icon>
+    <span>Sign Up</span>
+  </div>
+  <div mat-menu-item *ngIf="isLoggedIn" (click)="routeThePage('home')">
     <mat-icon>home</mat-icon>
     <span>Home</span>
   </div>
-  <button mat-menu-item (click)="routeThePage('order')">
+  <div mat-menu-item *ngIf="isLoggedIn" (click)="routeThePage('order')">
     <mat-icon>shopping_cart</mat-icon>
     <span>Order</span>
-  </button>
-  <button mat-menu-item (click)="routeThePage('login')">
-    <mat-icon>login</mat-icon>
-    <span>Login</span>
-  </button>
-  <button mat-menu-item (click)="routeThePage('signup')" >
-    <mat-icon>person_add</mat-icon>
-    <span>Sign Up</span>
-  </button>
+  </div>
+  <div mat-menu-item *ngIf="isLoggedIn" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </div>
 </mat-menu>
+

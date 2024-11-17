@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { SharedStatusService } from '../../../Services/shared-status.service';
 
 @Component({
   selector: 'app-header',
@@ -8,20 +9,37 @@ import { Route, Router } from '@angular/router';
 })
 export class HeaderComponent {
 
-  constructor(private router:Router) { }
+  isLoggedIn : Boolean = false;
+
+  constructor(private router:Router,private SharedStatusService: SharedStatusService) { }
+
+  ngOnInit(): void {
+    this.SharedStatusService.isLoggedIn$.subscribe((status) => {
+      this.isLoggedIn = status;
+    });
+
+  }
 
   routeThePage(page:string) {
     if (page === 'home') {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/pages/dashboard']);
     } else if (page === 'order') {
-      this.router.navigate(['/order']);
+      this.router.navigate(['/pages/order']);
     } else if (page === 'login') {
       this.router.navigate(['/auth/login']);
     } else if (page === 'signup') {
       this.router.navigate(['/auth/signup']);
-    } else {
+    }else {
       console.error('Invalid route:', page);
     }
+  }
+
+  logout(){
+    this.SharedStatusService.setLoginStatus(false);
+    localStorage.removeItem('token');
+    console.log('Logged Out Successfully! ')
+    this.router.navigate(['/auth/login']);
+
   }
 
 }
