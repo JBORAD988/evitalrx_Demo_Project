@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit {
 
   toggleEyeIconVisibility() {
        this.visibility =  true ;
-    // this.visibility = this.visibility === false ? true : false;
   }
 
 

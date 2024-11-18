@@ -1,0 +1,90 @@
+.green-button {
+  background-color: #58bb5b !important;
+
+  margin-left: 2%;
+}
+
+.green-button:hover {
+  background-color: #119417 !important;
+  color:  white;
+
+}
+
+.info-button {
+  background-color: #2196f3 !important;
+  color: white;
+}
+
+.info-button:hover {
+  background-color: #0d47a1 !important;
+  color:  white;
+
+}
+
+.form{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.full-width{
+  width: 50%;
+}
+
+
+
+
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.mat-header-cell, .mat-cell {
+  text-align: left;
+}
+
+
+.column-position {
+  width: 50px;
+  text-align: center;
+}
+
+.column-medicine-name {
+  flex-grow: 2;
+  min-width: 200px;
+}
+
+.column-manufacturer-name {
+  flex-grow: 2;
+  min-width: 200px;
+}
+
+.column-packing-size {
+  width: 10%;
+  min-width: 100px;
+}
+
+.column-price {
+  width: 10%;
+  min-width: 80px;
+}
+
+.column-available {
+  width: 15%;
+  min-width: 150px;
+}
+
+.column-action {
+  width: 20%;
+  min-width: 200px;
+}
+
+.mdc-data-table__cell{
+  text-align: center !important;
+}
+
+.mdc-data-table__header-cell  {
+  text-align: center !important;
+}

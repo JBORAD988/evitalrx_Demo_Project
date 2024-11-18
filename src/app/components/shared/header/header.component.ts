@@ -11,6 +11,8 @@ export class HeaderComponent {
 
   isLoggedIn : Boolean = false;
 
+  cartItemsCount:string = '';
+
   constructor(private router:Router,private SharedStatusService: SharedStatusService) { }
 
   ngOnInit(): void {

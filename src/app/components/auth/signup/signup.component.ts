@@ -45,16 +45,7 @@ export class SignupComponent {
       this.signUpForm.reset();
       this.router.navigate(['/auth/login']);
 
-      // Call sendUserData after successful sign-up
-      // this.dataservice.sendUserdata({
-      //   firstname: this.signUpForm.value.firstName,
-      //   lastname: this.signUpForm.value.lastName,
-      //   phone: this.signUpForm.value.phone,
-      //   city: this.signUpForm.value.city,
-      //   role: this.signUpForm.value.role,
-      //   email: this.signUpForm.value.email,
-      //   userid: localStorage.getItem('uid')
-      // })
+
     }, error => {
       console.error(error);
       console.log({detail: "Error", summary: error.message, duration: 5000});

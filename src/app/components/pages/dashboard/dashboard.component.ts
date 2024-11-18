@@ -1,7 +1,7 @@
 import { Component , OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MedicineService } from 'src/app/Services/medicine.service';
-import { OrdersComponent } from '../orders/orders.component';
+import { ViewdetailsComponent } from '../viewdetails/viewdetails.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -47,13 +47,17 @@ export class DashboardComponent implements OnInit {
     this.medicineService.getMedicineInfo(id).subscribe(res => {
       this.dialogData = res.data[0];
 
-      const dialogRef = this.dialog.open(OrdersComponent, {
+      const dialogRef = this.dialog.open(ViewdetailsComponent, {
         data: this.dialogData,
       });
 
       dialogRef.afterClosed().subscribe(result => {
       });
     });
+  }
+
+  AddtoCart(element: any): void {
+    console.log('element', element);
   }
 
 

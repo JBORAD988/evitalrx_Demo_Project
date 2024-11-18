@@ -1,0 +1,77 @@
+/* Medicine Box */
+.medicine-box {
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Medicine Image */
+.medicine-image {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.medicine-image img {
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Medicine Info Section */
+.medicine-info {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.medicine-name {
+  font-size: 1.8em;
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.manufacturer {
+  margin: 10px 0;
+  font-size: 1em;
+  color: #666;
+}
+
+.medicine-details, .warnings {
+  margin-top: 20px;
+}
+
+.medicine-details h3, .warnings h3 {
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.medicine-details ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.medicine-details ul li {
+  color: #555;
+  font-size: 0.95em;
+}
+
+.warnings p {
+  color: #555;
+  font-size: 0.95em;
+  margin: 5px 0;
+}
+
+.warnings strong {
+  color: #333;
+}

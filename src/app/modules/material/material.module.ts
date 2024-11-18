@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatBadgeModule } from '@angular/material/badge';
 
 
 
@@ -32,7 +32,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSelectModule,
     MatAutocompleteModule,
     MatTableModule,
-    MatDialogModule
+    MatDialogModule,
+    MatBadgeModule
   ],
 })
 export class MaterialModule { }

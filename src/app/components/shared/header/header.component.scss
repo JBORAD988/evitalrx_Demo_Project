@@ -1,18 +1,21 @@
-.example-spacer{
+.spacer{
   width: 100%;
 }
 
 .mat-toolbar.mat-primary {
-  position: absolute;
   top: 0;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.5);
-  color: rgb(77, 77, 77)
+  color: rgb(77, 77, 77);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 
-.example-spacer {
+.spacer {
   flex: 1 1 auto;
 }
 
@@ -23,4 +26,12 @@ mat-toolbar {
 
 mat-menu {
   min-width: 200px;
+}
+
+.cart-icon {
+  position: relative;
+}
+
+.mat-icon {
+  font-size: 24px; /* Adjust icon size if needed */
 }
