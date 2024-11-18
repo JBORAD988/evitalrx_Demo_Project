@@ -7,6 +7,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { OrdersComponent } from './orders/orders.component';
 import { MaterialModule } from 'src/app/modules/material/material.module';
 import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 
 
 
@@ -16,12 +19,15 @@ import { SharedModule } from '../shared/shared.module';
     DashboardComponent,
     OrdersComponent,
 
+
   ],
   imports: [
     CommonModule,
     PagesRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class PagesModule { }

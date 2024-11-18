@@ -9,6 +9,7 @@ import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFireAuth, AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { FirebaseAuthApi } from './Api/firebaseApi';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(FirebaseAuthApi.firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    HttpClientModule
 
   ],
   providers: [],

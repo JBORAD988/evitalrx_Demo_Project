@@ -7,6 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -24,7 +28,11 @@ import { MatMenuModule } from '@angular/material/menu';
     MatInputModule,
     MatCardModule,
     MatFormFieldModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatTableModule,
+    MatDialogModule
   ],
 })
 export class MaterialModule { }
