@@ -2,15 +2,18 @@
 <br>
 <div class="Main-block">
   <div class="Search-block">
-    <form class="form">
+
+    <div class="form">
       <mat-form-field class="full-width form-field">
         <mat-label>Search Medicine</mat-label>
         <input matInput placeholder="Ex. Dolo" (change)="onSearch($event)">
       </mat-form-field>
+
+
       <mat-form-field appearance="fill" class="full-width form-field">
         <mat-label>Select Patient </mat-label>
         <mat-select (selectionChange)="onSelectionChange($event)">
-          <mat-option *ngFor="let item of PatientName" [value]="item">
+          <mat-option *ngFor="let item of patient_name" [value]="item">
             {{ item }}
           </mat-option>
         </mat-select>
@@ -18,13 +21,13 @@
       <div class="add-patient-button">
         <button mat-raised-button color="primary" (click)="addPatient()">
           <mat-icon class="icon-size-Patient">person_add</mat-icon>
-          Add Patient
+          Add
         </button>
       </div>
-    </form>
+
+    </div>
 
 
-  </div>
 
   <div class="table-container">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

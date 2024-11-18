@@ -42,6 +42,7 @@ export class HeaderComponent {
   logout(){
     this.SharedStatusService.setLoginStatus(false);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     console.log('Logged Out Successfully! ')
     this.router.navigate(['/auth/login']);
 

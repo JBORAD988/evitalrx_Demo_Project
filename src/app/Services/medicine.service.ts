@@ -33,5 +33,27 @@ export class MedicineService {
     return this.http.post(this.medicineInfoUrl, formData);
   }
 
+  addPatient(patient: any): Observable<any> {
+    const formData = new FormData();
+    formData.append('apikey', evitalrxApi.evitalConfig.apiKey);
+    formData.append('mobile', patient.mobile);
+    formData.append('first_name', patient.first_name);
+    formData.append('last_name', patient.last_name);
+    formData.append('zipcode', patient.zipcode);
+    formData.append('dob', patient.dob);
+    formData.append('gender', patient.gender);
+    formData.append('blood_group', patient.blood_group);
+
+    return this.http.post('https://dev-api.evitalrx.in/v1/fulfillment/patients/add', formData);
+  }
+
+  viewPatient(patient_id: any): Observable<any> {
+    const formData = new FormData();
+    formData.append('apikey', evitalrxApi.evitalConfig.apiKey);
+    formData.append('patient_id', patient_id);
+
+    return this.http.post('https://dev-api.evitalrx.in/v1/fulfillment/patients/view', formData);
+  }
+
 
 }

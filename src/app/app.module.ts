@@ -11,6 +11,7 @@ import { AuthApi } from './Api/firebaseApi';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -26,8 +27,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     AngularFireModule.initializeApp(AuthApi.firebaseConfig),
     AngularFireAuthModule,
     HttpClientModule,
-    AngularFirestoreModule
-
+    AngularFirestoreModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
