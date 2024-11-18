@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
+import { FirestoreService } from 'src/app/Services/firebaseDatabase/firestore.service';
 
 @Component({
   selector: 'app-signup',
@@ -15,10 +16,9 @@ export class SignupComponent {
   type: string = "password"
   isText: boolean = false;
   eyeIcon: string = 'fa-eye-slash'
-  uid:string = ''
 
 
-  constructor(private fb: FormBuilder, private fireauth: AuthenticationService, private router: Router){
+  constructor(private fb: FormBuilder, private fireauth: AuthenticationService, private router: Router, private fireStore: FirestoreService  ){
     this.signUpForm = this.fb.group({
       userName: ['', Validators.required],
       email: ['', Validators.required  ],
@@ -35,21 +35,15 @@ export class SignupComponent {
 
   onSingup() {
 
-    this.fireauth.signUp({
+    this.fireauth.signup({
       Email: this.signUpForm.value.email,
       password: this.signUpForm.value.password
-    }).subscribe((userCredential)=>{
-      this.uid = userCredential.user.uid;
-      localStorage.setItem('uid',this.uid);
-      console.log({detail: "SUCCESS", summary: "User Created Successfully ", duration: 5000});
-      this.signUpForm.reset();
-      this.router.navigate(['/auth/login']);
+    })
 
 
-    }, error => {
-      console.error(error);
-      console.log({detail: "Error", summary: error.message, duration: 5000});
-    });
+    console.log({detail: "SUCCESS", summary: "User Created Successfully ", duration: 5000});
+    this.signUpForm.reset();
+    this.router.navigate(['auth/login']);
   }
 
 

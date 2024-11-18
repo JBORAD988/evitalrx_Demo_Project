@@ -12,6 +12,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthenticationService {
 
+  userData: any;
 
 
     constructor(private authfire: AngularFireAuth, private route: Router, private firestore: AngularFirestore) { }
@@ -23,10 +24,11 @@ export class AuthenticationService {
       params.email, params.password
     )).pipe(
       tap(()=>{
+
         setTimeout(()=>{
 
           console.log('You have been successfully logged in');
-          this.route.navigate(['home']);
+          this.route.navigate(['/pages/dashboard']);
         },2000)
       }, error => {
 
@@ -35,18 +37,32 @@ export class AuthenticationService {
     )
     }
 
-  signUp(user:SignUp): Observable <any>{
 
-return from(this.authfire.createUserWithEmailAndPassword(user.Email, user.password)).pipe(
-  tap(() => {
-    setTimeout(() => {
-      console.log("User has been successfully registered");
-      this.route.navigate(['login']);
-    }, 2000);
-  }, error => {
-    console.log("Invalid Email or Password  or User already exists");
-  })
-);
+
+
+
+
+
+
+
+
+
+
+
+  async signup(user:SignUp) {
+    try {
+      const userCredential = await this.authfire.createUserWithEmailAndPassword(user.Email, user.password);
+      const userId = userCredential.user?.uid;
+
+      if (userId) {
+        await this.firestore.collection('users').doc(userId).set({
+          email: user.Email,
+        });
+        console.log('User document created successfully!');
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+    }
   }
 
 

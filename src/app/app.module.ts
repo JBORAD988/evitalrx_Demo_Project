@@ -7,9 +7,10 @@ import { SharedModule } from './components/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFireAuth, AngularFireAuthModule } from "@angular/fire/compat/auth";
-import { FirebaseAuthApi } from './Api/firebaseApi';
+import { AuthApi } from './Api/firebaseApi';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [
@@ -22,9 +23,10 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp(FirebaseAuthApi.firebaseConfig),
+    AngularFireModule.initializeApp(AuthApi.firebaseConfig),
     AngularFireAuthModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFirestoreModule
 
   ],
   providers: [],

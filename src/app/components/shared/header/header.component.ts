@@ -11,7 +11,7 @@ export class HeaderComponent {
 
   isLoggedIn : Boolean = false;
 
-  cartItemsCount:string = '';
+  cartItemsCount:string = '2';
 
   constructor(private router:Router,private SharedStatusService: SharedStatusService) { }
 
@@ -31,7 +31,10 @@ export class HeaderComponent {
       this.router.navigate(['/auth/login']);
     } else if (page === 'signup') {
       this.router.navigate(['/auth/signup']);
-    }else {
+    }else if (page === 'cart') {
+      this.router.navigate(['/pages/addtocart']);
+    }
+    else {
       console.error('Invalid route:', page);
     }
   }

@@ -8,6 +8,8 @@ import { OrdersComponent } from './orders/orders.component';
 import { MaterialModule } from 'src/app/modules/material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddtocartComponent } from './addtocart/addtocart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 
@@ -18,6 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PagesComponent,
     DashboardComponent,
     OrdersComponent,
+    AddtocartComponent,
+    CheckoutComponent,
 
 
   ],

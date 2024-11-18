@@ -13,25 +13,61 @@
 .info-button {
   background-color: #2196f3 !important;
   color: white;
+  width: 10%;
 }
 
 .info-button:hover {
   background-color: #0d47a1 !important;
   color:  white;
+  width: 10%;
 
 }
 
 .form{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 2%;
+  width: 100%;
 
 }
 
 .full-width{
-  width: 50%;
+  width: 100%;
 }
 
+.add-patient-button {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.icon-size-Patient{
+  font-size: 13px;
+}
+
+
+.table-container {
+  max-height: 400px;
+  overflow: auto;
+  margin: 16px 20px 16px 20px;
+}
+
+.mat-table {
+  min-width: 800px;
+}
+
+.mat-header-cell, .mat-cell {
+  white-space: nowrap;
+}
+
+.Search-block{
+  margin: 16px 20px 16px 20px;
+}
+
+.mat-icon{
+  font-size: 20px;
+  margin: 0 5px 0 5px !important;
+}
 
 
 

@@ -1,11 +1,11 @@
 
 <div class="medicine-box">
   <div class="medicine-image">
-    <img src={{data.medicine_image}} alt="Medicine Image" />
+    <img src={{data?.medicine_image}} alt="Medicine Image" />
   </div>
   <div class="medicine-info">
-    <h2 class="medicine-name">Medicine Name: {{data.medicine_name}}</h2>
-    <p class="manufacturer">Manufacturer: <strong>{{data.manufacturer_name}}</strong></p>
+    <h2 class="medicine-name">Medicine Name: {{data?.medicine_name}}</h2>
+    <p class="manufacturer">Manufacturer: <strong>{{data?.manufacturer_name}}</strong></p>
 
     <div class="medicine-details">
       <h3>Side Effects</h3>
@@ -14,11 +14,11 @@
 
     <div class="warnings">
       <h3>Warnings</h3>
-      <p><strong>Driving:</strong> {{data.driving}}</p>
-      <p><strong>Kidney:</strong> {{data.kidney}}</p>
-      <p><strong>Liver:</strong> {{data.liver}}</p>
-      <p><strong>Lactation:</strong> {{data.lactation}}</p>
-      <p><strong>Pregnancy:</strong> {{data.pregnancy}}</p>
+      <p><strong>Driving:</strong> {{data?.driving}}</p>
+      <p><strong>Kidney:</strong> {{data?.kidney}}</p>
+      <p><strong>Liver:</strong> {{data?.liver}}</p>
+      <p><strong>Lactation:</strong> {{data?.lactation}}</p>
+      <p><strong>Pregnancy:</strong> {{data?.pregnancy}}</p>
     </div>
   </div>
 </div>
