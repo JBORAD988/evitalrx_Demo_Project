@@ -35,7 +35,15 @@ export class DashboardComponent implements OnInit {
     const searchTerm = event.target.value;
     this.medicineService.getMedicine(searchTerm).subscribe({
       next: (res) => {
+        const data = res.data;
+        const Suggestions = data.did_you_mean_result;
+if(Suggestions.length > 0){
+  this.toastr.info('Did you mean: ' + Suggestions[0].
+  medicine_name);
+}else{
         this.dataSource = res.data.result;
+}
+
       },
       error: (err) => {
         console.error('Error fetching medicines: ', err);

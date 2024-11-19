@@ -1,7 +1,7 @@
 <mat-dialog-content class="patient-form-container">
   <h2 class="form-title">Add Patient</h2>
 
-  <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="patientForm">
 
     <div class="form-row">
       <mat-form-field appearance="outline" class="form-field">
@@ -86,7 +86,7 @@
     </div>
 
     <div class="form-actions">
-      <button mat-raised-button color="primary" type="submit" [disabled]="patientForm.invalid">Submit</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="patientForm.invalid">Submit</button>
       <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
     </div>
   </form>

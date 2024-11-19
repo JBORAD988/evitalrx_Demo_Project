@@ -34,6 +34,8 @@ export class MedicineService {
   }
 
   addPatient(patient: any): Observable<any> {
+
+
     const formData = new FormData();
     formData.append('apikey', evitalrxApi.evitalConfig.apiKey);
     formData.append('mobile', patient.mobile);
@@ -43,6 +45,9 @@ export class MedicineService {
     formData.append('dob', patient.dob);
     formData.append('gender', patient.gender);
     formData.append('blood_group', patient.blood_group);
+
+    console.log('formData', formData.getAll);
+
 
     return this.http.post('https://dev-api.evitalrx.in/v1/fulfillment/patients/add', formData);
   }

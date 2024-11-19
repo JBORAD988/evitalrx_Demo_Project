@@ -1,6 +1,5 @@
-<app-header></app-header>
-<br>
-<div class="Main-block">
+
+< class="Main-block">
   <div class="Search-block">
 
     <div class="form">
@@ -9,23 +8,23 @@
         <input matInput placeholder="Ex. Dolo" (change)="onSearch($event)">
       </mat-form-field>
 
-
       <mat-form-field appearance="fill" class="full-width form-field">
-        <mat-label>Select Patient </mat-label>
+        <mat-label>Select Patient</mat-label>
         <mat-select (selectionChange)="onSelectionChange($event)">
           <mat-option *ngFor="let item of patient_name" [value]="item">
             {{ item }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+
       <div class="add-patient-button">
         <button mat-raised-button color="primary" (click)="addPatient()">
           <mat-icon class="icon-size-Patient">person_add</mat-icon>
           Add
         </button>
       </div>
-
     </div>
+
 
 
 
@@ -76,13 +75,12 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
 
 </div>
-
 
 
 
