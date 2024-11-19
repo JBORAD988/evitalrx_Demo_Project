@@ -1,25 +1,34 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { SharedStatusService } from '../../../Services/shared-status.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements AfterViewInit, OnInit {
 
   isLoggedIn : Boolean = false;
 
   cartItemsCount:string = '2';
 
-  constructor(private router:Router,private SharedStatusService: SharedStatusService) { }
+  constructor(private router:Router,private SharedStatusService: SharedStatusService, private toastr: ToastrService) {
+
+   }
 
   ngOnInit(): void {
     this.SharedStatusService.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
     });
 
+
+
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.updateToolbarPosition(), 0);
   }
 
   routeThePage(page:string) {
@@ -44,8 +53,31 @@ export class HeaderComponent {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     console.log('Logged Out Successfully! ')
+    this.toastr.warning('Logged Out!');
     this.router.navigate(['/auth/login']);
 
   }
+
+
+
+  updateToolbarPosition(): void {
+    const headerElement = document.querySelector('.mat-toolbar.mat-primary') as HTMLElement;
+
+    if (!headerElement) {
+      console.error('Element with class "mat-toolbar.mat-primary" not found.');
+      return;
+    }
+
+    if (!this.isLoggedIn) {
+      headerElement.style.position = 'absolute';
+
+      console.log('Header is absolute');
+
+    } else {
+      headerElement.style.position = 'sticky';
+      console.log('Header is not absolute');
+    }
+  }
+
 
 }

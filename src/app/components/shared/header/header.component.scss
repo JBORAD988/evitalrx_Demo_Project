@@ -14,6 +14,9 @@
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.mat-toolbar.mat-primary {
+  transition: position 0.3s ease-in-out, top 0.3s ease-in-out;
+}
 
 .spacer {
   flex: 1 1 auto;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { SharedStatusService } from 'src/app/Services/shared-status.service';
 
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
     private fireauth: AuthenticationService,
     private route: Router,
     private sharedDataService: SharedStatusService,
-
+    private toastr: ToastrService
   ) {}
 
 
@@ -33,9 +34,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
 
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      username: ['', [Validators.required, Validators.email,Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     })
+
 
     this.visibility = false ;
 
@@ -64,10 +66,11 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.value.password
     }).subscribe(async () => {
       this.fireauth.sendtoken()
-      console.log('Logged In Successfully! ');
+      this.toastr.success('Login Successfully');
       this.sharedDataService.setLoginStatus(true);
       this.route.navigate(['/']);
     }, error => {
+      this.toastr.error('Invalid Credentials');
       this.isLogginIn = false
       this.route.navigate(['/auth/login']);
     })

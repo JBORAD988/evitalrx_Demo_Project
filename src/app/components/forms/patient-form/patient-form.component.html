@@ -1,74 +1,93 @@
-<form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="first_name">First Name:</label>
-    <input id="first_name" formControlName="first_name" type="text" />
-    <div *ngIf="patientForm.get('first_name')?.invalid && patientForm.get('first_name')?.touched">
-      First name is required.
-    </div>
-  </div>
+<mat-dialog-content class="patient-form-container">
+  <h2 class="form-title">Add Patient</h2>
 
-  <div>
-    <label for="last_name">Last Name:</label>
-    <input id="last_name" formControlName="last_name" type="text" />
-    <div *ngIf="patientForm.get('last_name')?.invalid && patientForm.get('last_name')?.touched">
-      Last name is required.
-    </div>
-  </div>
+  <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
 
-  <div>
-    <label for="mobile">Mobile:</label>
-    <input id="mobile" formControlName="mobile" type="tel" />
-    <div *ngIf="patientForm.get('mobile')?.invalid && patientForm.get('mobile')?.touched">
-      Valid mobile number is required.
-    </div>
-  </div>
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>First Name</mat-label>
+        <input matInput id="first_name" formControlName="first_name" type="text" />
+        <mat-error *ngIf="patientForm.get('first_name')?.invalid && patientForm.get('first_name')?.touched">
+          First name is required.
+        </mat-error>
+      </mat-form-field>
 
-  <div>
-    <label for="zipcode">Zip Code:</label>
-    <input id="zipcode" formControlName="zipcode" type="text" />
-    <div *ngIf="patientForm.get('zipcode')?.invalid && patientForm.get('zipcode')?.touched">
-      Zip code is required.
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Last Name</mat-label>
+        <input matInput id="last_name" formControlName="last_name" type="text" />
+        <mat-error *ngIf="patientForm.get('last_name')?.invalid && patientForm.get('last_name')?.touched">
+          Last name is required.
+        </mat-error>
+      </mat-form-field>
     </div>
-  </div>
 
-  <div>
-    <label for="dob">Date of Birth:</label>
-    <input id="dob" formControlName="dob" type="date" />
-    <div *ngIf="patientForm.get('dob')?.invalid && patientForm.get('dob')?.touched">
-      Date of birth is required.
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Mobile</mat-label>
+        <input matInput id="mobile" formControlName="mobile" type="tel" />
+        <mat-error *ngIf="patientForm.get('mobile')?.invalid && patientForm.get('mobile')?.touched">
+          Valid mobile number is required.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Zip Code</mat-label>
+        <input matInput id="zipcode" formControlName="zipcode" type="text" />
+        <mat-error *ngIf="patientForm.get('zipcode')?.invalid && patientForm.get('zipcode')?.touched">
+          Zip code is required.
+        </mat-error>
+      </mat-form-field>
     </div>
-  </div>
 
-  <div>
-    <label for="gender">Gender:</label>
-    <select id="gender" formControlName="gender">
-      <option value="">Select Gender</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="other">Other</option>
-    </select>
-    <div *ngIf="patientForm.get('gender')?.invalid && patientForm.get('gender')?.touched">
-      Gender is required.
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dob" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="patientForm.get('dob')?.invalid && patientForm.get('dob')?.touched">
+          Date of birth is required.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Gender</mat-label>
+        <mat-select id="gender" formControlName="gender">
+          <mat-option value="">Select Gender</mat-option>
+          <mat-option value="male">Male</mat-option>
+          <mat-option value="female">Female</mat-option>
+          <mat-option value="other">Other</mat-option>
+        </mat-select>
+        <mat-error *ngIf="patientForm.get('gender')?.invalid && patientForm.get('gender')?.touched">
+          Gender is required.
+        </mat-error>
+      </mat-form-field>
     </div>
-  </div>
 
-  <div>
-    <label for="blood_group">Blood Group:</label>
-    <select id="blood_group" formControlName="blood_group">
-      <option value="">Select Blood Group</option>
-      <option value="A+">A+</option>
-      <option value="A-">A-</option>
-      <option value="B+">B+</option>
-      <option value="B-">B-</option>
-      <option value="AB+">AB+</option>
-      <option value="AB-">AB-</option>
-      <option value="O+">O+</option>
-      <option value="O-">O-</option>
-    </select>
-    <div *ngIf="patientForm.get('blood_group')?.invalid && patientForm.get('blood_group')?.touched">
-      Blood group is required.
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Blood Group</mat-label>
+        <mat-select id="blood_group" formControlName="blood_group">
+          <mat-option value="">Select Blood Group</mat-option>
+          <mat-option value="A+">A+</mat-option>
+          <mat-option value="A-">A-</mat-option>
+          <mat-option value="B+">B+</mat-option>
+          <mat-option value="B-">B-</mat-option>
+          <mat-option value="AB+">AB+</mat-option>
+          <mat-option value="AB-">AB-</mat-option>
+          <mat-option value="O+">O+</mat-option>
+          <mat-option value="O-">O-</mat-option>
+        </mat-select>
+        <mat-error *ngIf="patientForm.get('blood_group')?.invalid && patientForm.get('blood_group')?.touched">
+          Blood group is required.
+        </mat-error>
+      </mat-form-field>
     </div>
-  </div>
 
-  <button type="submit" [disabled]="patientForm.invalid">Submit</button>
-</form>
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="patientForm.invalid">Submit</button>
+      <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+</mat-dialog-content>

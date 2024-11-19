@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/Services/authentication/authentication.service';
 import { FirestoreService } from 'src/app/Services/firebaseDatabase/firestore.service';
 
@@ -18,11 +19,11 @@ export class SignupComponent {
   eyeIcon: string = 'fa-eye-slash'
 
 
-  constructor(private fb: FormBuilder, private fireauth: AuthenticationService, private router: Router, private fireStore: FirestoreService  ){
+  constructor(private fb: FormBuilder, private fireauth: AuthenticationService, private router: Router, private fireStore: FirestoreService , private toastr: ToastrService ){
     this.signUpForm = this.fb.group({
-      userName: ['', Validators.required],
-      email: ['', Validators.required  ],
-      password: ['', Validators.required],
+      userName: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     })
   }
 
@@ -40,8 +41,8 @@ export class SignupComponent {
       password: this.signUpForm.value.password
     })
 
+    this.toastr.success('User Created Successfully');
 
-    console.log({detail: "SUCCESS", summary: "User Created Successfully ", duration: 5000});
     this.signUpForm.reset();
     this.router.navigate(['auth/login']);
   }

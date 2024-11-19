@@ -75,3 +75,15 @@
 .login-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
   padding: 0.8375em 0;
 }
+
+.route-to-login{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  a{
+    color: #3f51b5;
+    text-decoration: none;
+    font-weight: 700;
+  }
+}

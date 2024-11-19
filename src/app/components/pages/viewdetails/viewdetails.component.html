@@ -1,26 +1,30 @@
-
-<div class="medicine-box">
-  <div class="medicine-image">
-    <img src={{data?.medicine_image}} alt="Medicine Image" />
-  </div>
-  <div class="medicine-info">
-    <h2 class="medicine-name">Medicine Name: {{data?.medicine_name}}</h2>
-    <p class="manufacturer">Manufacturer: <strong>{{data?.manufacturer_name}}</strong></p>
-
-    <div class="medicine-details">
-      <h3>Side Effects</h3>
-      <p>{{data.side_effects}}</p>
+<div class="popup-medicine-container">
+  <div class="popup-content">
+    <button class="popup-close-btn" (click)="closePopup()">✖</button>
+    <div class="popup-image">
+      <img src="{{data?.medicine_image}}" alt="Medicine Image" />
     </div>
-
-    <div class="warnings">
-      <h3>Warnings</h3>
-      <p><strong>Driving:</strong> {{data?.driving}}</p>
-      <p><strong>Kidney:</strong> {{data?.kidney}}</p>
-      <p><strong>Liver:</strong> {{data?.liver}}</p>
-      <p><strong>Lactation:</strong> {{data?.lactation}}</p>
-      <p><strong>Pregnancy:</strong> {{data?.pregnancy}}</p>
+    <div class="popup-details">
+      <h2 class="medicine-title">{{data?.medicine_name}}</h2>
+      <p class="medicine-manufacturer">
+        <strong>Manufacturer:</strong> {{data?.manufacturer_name}}
+      </p>
+      <div class="popup-sections">
+        <div class="medicine-section">
+          <h3 class="section-title">Side Effects</h3>
+          <p class="section-content">{{data?.side_effects}}</p>
+        </div>
+        <div class="medicine-section">
+          <h3 class="section-title">Warnings</h3>
+          <ul class="warnings-list">
+            <li><strong>Driving:</strong> {{data?.driving}}</li>
+            <li><strong>Kidney:</strong> {{data?.kidney}}</li>
+            <li><strong>Liver:</strong> {{data?.liver}}</li>
+            <li><strong>Lactation:</strong> {{data?.lactation}}</li>
+            <li><strong>Pregnancy:</strong> {{data?.pregnancy}}</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
-

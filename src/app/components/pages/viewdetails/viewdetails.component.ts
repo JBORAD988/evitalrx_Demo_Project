@@ -17,4 +17,8 @@ export class ViewdetailsComponent {
 
   }
 
+  closePopup(): void {
+    this.dialogRef.close();
+  }
+
 }

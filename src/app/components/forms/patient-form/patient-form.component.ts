@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirestoreService } from 'src/app/Services/firebaseDatabase/firestore.service';
 import { MedicineService } from 'src/app/Services/medicine.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ViewdetailsComponent } from '../../pages/viewdetails/viewdetails.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-patient-form',
@@ -10,8 +13,15 @@ import { MedicineService } from 'src/app/Services/medicine.service';
 })
 export class PatientFormComponent {
   patientForm!: FormGroup;
-
-  constructor(private fb: FormBuilder, private medicineService: MedicineService, private firestoreService: FirestoreService) {}
+  constructor(
+    private fb: FormBuilder,
+    private medicineService: MedicineService,
+    private toster: ToastrService,
+    private firestoreService: FirestoreService,
+    public dialogRef: MatDialogRef<ViewdetailsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+ }
 
   ngOnInit(): void {
     this.patientForm = this.fb.group({
@@ -27,15 +37,25 @@ export class PatientFormComponent {
 
   onSubmit(): void {
     if (this.patientForm.valid) {
-      // console.log('Form Submitted:', this.patientForm.value);
 
+      this.toster.success('Patient added successfully');
       this.medicineService.addPatient(this.patientForm.value).subscribe((response) => {
         console.log('Response:', response);
         this.firestoreService.addPatient(response.data.patient_id);
       })
 
+      this.onCancel()
+
     } else {
-      console.log('Form is invalid');
+      this.toster.error('Form is invalid');
+
     }
+  }
+
+
+  onCancel(): void {
+    this.patientForm.reset();
+    this.dialogRef.close();
+
   }
 }

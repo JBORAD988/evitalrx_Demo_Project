@@ -1,13 +1,10 @@
 <mat-toolbar color="primary" class="sticky-toolbar">
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example menu icon">
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example menu icon" *ngIf="isLoggedIn">
     <mat-icon>menu</mat-icon>
   </button>
   <span>Evitalrx</span>
   <span class="spacer"></span>
-  <button mat-icon-button class="cart-icon favorite-icon" aria-label="favorite">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="cart-icon" aria-label="Example icon-button with shopping cart icon" (click)="routeThePage('cart')">
+  <button mat-icon-button class="cart-icon" aria-label="Example icon-button with shopping cart icon" (click)="routeThePage('cart')" *ngIf="isLoggedIn">
     <mat-icon matBadge="{{cartItemsCount}}" matBadgeColor="warn">shopping_cart</mat-icon>
   </button>
 

@@ -1,77 +1,105 @@
-/* Medicine Box */
-.medicine-box {
+.popup-medicine-container {
   display: flex;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 20px auto;
-  max-height: 500px;
-  overflow-y: auto;
-}
-
-/* Medicine Image */
-.medicine-image {
-  flex: 1;
-  margin-right: 20px;
-}
-
-.medicine-image img {
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5); /* Popup background overlay */
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: auto;
-  max-width: 150px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  z-index: 1000;
 }
 
-/* Medicine Info Section */
-.medicine-info {
-  flex: 2;
+.popup-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 1000px; /* Increased width for spacious layout */
+  width: 90%;
+  overflow: hidden;
+  position: relative;
 }
 
-.medicine-name {
-  font-size: 1.8em;
-  margin: 0;
-  font-weight: bold;
+.popup-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
   color: #333;
+  cursor: pointer;
+  z-index: 10;
 }
 
-.manufacturer {
+.popup-close-btn:hover {
+  color: #007bff;
+}
+
+.popup-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eef5ff;
+  padding: 20px;
+}
+
+.popup-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.popup-details {
+  flex: 2;
+  padding: 20px;
+}
+
+.medicine-title {
+  font-size: 2rem;
+  color: #333;
+  margin: 0;
+  text-align: left;
+}
+
+.medicine-manufacturer {
+  font-size: 1rem;
+  color: #555;
   margin: 10px 0;
-  font-size: 1em;
-  color: #666;
 }
 
-.medicine-details, .warnings {
+.popup-sections {
   margin-top: 20px;
 }
 
-.medicine-details h3, .warnings h3 {
-  font-size: 1.2em;
-  color: #333;
-  margin-bottom: 10px;
+.medicine-section {
+  margin-bottom: 20px;
 }
 
-.medicine-details ul {
-  list-style-type: disc;
-  padding-left: 20px;
+.section-title {
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-bottom: 5px;
 }
 
-.medicine-details ul li {
+.section-content {
+  font-size: 1rem;
   color: #555;
-  font-size: 0.95em;
 }
 
-.warnings p {
+.warnings-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
   color: #555;
-  font-size: 0.95em;
-  margin: 5px 0;
 }
 
-.warnings strong {
-  color: #333;
+.warnings-list li {
+  margin-bottom: 5px;
 }

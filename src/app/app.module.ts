@@ -28,6 +28,7 @@ import { ToastrModule } from 'ngx-toastr';
     AngularFireAuthModule,
     HttpClientModule,
     AngularFirestoreModule,
+
     ToastrModule.forRoot(),
   ],
   providers: [],
