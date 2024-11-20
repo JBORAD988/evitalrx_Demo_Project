@@ -1,0 +1,33 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card class="box">
+    <mat-card-header>
+      <mat-card-title>Forgot password</mat-card-title>
+    </mat-card-header>
+    <form class="form" [formGroup]="ForgotpassForm">
+      <mat-card-content>
+        <mat-form-field class="full-width">
+          <input
+            matInput
+            placeholder="Email"
+            formControlName="useremail"
+          />
+          <mat-error *ngIf="ForgotpassForm.get('username')?.hasError('required') && ForgotpassForm.get('username')?.touched">
+            Username is required.
+          </mat-error>
+          <mat-error *ngIf="ForgotpassForm.get('username')?.hasError('minlength') && ForgotpassForm.get('username')?.touched">
+            Username must be at least 3 characters long.
+          </mat-error>
+        </mat-form-field>
+
+
+      </mat-card-content>
+      <button mat-stroked-button color="accent" class="btn-block" (click)="ForgotpassSentLink()" [disabled]="ForgotpassForm.invalid">
+         Send Email
+      </button>
+    </form>
+
+    <div class="route-to-signup">
+      <small>Return to login?<a routerLink="/auth/login">Log in</a></small>
+    </div>
+  </mat-card>
+</div>

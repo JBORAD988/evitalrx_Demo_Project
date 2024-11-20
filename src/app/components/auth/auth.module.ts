@@ -8,6 +8,7 @@ import { SignupComponent } from './signup/signup.component';
 import { MaterialModule } from 'src/app/modules/material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ForgotpassComponent } from './forgotpass/forgotpass.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AuthComponent,
     LoginComponent,
     SignupComponent,
+    ForgotpassComponent,
 
 
   ],

@@ -163,6 +163,7 @@ export class CheckoutComponent implements OnInit {
 
         this.medicineService.placeOrder(data).subscribe({
           next: (response) => {
+            // console.log("responseresponse",response);
             this.openOrderModal(response)
             this.Firestore.addOrders(response.data?.order_id);
             this.toast.success('Order placed successfully!');

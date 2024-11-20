@@ -8,7 +8,7 @@
         <mat-form-field class="full-width">
           <input
             matInput
-            placeholder="Username"
+            placeholder="Email"
             formControlName="username"
           />
           <mat-error *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched">
@@ -45,7 +45,11 @@
     </form>
 
     <div class="route-to-signup">
+      <small> <a routerLink="/auth/forgotpass">Forgot Password?</a></small>
+    </div>
+    <div class="route-to-signup2">
       <small>Don't have an account? <a routerLink="/auth/signup">Sign up</a></small>
     </div>
+
   </mat-card>
 </div>
