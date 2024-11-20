@@ -104,41 +104,50 @@ Thank you for your patience and understanding. 🙏✨
 
 ## Demo Screenshots
 
-1. **Homepage**  
-   ![Homepage](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/4e702ad455935500383cf68d54893bf981f474e0/src/assets/screenshorts/1.png)
+ 1. **Login**  
+   ![Login](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/2.png)
 
-2. **Login**  
-   ![Login](https://github.com/example/screenshots/login.png)
+2. **Register**  
+      ![Register](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/4e702ad455935500383cf68d54893bf981f474e0/src/assets/screenshorts/1.png)
 
-3. **Dashboard**  
-   ![Dashboard](https://github.com/example/screenshots/dashboard.png)
+3.  **ForgotPass**  
+    ![Forgotpass](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/4.png)
+      ![ForgotpassEmailLink]( https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/5.png)
+  
 
-4. **Search Suggestions**  
-   ![Search Suggestions](https://github.com/example/screenshots/search-suggestions.png)
+4. **Dashboard**  
+   ![Dashboard](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/3.png)
+      ![Dashboard](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/7.png)
+      ![Dashboard](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/Screenshot%202024-11-20%20at%2010.51.19%E2%80%AFPM.png)
+      ![dashboard](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/screencapture-localhost-4200-pages-dashboard-2024-11-20-23_00_10.png)
 
-5. **Add Patient**  
-   ![Add Patient](https://github.com/example/screenshots/add-patient.png)
 
-6. **Cart**  
-   ![Cart](https://github.com/example/screenshots/cart.png)
+      
 
-7. **Checkout**  
-   ![Checkout](https://github.com/example/screenshots/checkout.png)
+5. **Search Suggestions**  
+   ![Search Suggestions](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/screencapture-localhost-4200-pages-dashboard-2024-11-20-22_59_33.png)
 
-8. **Order Confirmation**  
-   ![Order Confirmation](https://github.com/example/screenshots/order-confirmation.png)
+6. **Add Patient**  
+   ![Add Patient](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/Screenshot%202024-11-20%20at%2010.47.32%E2%80%AFPM.png)
 
-9. **Patient History**  
-   ![Patient History](https://github.com/example/screenshots/patient-history.png)
+7. **Cart**  
+   ![Cart](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/9.png)
 
-10. **Past Orders**  
-    ![Past Orders](https://github.com/example/screenshots/past-orders.png)
+8. **Checkout**  
+   ![Checkout](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/screencapture-localhost-4200-pages-checkout-2024-11-20-22_56_30.png)
+   ![Checkout](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/screencapture-localhost-4200-pages-checkout-2024-11-20-22_54_27.png)
 
-11. **Error 404**  
-    ![Error 404](https://github.com/example/screenshots/error-404.png)
+9. **Order Confirmation**  
+   ![Order Confirmation](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/Screenshot%202024-11-20%20at%2010.58.24%E2%80%AFPM.png)
 
-12. **Contact Us**  
-    ![Contact Us](https://github.com/example/screenshots/contact-us.png)
+
+
+
+10. **Firebase Collection**  
+    ![Firebase](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/screencapture-console-firebase-google-u-0-project-evitalrx-44057-firestore-databases-default-data-2Fusers-2FE2c3rEdXwHMdkh5USL5vvdlXsqN2-2024-11-20-23_00_50.png)
+        ![Firebase](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/screencapture-console-firebase-google-u-0-project-evitalrx-44057-firestore-databases-default-data-2Fusers-2FhgUQAvnnGPNoNRcuGzXKQE1qTj42-2Fpatients-2FpatientList-2024-11-20-23_01_18.png)
+
+
 
 ---
 
