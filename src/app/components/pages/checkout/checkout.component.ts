@@ -6,6 +6,7 @@ import { MedicineService } from 'src/app/Services/medicine.service';
 import { SharedStatusService } from 'src/app/Services/shared-status.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderconfirmationComponent } from '../orderconfirmation/orderconfirmation.component';
+import { FirestoreService } from '../../../Services/firebaseDatabase/firestore.service';
 
 @Component({
   selector: 'app-checkout',
@@ -15,7 +16,7 @@ import { OrderconfirmationComponent } from '../orderconfirmation/orderconfirmati
 export class CheckoutComponent implements OnInit {
 
   billingForm!: FormGroup;
-  constructor(private shareDataService :SharedStatusService, private medicineService: MedicineService, private dialog: MatDialog ,private fb : FormBuilder , private router: Router, private toast : ToastrService) {
+  constructor(private shareDataService :SharedStatusService, private medicineService: MedicineService, private dialog: MatDialog ,private fb : FormBuilder , private router: Router, private toast : ToastrService, private Firestore : FirestoreService) {
     this.billingForm = this.fb.group({
       deliveryType: ['delivery', [Validators.required, Validators.pattern(/^(pickup|delivery)$/)]],
       patientName: ['', Validators.required],
@@ -162,7 +163,7 @@ export class CheckoutComponent implements OnInit {
 
         this.medicineService.placeOrder(data).subscribe({
           next: (response) => {
-            // console.log('Order placed successfully:', response);
+            this.Firestore.addOrders(response?.data?.order_id);
             this.openOrderModal(response)
             this.toast.success('Order placed successfully!');
             this.billingForm.reset({ deliveryType: 'delivery', autoAssign: true });
