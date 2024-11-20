@@ -28,6 +28,19 @@
 
 
 
+    <div *ngIf="suggestions" class="empty-table-message">
+      <mat-card class="empty-table-card">
+        <mat-card-content>
+
+          <div class="suggest-medicine">Did You Mean ?</div>
+          <div class="medicine-buttons">
+            <button mat-button class="medicine-button" (click)="buttonSearch(suggestions)" >
+              {{ suggestions  }}
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
   <div class="table-container">
 
@@ -85,21 +98,6 @@
 
   </table>
 
-</div>
-
-
-<div *ngIf="suggestions" class="empty-table-message">
-  <mat-card class="empty-table-card">
-    <mat-card-content>
-
-      <div class="suggest-medicine">Did You Mean ?</div>
-      <div class="medicine-buttons">
-        <button mat-button class="medicine-button" (click)="buttonSearch(suggestions)" >
-          {{ suggestions  }}
-        </button>
-      </div>
-    </mat-card-content>
-  </mat-card>
 </div>
 
 <div *ngIf="!dataSource || dataSource.length === 0" class="empty-table-message">

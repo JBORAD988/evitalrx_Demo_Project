@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedStatusService } from '../../../Services/shared-status.service';
 import { MedicineService } from 'src/app/Services/medicine.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addtocart',
@@ -14,7 +15,8 @@ export class AddtocartComponent implements OnInit {
 
 
   constructor(
-    private sharedStatusService: SharedStatusService, private medicineService: MedicineService
+    private sharedStatusService: SharedStatusService, private medicineService: MedicineService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -29,10 +31,10 @@ export class AddtocartComponent implements OnInit {
   });
   }
 
-
-  quantity(event: any){
-
-  }
+returntohome() {
+  this.sharedStatusService.ClearCart();
+  this.router.navigate(['/pages/dashboard']);
+}
 
 
   couponCode: string = '';

@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/co
 import { Route, Router } from '@angular/router';
 import { SharedStatusService } from '../../../Services/shared-status.service';
 import { ToastrService } from 'ngx-toastr';
+import { catchError, filter, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,15 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.SharedStatusService.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
+    });
+
+    this.SharedStatusService.elementSubject$.subscribe((element:any) => {
+      if (Array.isArray(element)) {
+        this.cartItemsCount = element.length.toString();
+      } else {
+        console.warn('Expected an array from elementSubject$, got:', element);
+        this.cartItemsCount = '';
+      }
     });
 
 

@@ -101,31 +101,6 @@ this.suggestions = '';
   }
 
   AddtoCart(element: any): void {
-    // this.cardDataIds = [];
-
-
-    // this.cardDataIds.push(element.medicine_id);
-    // let id = JSON.stringify(this.cardDataIds);
-    // const avalibalForPatient = element.available_for_patient;
-    // this.medicineService.getMedicineInfo(id).subscribe(res => {
-    //   // if(this.cartData.length == 0) {
-    //     this.cartData.push({...res, "quantity": 1});
-    //   // } else {
-    //   //   this.cartData.forEach(ele => {
-    //   //     if(ele.data[0].id != res.id) {
-    //   //   this.cartData.push(res);
-    //   //     }
-    //   //   })
-    //   // }
-    // })
-    // if(avalibalForPatient === 'Yes' || avalibalForPatient === 'yes'){
-    //   this.toastr.success('Added to cart');
-    //   this.sharedStatusService.sendElement(this.cartData);
-    // }else{
-    //   this.cartData.pop();
-    //   this.toastr.error('Not available for patient');
-    // }
-
     this.cardDataIds = [element.medicine_id];
     const id = JSON.stringify(this.cardDataIds);
     const availableForPatient = element.available_for_patient?.toLowerCase() === 'yes';
@@ -135,19 +110,26 @@ this.suggestions = '';
       next: (res) => {
 
         const isAlreadyInCart = this.cartData.some(
-          (item) => item.data[0]?.id === res.id
+          (item) =>
+          item.data[0]?.id === res.data[0]?.id
+
+
         );
 
         if (!isAlreadyInCart) {
           this.cartData.push({ ...res, quantity: 1 });
         }
 
-        if (availableForPatient) {
+
+
+        if (availableForPatient  && !isAlreadyInCart) {
           this.toastr.success('Added to cart');
           this.sharedStatusService.sendElement(this.cartData);
-        } else {
+        } else if(!availableForPatient){
           this.cartData = this.cartData.filter((item) => item.data[0]?.id !== res.id);
           this.toastr.error('Not available for patient');
+        }else {
+          this.toastr.info('Already in cart');
         }
       },
       error: (err) => {

@@ -31,5 +31,11 @@ export class SharedStatusService {
     this.elementSubject.next(element);
   }
 
+  ClearCart() {
+    this.elementSubject.next(null);
+
+  }
+
+
 
 }
