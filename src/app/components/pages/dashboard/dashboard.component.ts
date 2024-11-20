@@ -32,7 +32,12 @@ export class DashboardComponent implements OnInit {
     private fireStroreService: FirestoreService,
     private toastr: ToastrService,
     private sharedStatusService: SharedStatusService
-  ) { }
+  ) {
+
+
+
+   }
+
 
   ngOnInit(): void {
     this.getPatients();
@@ -106,6 +111,10 @@ this.suggestions = '';
     const id = JSON.stringify(this.cardDataIds);
     const availableForPatient = element.available_for_patient?.toLowerCase() === 'yes';
 
+    const storedCartData = localStorage.getItem('cartCheckoutResponse');
+    if (storedCartData) {
+      this.cartData = JSON.parse(storedCartData);
+    }
 
     this.medicineService.getMedicineInfo(id).subscribe({
       next: (res) => {

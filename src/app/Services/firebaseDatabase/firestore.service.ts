@@ -54,22 +54,90 @@ async getPatientIds() {
     if (user) {
       const userId = user.uid;
 
-      // Reference the user's "patients" document
       const patientsDocRef = this.firestore
         .collection('users')
         .doc(userId)
         .collection('patients')
-        .doc('patientList'); // Access the fixed document
+        .doc('patientList');
 
-      // Get the document snapshot
       const docSnapshot = await patientsDocRef.get().toPromise();
 
-      // Check if the document exists
       if (docSnapshot?.exists) {
         const data = docSnapshot.data();
-        return data?.['patientIds'] || []; // Return the patient IDs array or an empty array if undefined
+        return data?.['patientIds'] || [];
       } else {
         console.log('No patient data found.');
+        return [];
+      }
+    } else {
+      console.error('No user logged in!');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching patient IDs:', error);
+    return [];
+  }
+}
+
+
+
+async addOrders(orderId: string) {
+  try {
+    const user = await this.authfire.currentUser;
+
+    if (user) {
+      const userId = user.uid;
+
+      const patientsDocRef = this.firestore
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .doc('orderList');
+
+      await patientsDocRef.set(
+        {
+          orderIds: arrayUnion(orderId),
+        },
+        { merge: true }
+      );
+
+      console.log(`Patient ID ${orderId} added to the array successfully!`);
+    } else {
+      console.error('No user logged in!');
+    }
+  } catch (error) {
+    console.error('Error adding orderId ID:', error);
+  }
+}
+
+
+
+async getOrderIds() {
+  try {
+    const user1 = await this.authfire.currentUser;
+
+    if(user1) {
+    localStorage.setItem('user', JSON.stringify(user1));
+    }
+
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (user) {
+      const userId = user.uid;
+
+      const patientsDocRef = this.firestore
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .doc('orderList');
+
+      const docSnapshot = await patientsDocRef.get().toPromise();
+
+      if (docSnapshot?.exists) {
+        const data = docSnapshot.data();
+        return data?.['orderIds'] || [];
+      } else {
+        console.log('No order data found.');
         return [];
       }
     } else {

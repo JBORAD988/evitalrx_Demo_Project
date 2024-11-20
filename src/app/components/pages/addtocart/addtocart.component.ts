@@ -17,7 +17,10 @@ export class AddtocartComponent implements OnInit {
   constructor(
     private sharedStatusService: SharedStatusService, private medicineService: MedicineService,
     private router: Router
-  ) {}
+  ) {
+
+
+  }
 
   ngOnInit(): void {
    this.getdata();

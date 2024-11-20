@@ -10,8 +10,10 @@ export class SharedStatusService {
     const storedCartData = localStorage.getItem('cartCheckoutResponse');
     if (storedCartData) {
       this.cartCheckoutResponse.next(JSON.parse(storedCartData));
-      this.elementSubject.next(JSON.parse(storedCartData)); // Optionally set elementSubject here as well
+      this.elementSubject.next(JSON.parse(storedCartData));
     }
+
+
   }
 
   private loginStatus = new BehaviorSubject<boolean>(this.IsLoggedIn);
