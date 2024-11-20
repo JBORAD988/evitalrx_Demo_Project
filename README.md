@@ -144,6 +144,6 @@ Thank you for your patience and understanding. 🙏✨
 
 ## Contact Us 📞
 
-If you have questions or need support, feel free to reach out via our [GitHub repository](https://github.com/example/evitalrx).
+If you have questions or need support, feel free to reach out via our [GitHub repository](https://github.com/JBORAD988/evitalrx_Demo_Project?tab=readme-ov-file#order-tracking-example/evitalrx).
 
 Thank you for choosing **EvitalRx**. We look forward to making your medicine ordering experience smooth and reliable. 🌟💊📦
