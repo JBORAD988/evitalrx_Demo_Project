@@ -101,6 +101,7 @@ this.suggestions = '';
   }
 
   AddtoCart(element: any): void {
+    debugger
     this.cardDataIds = [element.medicine_id];
     const id = JSON.stringify(this.cardDataIds);
     const availableForPatient = element.available_for_patient?.toLowerCase() === 'yes';
@@ -108,7 +109,10 @@ this.suggestions = '';
 
     this.medicineService.getMedicineInfo(id).subscribe({
       next: (res) => {
-
+if(res.data.length === 0){
+  this.toastr.error('No data for available');
+return
+}
         const isAlreadyInCart = this.cartData.some(
           (item) =>
           item.data[0]?.id === res.data[0]?.id
