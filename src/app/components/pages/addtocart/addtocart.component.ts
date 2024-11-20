@@ -32,7 +32,7 @@ export class AddtocartComponent implements OnInit {
   }
 
 returntohome() {
-  this.sharedStatusService.ClearCart();
+  // this.sharedStatusService.ClearCart();
   this.router.navigate(['/pages/dashboard']);
 }
 

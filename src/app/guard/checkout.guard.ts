@@ -20,7 +20,7 @@ export class CheckoutGuard implements CanActivate {
     if (cartCheckoutResponse) {
       return true;
     } else {
-       this.router.navigate(['/pages/cart']);
+       this.router.navigate(['/pages/checkout']);
        return false;
     }
   }

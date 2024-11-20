@@ -110,22 +110,17 @@ this.suggestions = '';
     this.medicineService.getMedicineInfo(id).subscribe({
       next: (res) => {
 if(res.data.length === 0){
+
   this.toastr.error('No data for available');
 return
 }
         const isAlreadyInCart = this.cartData.some(
           (item) =>
           item.data[0]?.id === res.data[0]?.id
-
-
         );
-
         if (!isAlreadyInCart) {
           this.cartData.push({ ...res, quantity: 1 });
         }
-
-
-
         if (availableForPatient  && !isAlreadyInCart) {
           this.toastr.success('Added to cart');
           this.sharedStatusService.sendElement(this.cartData);

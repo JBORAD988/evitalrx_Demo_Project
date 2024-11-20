@@ -54,24 +54,26 @@ export class CheckoutComponent implements OnInit {
 
   getdata() {
     this.shareDataService.cartCheckoutResponse$.subscribe((element) => {
-      this.checkout = element;
-      console.log(this.checkout);
+      if (element) {
+        this.checkout = element;
+        console.log(this.checkout);
 
-      let totalMrp = this.checkout.data?.items.reduce((total:any, item:any) => {
-        if (item.mrp) {
-          total += item.mrp;
-        }
-        return total;
-      }, 0);
+        let totalMrp = this.checkout.data?.items.reduce((total: any, item: any) => {
+          if (item.mrp) {
+            total += item.mrp;
+          }
+          return total;
+        }, 0);
 
-      console.log("Total MRP:", totalMrp);
+        console.log("Total MRP:", totalMrp);
 
-      this.subtotal = totalMrp;
-      this.shippingCharges = this.checkout.data?.shipping_charges;
+        this.subtotal = totalMrp;
+        this.shippingCharges = this.checkout.data?.shipping_charges;
+      } else {
+        console.log("No cart data found.");
+      }
+    });
 
-
-
-  });
   }
 
   returntohome(){

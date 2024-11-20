@@ -7,6 +7,11 @@ import { BehaviorSubject } from 'rxjs';
 export class SharedStatusService {
 
   constructor() {
+    const storedCartData = localStorage.getItem('cartCheckoutResponse');
+    if (storedCartData) {
+      this.cartCheckoutResponse.next(JSON.parse(storedCartData));
+      this.elementSubject.next(JSON.parse(storedCartData)); // Optionally set elementSubject here as well
+    }
   }
 
   private loginStatus = new BehaviorSubject<boolean>(this.IsLoggedIn);
@@ -16,13 +21,8 @@ export class SharedStatusService {
     this.loginStatus.next(status);
   }
 
-
-
   get IsLoggedIn() {
-    if (localStorage.getItem("token")) {
-      return true;
-    }
-    return false;
+    return localStorage.getItem("token") !== null;
   }
 
   private elementSubject = new BehaviorSubject<any>(null);
@@ -30,27 +30,37 @@ export class SharedStatusService {
 
   sendElement(element: any): void {
     this.elementSubject.next(element);
+    this.saveCartData(element);
   }
 
   ClearCart() {
     this.elementSubject.next(null);
-
+    this.clearStoredCartData();
   }
 
-
-  private cartCheckoutResponse = new BehaviorSubject<any[]>([]);
+  private cartCheckoutResponse = new BehaviorSubject<any[]>(this.getStoredCartData());
   public cartCheckoutResponse$ = this.cartCheckoutResponse.asObservable();
 
   sendCartCheckoutResponse(response: any[]): void {
     this.cartCheckoutResponse.next(response);
+    this.saveCartData(response);
   }
 
   clearCartCheckoutResponse() {
     this.cartCheckoutResponse.next([]);
+    this.clearStoredCartData();
   }
 
+  private saveCartData(data: any[]): void {
+    localStorage.setItem('cartCheckoutResponse', JSON.stringify(data));
+  }
 
+  private getStoredCartData(): any[] {
+    const storedData = localStorage.getItem('cartCheckoutResponse');
+    return storedData ? JSON.parse(storedData) : [];
+  }
 
-
-
+  private clearStoredCartData(): void {
+    localStorage.removeItem('cartCheckoutResponse');
+  }
 }
