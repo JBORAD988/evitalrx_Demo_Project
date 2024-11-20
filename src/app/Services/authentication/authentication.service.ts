@@ -27,12 +27,12 @@ export class AuthenticationService {
 
         setTimeout(()=>{
 
-          console.log('You have been successfully logged in');
+          // console.log('You have been successfully logged in');
           this.route.navigate(['/pages/dashboard']);
         },2000)
       }, error => {
 
-        console.log("Invalid Email or Password");
+        // console.log("Invalid Email or Password");
       })
     )
     }
@@ -58,10 +58,10 @@ export class AuthenticationService {
         await this.firestore.collection('users').doc(userId).set({
           email: user.Email,
         });
-        console.log('User document created successfully!');
+        // console.log('User document created successfully!');
       }
     } catch (error) {
-      console.error('Error during signup:', error);
+      // console.error('Error during signup:', error);
     }
   }
 
@@ -88,15 +88,12 @@ export class AuthenticationService {
 
   }
 
-  deleteUser(uid: any) {
-    console.log(uid)
-  }
 
 
   recoverpass(email: string): Observable<void> {
     return from(this.authfire.sendPasswordResetEmail(email)).pipe(tap(()=>{
       setTimeout(()=>{
-        console.log('Email has been sent to your email address')
+        // console.log('Email has been sent to your email address')
         this.route.navigate(['login'])
       },2000)
     }))
@@ -107,11 +104,11 @@ export class AuthenticationService {
     return this.authfire
       .signInWithPopup(provider)
       .then((result) => {
-        console.log('You have been successfully logged in!', result.user);
+        // console.log('You have been successfully logged in!', result.user);
         return result.user;
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         throw error;
       });
   }

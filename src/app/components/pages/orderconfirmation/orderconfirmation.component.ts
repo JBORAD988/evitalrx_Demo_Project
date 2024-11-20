@@ -23,7 +23,7 @@ export class OrderconfirmationComponent {
       if (element) {
         this.data.patientId = element;
         this.MedicineService.viewPatient(element).subscribe((response) => {
-console.log('Response:', response);
+// console.log('Response:', response);
 
           this.data = {
             ...this.data , patientName : response.data[0].firstname + ' ' + response.data[0].lastname
@@ -31,7 +31,7 @@ console.log('Response:', response);
         }
         );
       } else {
-        console.error('No patient id found in the element');
+        // console.error('No patient id found in the element');
       }
 
     });

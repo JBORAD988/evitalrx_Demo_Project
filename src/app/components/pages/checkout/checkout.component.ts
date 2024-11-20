@@ -52,7 +52,7 @@ export class CheckoutComponent implements OnInit {
           patientId: element
         });
       } else {
-        console.error('No patient id found in the element');
+        // console.error('No patient id found in the element');
       }
     }
     );
@@ -77,7 +77,7 @@ export class CheckoutComponent implements OnInit {
 
         this.shippingCharges = this.checkout.data?.shipping_charges;
       } else {
-        console.log("No cart data found.");
+        // console.log("No cart data found.");
       }
     });
 
@@ -89,10 +89,9 @@ export class CheckoutComponent implements OnInit {
           return sum + (item.totalprice || 0);
         }, 0);
 
-        console.log("Total Price:", totalPrice);
         this.subtotal = totalPrice;
       } else {
-        console.error('No subtotal found in the element');
+        // console.error('No subtotal found in the element');
       }
 
     });
@@ -135,11 +134,11 @@ export class CheckoutComponent implements OnInit {
               medicine_id: ele.medicine_id,
               quantity: 1
             };
-            console.log('Item:', item);
+            // console.log('Item:', item);
 
             this.item.push(item);
           }else{
-            console.error('No medicine id found in the item');
+            // console.error('No medicine id found in the item');
           }
 
         });
@@ -163,7 +162,7 @@ export class CheckoutComponent implements OnInit {
 
         this.medicineService.placeOrder(data).subscribe({
           next: (response) => {
-            console.log('Order placed successfully:', response);
+            // console.log('Order placed successfully:', response);
             this.openOrderModal(response)
             this.toast.success('Order placed successfully!');
             this.billingForm.reset({ deliveryType: 'delivery', autoAssign: true });
@@ -171,14 +170,14 @@ export class CheckoutComponent implements OnInit {
 
           },
           error: (err) => {
-            console.error('Error placing the order:', err);
+            // console.error('Error placing the order:', err);
           }
         });
       } else {
-        console.error('No items found in the cart.');
+        // console.error('No items found in the cart.');
       }
     } else {
-      console.error('Billing form is invalid.');
+      // console.error('Billing form is invalid.');
       Object.values(this.billingForm.controls).forEach(control => {
         if (control.invalid) {
           control.markAsTouched();

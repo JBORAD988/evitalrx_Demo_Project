@@ -15,7 +15,7 @@ export class SharedStatusService {
         this.elementSubject.next(parsedData);
       }
     } catch (error) {
-      console.error('Error parsing cartCheckoutResponse from localStorage:', error);
+      // console.error('Error parsing cartCheckoutResponse from localStorage:', error);
       localStorage.removeItem('cartCheckoutResponse');
       this.cartCheckoutResponse.next([]);
       this.elementSubject.next([]);
@@ -35,7 +35,7 @@ export class SharedStatusService {
       const token = localStorage.getItem("token");
       return !!token;
     } catch (error) {
-      console.error('Error checking login status:', error);
+      // console.error('Error checking login status:', error);
       return false;
     }
   }
@@ -75,7 +75,7 @@ export class SharedStatusService {
     try {
       return storedData ? JSON.parse(storedData) : [];
     } catch (error) {
-      console.error('Error parsing cartCheckoutResponse from localStorage:', error);
+      // console.error('Error parsing cartCheckoutResponse from localStorage:', error);
       localStorage.removeItem('cartCheckoutResponse');
       return [];
     }
@@ -105,12 +105,12 @@ export class SharedStatusService {
       try {
         return JSON.parse(storedData); // Safely parse JSON
       } catch (error) {
-        console.error('Error parsing patientId from localStorage:', error);
+        // console.error('Error parsing patientId from localStorage:', error);
         localStorage.removeItem('patientId'); // Clear corrupted data
         return null;
       }
     } else {
-      console.log('No patientId found in localStorage.');
+      // console.log('No patientId found in localStorage.');
       return null;
     }
   }
@@ -139,12 +139,12 @@ export class SharedStatusService {
       try {
         return JSON.parse(storedData); // Safely parse JSON
       } catch (error) {
-        console.error('Error parsing patientId from localStorage:', error);
+        // console.error('Error parsing patientId from localStorage:', error);
         localStorage.removeItem('saveSubtotal'); // Clear corrupted data
         return null;
       }
     } else {
-      console.log('No patientId found in localStorage.');
+      // console.log('No patientId found in localStorage.');
       return null;
     }
   }

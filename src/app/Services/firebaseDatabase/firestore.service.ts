@@ -31,12 +31,12 @@ async addPatient(patientId: string) {
         { merge: true }
       );
 
-      console.log(`Patient ID ${patientId} added to the array successfully!`);
+      // console.log(`Patient ID ${patientId} added to the array successfully!`);
     } else {
-      console.error('No user logged in!');
+      // console.error('No user logged in!');
     }
   } catch (error) {
-    console.error('Error adding patient ID:', error);
+    // console.error('Error adding patient ID:', error);
   }
 }
 
@@ -66,15 +66,15 @@ async getPatientIds() {
         const data = docSnapshot.data();
         return data?.['patientIds'] || [];
       } else {
-        console.log('No patient data found.');
+        // console.log('No patient data found.');
         return [];
       }
     } else {
-      console.error('No user logged in!');
+      // console.error('No user logged in!');
       return [];
     }
   } catch (error) {
-    console.error('Error fetching patient IDs:', error);
+    // console.error('Error fetching patient IDs:', error);
     return [];
   }
 }
@@ -101,12 +101,12 @@ async addOrders(orderId: string) {
         { merge: true }
       );
 
-      console.log(`Patient ID ${orderId} added to the array successfully!`);
+      // console.log(`Patient ID ${orderId} added to the array successfully!`);
     } else {
-      console.error('No user logged in!');
+      // console.error('No user logged in!');
     }
   } catch (error) {
-    console.error('Error adding orderId ID:', error);
+    // console.error('Error adding orderId ID:', error);
   }
 }
 
@@ -137,15 +137,15 @@ async getOrderIds() {
         const data = docSnapshot.data();
         return data?.['orderIds'] || [];
       } else {
-        console.log('No order data found.');
+        // console.log('No order data found.');
         return [];
       }
     } else {
-      console.error('No user logged in!');
+      // console.error('No user logged in!');
       return [];
     }
   } catch (error) {
-    console.error('Error fetching patient IDs:', error);
+    // console.error('Error fetching patient IDs:', error);
     return [];
   }
 }

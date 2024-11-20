@@ -58,7 +58,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
 
       this.SharedStatusService.elementSubject$.subscribe((element) => {
-        console.log(element);
+        // console.log(element);
 
         if (element !== null && element !== undefined) {
           this.cartItems = true;
@@ -75,7 +75,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     }
 
     else {
-      console.error('Invalid route:', page);
+      // console.error('Invalid route:', page);
     }
   }
 
@@ -83,7 +83,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     this.SharedStatusService.setLoginStatus(false);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    console.log('Logged Out Successfully! ')
+    // console.log('Logged Out Successfully! ')
     this.toastr.warning('Logged Out!');
     this.router.navigate(['/auth/login']);
 
@@ -95,18 +95,18 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     const headerElement = document.querySelector('.mat-toolbar.mat-primary') as HTMLElement;
 
     if (!headerElement) {
-      console.error('Element with class "mat-toolbar.mat-primary" not found.');
+      // console.error('Element with class "mat-toolbar.mat-primary" not found.');
       return;
     }
 
     if (!this.isLoggedIn) {
       headerElement.style.position = 'absolute';
 
-      console.log('Header is absolute');
+      // console.log('Header is absolute');
 
     } else {
       headerElement.style.position = 'sticky';
-      console.log('Header is not absolute');
+      // console.log('Header is not absolute');
     }
   }
 

@@ -68,7 +68,7 @@ if(Suggestions.length > 0){
 
       },
       error: (err) => {
-        console.error('Error fetching medicines: ', err);
+        // console.error('Error fetching medicines: ', err);
       }
     });
 
@@ -84,7 +84,7 @@ this.suggestions = '';
         this.dataSource = res.data.result;
       },
       error: (err) => {
-        console.error('Error fetching medicines: ', err);
+        // console.error('Error fetching medicines: ', err);
       }
     });
   }
@@ -153,7 +153,7 @@ return
         }
       },
       error: (err) => {
-        console.error('Error fetching medicine info:', err);
+        // console.error('Error fetching medicine info:', err);
         this.toastr.error('Failed to add to cart. Please try again.');
       },
     });
@@ -167,13 +167,13 @@ return
 
   onSelectionChange(event: any): void {
     const patientid = event.value.patient_id;
-    console.log('Patient ID:', patientid);
+    // console.log('Patient ID:', patientid);
 
     this.sharedStatusService.sendPatientId(patientid);
   }
 
   addPatient(): void {
-    console.log('Add Patient option clicked');
+    // console.log('Add Patient option clicked');
     const dialogRef = this.dialog.open(PatientFormComponent, {
     });
   }
@@ -182,7 +182,7 @@ return
     this.fireStroreService.getPatientIds().then((data) => {
       data.forEach((element: any) => {
         this.medicineService.viewPatient(element).subscribe((res) => {
-          console.log("res-----",res);
+          // console.log("res-----",res);
           let data = {
             patient_id: res.data[0].patient_id,
             patient_name: res.data[0].firstname
@@ -191,7 +191,7 @@ return
         } );
       });
     } ).catch((error) => {
-      console.error('Error fetching patient IDs:', error);
+      // console.error('Error fetching patient IDs:', error);
     });
   }
 
