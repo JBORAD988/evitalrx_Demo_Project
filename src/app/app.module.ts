@@ -29,7 +29,11 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     AngularFirestoreModule,
 
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot( {
+      timeOut: 1000,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

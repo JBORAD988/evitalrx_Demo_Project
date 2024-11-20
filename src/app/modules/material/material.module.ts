@@ -14,6 +14,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 
@@ -38,6 +40,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatBadgeModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatRadioModule,
+    MatCheckboxModule
   ],
 })
 export class MaterialModule { }

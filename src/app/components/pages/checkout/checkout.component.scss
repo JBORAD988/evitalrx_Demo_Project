@@ -1,0 +1,135 @@
+
+
+
+    .cart-card{
+
+      border-radius: 10px !important;
+        overflow: hidden !important;
+        margin:  0 20px 0 20px;
+    }
+
+
+    .mat-mdc-card-content:last-child{
+      padding-bottom: 0 !important;
+    }
+
+
+
+    .checkout-div {
+      padding: 3rem 5rem;
+
+      .page p {
+        font-size: 18px;
+      }
+
+      .frow,
+      .frow1 {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .fcol {
+        display: flex;
+        flex-direction: column;
+
+        .title{
+          font-size: 1.5rem;
+          font-weight: bold;
+          margin-bottom: 1rem;
+        }
+      }
+
+      .bill-form {
+        padding: 2rem;
+        .form-field {
+          margin-bottom: 1rem;
+          width: 48%;
+        }
+        .save-info {
+          margin-top: 1rem;
+          font-size: 0.8rem;
+        }
+      }
+
+      .bill-card {
+        padding: 1.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        // .coupon {
+        //   margin-right: 1rem;
+        //   width: 60%;
+        // }
+        // .cpn-btn {
+        //   margin-left: 1rem;
+        //   height: 2.5rem;
+        // }
+
+        .bill-header{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+        }
+        .bill-box {
+          margin-top: 1rem;
+
+          .bill-amo {
+            justify-content: space-between;
+            font-size: 0.9rem;
+          }
+          .proceed {
+            width: 100%;
+            margin-top: 1rem;
+          }
+        }
+      }
+
+    }
+
+
+    .checkout-form{
+      display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    flex-direction: row;
+    gap: 2%;
+    }
+
+    @media screen and (max-width: 450px) {
+      .checkout-div {
+        padding: 1rem;
+
+        .bill-box {
+          margin: 0 auto;
+          max-width: 100%;
+        }
+
+        .bill-form input {
+          width: 100%;
+        }
+
+        .coupon input {
+          width: 70%;
+        }
+
+        .coupon button {
+          width: 25%;
+        }
+      }
+    }
+
+
+    .route-to-signup{
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+
+      a{
+        color: #3f51b5;
+        text-decoration: none;
+        font-weight: 700;
+        cursor: pointer;
+
+      }
+    }

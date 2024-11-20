@@ -52,8 +52,17 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     } else if (page === 'signup') {
       this.router.navigate(['/auth/signup']);
     }else if (page === 'cart') {
-      this.router.navigate(['/pages/addtocart']);
+      this.SharedStatusService.elementSubject$.subscribe((element) => {
+        if (element !== null && element !== undefined) {
+          console.log('Cart is not Empty!');
+          this.router.navigate(['/pages/addtocart']);
+        } else {
+          console.log('Cart is Empty!');
+          this.toastr.warning('Cart is Empty!');
+        }
+      });
     }
+
     else {
       console.error('Invalid route:', page);
     }

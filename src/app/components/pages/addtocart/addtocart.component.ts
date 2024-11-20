@@ -37,30 +37,8 @@ returntohome() {
 }
 
 
-  couponCode: string = '';
 
-  calculateSubtotal(): number {
-    return this.products.reduce(
-      (total, product) => total + product.price * product.quantity,
-      0
-    );
-  }
 
-  calculateTotal(): number {
-    return this.calculateSubtotal(); // Add any additional charges like tax here
-  }
-
-  updateCart(): void {
-    alert('Cart updated successfully!');
-  }
-
-  applyCoupon(): void {
-    if (this.couponCode) {
-      alert(`Coupon "${this.couponCode}" applied!`);
-    } else {
-      alert('Please enter a coupon code.');
-    }
-  }
 
   onClickChekcout() {
 
@@ -78,10 +56,11 @@ returntohome() {
       distance: 5,
       items: JSON.stringify(this.item)
     }
-    console.log('data', data);
 
     this.medicineService.chekout(data).subscribe(res => {
-      console.log('res', res);
+      const data = res ;
+      this.sharedStatusService.sendCartCheckoutResponse(data);
+      this.router.navigate(['/pages/checkout']);
   })
 
   }

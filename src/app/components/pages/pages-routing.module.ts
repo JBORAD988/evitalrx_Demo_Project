@@ -5,10 +5,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { OrdersComponent } from './orders/orders.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { AddtocartComponent } from './addtocart/addtocart.component';
+import { CheckoutGuard } from 'src/app/guard/checkout.guard';
 
 const routes: Routes = [{ path: 'order', component: OrdersComponent },{
   path: 'dashboard', component: DashboardComponent
-},{path:'checkout',component:CheckoutComponent},{path:'addtocart',component:AddtocartComponent}];
+},{path:'checkout',component:CheckoutComponent , canActivate: [CheckoutGuard]},{path:'addtocart',component:AddtocartComponent}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

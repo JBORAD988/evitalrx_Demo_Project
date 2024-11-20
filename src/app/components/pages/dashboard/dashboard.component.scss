@@ -218,13 +218,13 @@ tr:hover {
   border-radius: 20px;
   padding: 5px 15px;
   font-size: 14px;
-  color: #ffffff;
+  color: #000000 !important;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .medicine-button:hover {
   background-color: #479efa;
-  color: white;
+  color: white !important;
 }
 

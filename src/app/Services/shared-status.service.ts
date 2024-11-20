@@ -17,6 +17,7 @@ export class SharedStatusService {
   }
 
 
+
   get IsLoggedIn() {
     if (localStorage.getItem("token")) {
       return true;
@@ -35,6 +36,20 @@ export class SharedStatusService {
     this.elementSubject.next(null);
 
   }
+
+
+  private cartCheckoutResponse = new BehaviorSubject<any[]>([]);
+  public cartCheckoutResponse$ = this.cartCheckoutResponse.asObservable();
+
+  sendCartCheckoutResponse(response: any[]): void {
+    this.cartCheckoutResponse.next(response);
+  }
+
+  clearCartCheckoutResponse() {
+    this.cartCheckoutResponse.next([]);
+  }
+
+
 
 
 
