@@ -105,7 +105,7 @@ Thank you for your patience and understanding. 🙏✨
 ## Demo Screenshots
 
 1. **Homepage**  
-   ![Homepage](https://github.com/example/screenshots/homepage.png)
+   ![Homepage](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/4e702ad455935500383cf68d54893bf981f474e0/src/assets/screenshorts/1.png)
 
 2. **Login**  
    ![Login](https://github.com/example/screenshots/login.png)
