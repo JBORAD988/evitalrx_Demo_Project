@@ -8,13 +8,20 @@ export class SharedStatusService {
 
   constructor() {
     const storedCartData = localStorage.getItem('cartCheckoutResponse');
-    if (storedCartData) {
-      this.cartCheckoutResponse.next(JSON.parse(storedCartData));
-      this.elementSubject.next(JSON.parse(storedCartData));
+    try {
+      if (storedCartData) {
+        const parsedData = JSON.parse(storedCartData);
+        this.cartCheckoutResponse.next(parsedData);
+        this.elementSubject.next(parsedData);
+      }
+    } catch (error) {
+      console.error('Error parsing cartCheckoutResponse from localStorage:', error);
+      localStorage.removeItem('cartCheckoutResponse');
+      this.cartCheckoutResponse.next([]);
+      this.elementSubject.next([]);
     }
-
-
   }
+
 
   private loginStatus = new BehaviorSubject<boolean>(this.IsLoggedIn);
   isLoggedIn$ = this.loginStatus.asObservable();
@@ -23,8 +30,14 @@ export class SharedStatusService {
     this.loginStatus.next(status);
   }
 
-  get IsLoggedIn() {
-    return localStorage.getItem("token") !== null;
+  get IsLoggedIn(): boolean {
+    try {
+      const token = localStorage.getItem("token");
+      return !!token;
+    } catch (error) {
+      console.error('Error checking login status:', error);
+      return false;
+    }
   }
 
   private elementSubject = new BehaviorSubject<any>(null);
@@ -53,16 +66,91 @@ export class SharedStatusService {
     this.clearStoredCartData();
   }
 
-  private saveCartData(data: any[]): void {
+   saveCartData(data: any[]): void {
     localStorage.setItem('cartCheckoutResponse', JSON.stringify(data));
   }
 
   private getStoredCartData(): any[] {
     const storedData = localStorage.getItem('cartCheckoutResponse');
-    return storedData ? JSON.parse(storedData) : [];
+    try {
+      return storedData ? JSON.parse(storedData) : [];
+    } catch (error) {
+      console.error('Error parsing cartCheckoutResponse from localStorage:', error);
+      localStorage.removeItem('cartCheckoutResponse');
+      return [];
+    }
   }
 
   private clearStoredCartData(): void {
     localStorage.removeItem('cartCheckoutResponse');
   }
+
+
+
+  private patientId = new BehaviorSubject<any>(this.getStoredPatientId());
+  public patientId$ = this.patientId.asObservable();
+
+  sendPatientId(element: any): void {
+    this.patientId.next(element);
+    this.savePatientId(element);
+  }
+
+  private savePatientId(data: any): void {
+    localStorage.setItem('patientId', JSON.stringify(data));
+  }
+
+  private getStoredPatientId(): any {
+    const storedData = localStorage.getItem('patientId');
+    if (storedData) {
+      try {
+        return JSON.parse(storedData); // Safely parse JSON
+      } catch (error) {
+        console.error('Error parsing patientId from localStorage:', error);
+        localStorage.removeItem('patientId'); // Clear corrupted data
+        return null;
+      }
+    } else {
+      console.log('No patientId found in localStorage.');
+      return null;
+    }
+  }
+
+
+
+
+
+
+
+  private subtotal = new BehaviorSubject<any>(this.getSubtotal());
+  public subtotal$ = this.patientId.asObservable();
+
+  sendSubtotal(element: any): void {
+    this.patientId.next(element);
+    this.saveSubtotal(element);
+  }
+
+  private saveSubtotal(data: any): void {
+    localStorage.setItem('saveSubtotal', JSON.stringify(data));
+  }
+
+  private getSubtotal(): any {
+    const storedData = localStorage.getItem('saveSubtotal');
+    if (storedData) {
+      try {
+        return JSON.parse(storedData); // Safely parse JSON
+      } catch (error) {
+        console.error('Error parsing patientId from localStorage:', error);
+        localStorage.removeItem('saveSubtotal'); // Clear corrupted data
+        return null;
+      }
+    } else {
+      console.log('No patientId found in localStorage.');
+      return null;
+    }
+  }
+
+
+
+
+
 }

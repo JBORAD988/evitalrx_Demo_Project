@@ -71,5 +71,27 @@ export class MedicineService {
     return this.http.post('https://dev-api.evitalrx.in/v1/fulfillment/orders/checkout', formData);
   }
 
+  placeOrder(data: any): Observable<any> {
 
+    console.log('formData', data);
+
+    const formData = new FormData();
+    formData.append('apikey', evitalrxApi.evitalConfig.apiKey);
+    formData.append('items', data.items);
+    formData.append('delivery_type', data.delivery_type);
+    formData.append('patient_name', data.patient_name);
+    formData.append('mobile', data.mobile);
+    formData.append('address', data.address);
+    formData.append('city', data.city);
+    formData.append('state', data.state);
+    formData.append('zipcode', data.zipcode);
+    formData.append('auto_assign', data.auto_assign);
+    formData.append('chemist_id', data.chemist_id);
+    formData.append('latitude', data.latitude);
+    formData.append('longitude', data.longitude);
+    formData.append('patient_id', data.patient_id);
+
+
+    return this.http.post('https://dev-api.evitalrx.in/v1/fulfillment/orders/place_order', formData);
+  }
 }

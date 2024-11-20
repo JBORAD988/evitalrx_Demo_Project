@@ -1,7 +1,11 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MedicineService } from 'src/app/Services/medicine.service';
 import { SharedStatusService } from 'src/app/Services/shared-status.service';
+import { MatDialog } from '@angular/material/dialog';
+import { OrderconfirmationComponent } from '../orderconfirmation/orderconfirmation.component';
 
 @Component({
   selector: 'app-checkout',
@@ -11,9 +15,9 @@ import { SharedStatusService } from 'src/app/Services/shared-status.service';
 export class CheckoutComponent implements OnInit {
 
   billingForm!: FormGroup;
-  constructor(private shareDataService :SharedStatusService, private fb : FormBuilder , private router: Router) {
+  constructor(private shareDataService :SharedStatusService, private medicineService: MedicineService, private dialog: MatDialog ,private fb : FormBuilder , private router: Router, private toast : ToastrService) {
     this.billingForm = this.fb.group({
-      deliveryType: ['delivery'],
+      deliveryType: ['delivery', [Validators.required, Validators.pattern(/^(pickup|delivery)$/)]],
       patientName: ['', Validators.required],
       mobile: [
         '',
@@ -38,40 +42,59 @@ export class CheckoutComponent implements OnInit {
       longitude: ['77.6382433'],
       patientId: ['']
     });
+
+
+
+    this.shareDataService.patientId$.subscribe((element) => {
+
+      if (element) {
+        this.billingForm.patchValue({
+          patientId: element
+        });
+      } else {
+        console.error('No patient id found in the element');
+      }
+    }
+    );
   }
 
 
   checkout: any;
   shippingCharges: number = 0;
   subtotal: number = 0;
+  item: any[] = [];
+  totalamoutobject: any;
+
 
   ngOnInit(): void {
-
     this.getdata();
-
-
   }
 
   getdata() {
     this.shareDataService.cartCheckoutResponse$.subscribe((element) => {
       if (element) {
         this.checkout = element;
-        console.log(this.checkout);
 
-        let totalMrp = this.checkout.data?.items.reduce((total: any, item: any) => {
-          if (item.mrp) {
-            total += item.mrp;
-          }
-          return total;
-        }, 0);
-
-        console.log("Total MRP:", totalMrp);
-
-        this.subtotal = totalMrp;
         this.shippingCharges = this.checkout.data?.shipping_charges;
       } else {
         console.log("No cart data found.");
       }
+    });
+
+    this.shareDataService.subtotal$.subscribe((element) => {
+      if (element) {
+
+        this.totalamoutobject = element;
+        const totalPrice = this.totalamoutobject.reduce((sum: number, item: any) => {
+          return sum + (item.totalprice || 0);
+        }, 0);
+
+        console.log("Total Price:", totalPrice);
+        this.subtotal = totalPrice;
+      } else {
+        console.error('No subtotal found in the element');
+      }
+
     });
 
   }
@@ -82,6 +105,16 @@ export class CheckoutComponent implements OnInit {
     this.router.navigate(['/pages/dashboard']);
   }
 
+  openOrderModal(data:any): void {
+    this.dialog.open(OrderconfirmationComponent, {
+      data:data,
+      width: '400px',
+      disableClose: true,
+      panelClass: 'custom-dialog-container',
+
+    });
+  }
+
 
 
 
@@ -90,10 +123,69 @@ export class CheckoutComponent implements OnInit {
 
 
   proceedToCheckout(): void {
-    if (this.billingForm.valid) {
-      console.log('Proceeding to checkout with data:', this.billingForm.value);
 
+    if (this.billingForm.valid) {
+      this.item = [];
+
+      if (this.checkout?.data?.items?.length) {
+
+        this.checkout.data.items.forEach((ele: any) => {
+          if (ele.medicine_id ){
+            const item = {
+              medicine_id: ele.medicine_id,
+              quantity: 1
+            };
+            console.log('Item:', item);
+
+            this.item.push(item);
+          }else{
+            console.error('No medicine id found in the item');
+          }
+
+        });
+
+
+        const data = {
+          items: JSON.stringify(this.item),
+          delivery_type: this.billingForm.get('deliveryType')?.value || "delivery",
+          patient_name: this.billingForm.get('patientName')?.value,
+          mobile: this.billingForm.get('mobile')?.value,
+          address: this.billingForm.get('address')?.value,
+          city: this.billingForm.get('city')?.value,
+          state: this.billingForm.get('state')?.value,
+          zipcode: this.billingForm.get('zipcode')?.value,
+          auto_assign: this.billingForm.get('autoAssign')?.value || true,
+          chemist_id: this.billingForm.get('chemistId')?.value || null,
+          latitude: +this.billingForm.get('latitude')?.value || 12.970612,
+          longitude: +this.billingForm.get('longitude')?.value || 77.6382433,
+          patient_id: this.billingForm.get('patientId')?.value
+        };
+
+        this.medicineService.placeOrder(data).subscribe({
+          next: (response) => {
+            console.log('Order placed successfully:', response);
+            this.openOrderModal(response)
+            this.toast.success('Order placed successfully!');
+            this.billingForm.reset({ deliveryType: 'delivery', autoAssign: true });
+            this.item = [];
+
+          },
+          error: (err) => {
+            console.error('Error placing the order:', err);
+          }
+        });
+      } else {
+        console.error('No items found in the cart.');
+      }
+    } else {
+      console.error('Billing form is invalid.');
+      Object.values(this.billingForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsTouched();
+        }
+      });
     }
   }
+
 
 }

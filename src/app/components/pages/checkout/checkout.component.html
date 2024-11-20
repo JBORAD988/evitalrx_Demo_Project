@@ -62,15 +62,26 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Delivery Type</mat-label>
+              <mat-select formControlName="deliveryType" placeholder="Select Delivery Type">
+                <mat-option value="delivery">Delivery</mat-option>
+                <mat-option value="pickup">Pickup</mat-option>
+              </mat-select>
+              <mat-error *ngIf="billingForm.get('deliveryType')?.hasError('required')">
+                Delivery Type is required.
+              </mat-error>
+              <mat-error *ngIf="billingForm.get('deliveryType')?.hasError('pattern')">
+                Invalid Delivery Type selected.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
               <mat-label>Chemist ID</mat-label>
               <input matInput placeholder="Enter Chemist ID" formControlName="chemistId" />
 
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="form-field" *ngIf="billingForm.get('patientId')?.value">
-              <mat-label>Patient ID</mat-label>
-              <input matInput placeholder="Enter Patient ID (Optional)" formControlName="patientId" />
-            </mat-form-field>
+
 
             <mat-checkbox color="warn" class="save-info" formControlName="autoAssign">
               Auto Assign

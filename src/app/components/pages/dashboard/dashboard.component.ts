@@ -7,6 +7,7 @@ import { FirestoreService } from 'src/app/Services/firebaseDatabase/firestore.se
 import { ToastrService } from 'ngx-toastr';
 import { SharedStatusService } from 'src/app/Services/shared-status.service';
 import { share } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,9 +16,11 @@ import { share } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
 
+  patientForm!: FormGroup;
   dataSource: any;
   cartData: any[] = [];
   cardDataIds:any[]=[];
+  isAlreadyInCart:any;
   displayedColumns: string[] = ['position', 'medicine_name', 'manufacturer_name', 'packing_size', 'price', 'available_for_patient', 'Action'];
   dialogData: any;
   suggestions : string = '';
@@ -31,9 +34,13 @@ export class DashboardComponent implements OnInit {
     private medicineService: MedicineService,
     private fireStroreService: FirestoreService,
     private toastr: ToastrService,
-    private sharedStatusService: SharedStatusService
+    private sharedStatusService: SharedStatusService,
+    private fb: FormBuilder
   ) {
 
+    this.patientForm = this.fb.group({
+      patientName: ['',Validators.required],
+    });
 
 
    }
@@ -123,14 +130,19 @@ if(res.data.length === 0){
   this.toastr.error('No data for available');
 return
 }
-        const isAlreadyInCart = this.cartData.some(
-          (item) =>
-          item.data[0]?.id === res.data[0]?.id
-        );
-        if (!isAlreadyInCart) {
+
+        if (Array.isArray(this.cartData)) {
+           this.isAlreadyInCart = this.cartData.some((item) =>
+            item.data[0]?.id === res.data[0]?.id
+          );
+        } else {
+          this.cartData = [];
+          }
+
+        if (!this.isAlreadyInCart) {
           this.cartData.push({ ...res, quantity: 1 });
         }
-        if (availableForPatient  && !isAlreadyInCart) {
+        if (availableForPatient  && !this.isAlreadyInCart) {
           this.toastr.success('Added to cart');
           this.sharedStatusService.sendElement(this.cartData);
         } else if(!availableForPatient){
@@ -154,9 +166,10 @@ return
 
 
   onSelectionChange(event: any): void {
-    const selectedValue = event.value;
-    console.log('Selected:', selectedValue);
+    const patientid = event.value.patient_id;
+    console.log('Patient ID:', patientid);
 
+    this.sharedStatusService.sendPatientId(patientid);
   }
 
   addPatient(): void {
@@ -169,8 +182,12 @@ return
     this.fireStroreService.getPatientIds().then((data) => {
       data.forEach((element: any) => {
         this.medicineService.viewPatient(element).subscribe((res) => {
-          console.log(res);
-          this.patient_name.push(res.data[0].firstname);
+          console.log("res-----",res);
+          let data = {
+            patient_id: res.data[0].patient_id,
+            patient_name: res.data[0].firstname
+          }
+          this.patient_name.push(data);
         } );
       });
     } ).catch((error) => {

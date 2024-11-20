@@ -16,6 +16,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   cartItemsCount:string = '';
 
+  cartItems : boolean = false;
+
   constructor(private router:Router,private SharedStatusService: SharedStatusService, private toastr: ToastrService) {
 
    }
@@ -52,16 +54,24 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     } else if (page === 'signup') {
       this.router.navigate(['/auth/signup']);
     }else if (page === 'cart') {
-      this.router.navigate(['/pages/addtocart']);
+
+
 
       this.SharedStatusService.elementSubject$.subscribe((element) => {
+        console.log(element);
+
         if (element !== null && element !== undefined) {
-          console.log('Cart is not Empty!');
+          this.cartItems = true;
         } else {
-          console.log('Cart is Empty!');
-          this.toastr.warning('Cart is Empty!');
+          this.cartItems = false
         }
       });
+
+      if(this.cartItems){
+        this.router.navigate(['/pages/addtocart']);
+      }else{
+        this.toastr.warning('Cart is Empty!');
+      }
     }
 
     else {

@@ -12,7 +12,7 @@ export class AddtocartComponent implements OnInit {
 
   products: any[] = [];
   item: any[] = [];
-
+  productPrice: any[] = [];
 
   constructor(
     private sharedStatusService: SharedStatusService, private medicineService: MedicineService,
@@ -31,12 +31,23 @@ export class AddtocartComponent implements OnInit {
     this.sharedStatusService.elementSubject$.subscribe((element) => {
       console.log(element);
       this.products = element;
+
+      this.products.forEach((element) => {
+        this.productPrice.push({ id : element.data[0].id ,totalprice: element.data[0].mrp });
+
+      });
+      this.sharedStatusService.sendSubtotal(this.productPrice);
+
   });
   }
 
 returntohome() {
-  // this.sharedStatusService.ClearCart();
   this.router.navigate(['/pages/dashboard']);
+}
+
+ClearAlldata(){
+    this.sharedStatusService.ClearCart();
+    this.router.navigate(['/pages/dashboard']);
 }
 
 
@@ -67,5 +78,23 @@ returntohome() {
   })
 
   }
+
+  quantityChange(products: any, id: any) {
+    const productIndex = this.productPrice.findIndex((item) => item.id === id);
+
+    if (productIndex !== -1) {
+      this.productPrice[productIndex].totalprice = products;
+      console.log(`Updated totalprice for id: ${id}, new totalprice: ${products}`);
+    } else {
+      this.productPrice.push({ ...products, id });
+      console.log(`Added new product:`, products);
+    }
+
+     this.sharedStatusService.sendSubtotal(this.productPrice);
+
+
+    console.log('Updated productPrice:', this.productPrice);
+  }
+
 
 }

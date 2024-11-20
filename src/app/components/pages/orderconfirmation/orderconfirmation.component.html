@@ -1,0 +1,35 @@
+<div mat-dialog-title class="modal-header">
+  <h2>Order Confirmed</h2>
+
+</div>
+
+<div mat-dialog-content>
+  <div class="modal-body">
+    <h4>Thank you, {{data.patientName}}!</h4>
+    <p class="subtitle">{{data?.data?.thankyou_msg_second}}</p>
+
+    <div class="summary">
+      <h5>Payment Summary</h5>
+      <mat-divider></mat-divider>
+
+      <div class="summary-item">
+        <span>Order Id</span>
+        <span>{{data?.data?.order_id}}</span>
+      </div>
+      <div class="summary-item">
+        <span>Order Number</span>
+        <span>{{data?.data?.order_number}}</span>
+      </div>
+      <div class="summary-item">
+        <span>pharmacy Name</span>
+        <span>{{data?.data?.pharmacy_name}}</span>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close color="primary">Close</button>
+</div>

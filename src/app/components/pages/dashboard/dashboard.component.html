@@ -8,14 +8,21 @@
         <input matInput placeholder="Ex. Dolo" [value]="selectedMedicine" (change)="onSearch($event)">
       </mat-form-field>
 
-      <mat-form-field  class="full-width form-field" appearance="fill">
-        <mat-label>Select Patient</mat-label>
-        <mat-select (selectionChange)="onSelectionChange($event)">
-          <mat-option *ngFor="let item of patient_name" [value]="item">
-            {{ item }}
-          </mat-option>
-        </mat-select>
+      <form [formGroup]="patientForm"  class="full-width form-field">
+
+        <mat-form-field class="full-width form-field" appearance="fill">
+          <mat-label>Select Patient</mat-label>
+          <mat-select formControlName="patientName" (selectionChange)="onSelectionChange($event)" required>
+            <mat-option *ngFor="let item of patient_name" [value]="item">
+              {{ item.patient_name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="patientForm.get('patientName')?.hasError('required')">
+            Patient selection is required.
+          </mat-error>
       </mat-form-field>
+
+      </form>
 
       <div class="add-patient-button">
         <button mat-raised-button color="primary" (click)="addPatient()">

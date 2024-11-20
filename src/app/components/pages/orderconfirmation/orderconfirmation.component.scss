@@ -1,0 +1,55 @@
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3f51b5;
+  }
+
+  mat-icon {
+    color: #757575;
+  }
+}
+
+.modal-body {
+  text-align: center;
+  padding: 1rem 0;
+
+  h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #3f51b5;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: #757575;
+    margin-bottom: 1.5rem;
+  }
+
+  .summary {
+    text-align: left;
+    margin: 1rem 0;
+
+    h5 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
+    }
+
+
+  }
+}

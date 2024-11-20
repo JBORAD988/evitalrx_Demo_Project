@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddtocartComponent } from './addtocart/addtocart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ToastrModule } from 'ngx-toastr';
+import { OrderconfirmationComponent } from './orderconfirmation/orderconfirmation.component';
 
 
 
@@ -23,6 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
     OrdersComponent,
     AddtocartComponent,
     CheckoutComponent,
+    OrderconfirmationComponent,
 
 
   ],
