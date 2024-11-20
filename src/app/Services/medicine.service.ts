@@ -60,5 +60,16 @@ export class MedicineService {
     return this.http.post('https://dev-api.evitalrx.in/v1/fulfillment/patients/view', formData);
   }
 
+  chekout(data: any): Observable<any> {
+    const formData = new FormData();
+    formData.append('apikey', evitalrxApi.evitalConfig.apiKey);
+    formData.append('items', data.items);
+    formData.append('latitude', data.latitude);
+    formData.append('longitude', data.longitude);
+    formData.append('distance', data.distance);
+
+    return this.http.post('https://dev-api.evitalrx.in/v1/fulfillment/orders/checkout', formData);
+  }
+
 
 }

@@ -1,0 +1,597 @@
+.cart-div {
+
+  padding: 0 15px 0 15px;
+
+  .pm {
+    display: none;
+  }
+
+  h4 {
+    font-weight: 500;
+  }
+
+  .page {
+    p {
+      font-size: 18px;
+    }
+  }
+
+  .frow {
+    display: flex;
+    flex-direction: row;
+  }
+
+
+  .three-d-card {
+
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    box-shadow: 0 10px 20px rgba(223, 223, 223, 0.3);
+  }
+
+  .heading {
+    justify-content: space-between;
+    padding: 0 40px 0 40px;
+  }
+
+  .prod-img {
+    width: 5rem;
+    height: 4rem;
+    margin-left: 2.3rem;
+  }
+
+  .card1 {
+    height: 7rem;
+  }
+
+  .title {
+    margin-bottom: 2rem;
+  }
+
+  .prod-name {
+    font-size: 1rem;
+    margin-top: 1.7rem;
+    margin-left: 1rem;
+  }
+
+  .price {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-left: 10.5rem;
+  }
+
+  .qua {
+    width: 4rem;
+    height: 2.4rem;
+    margin-top: 1rem;
+    margin-left: 25.2rem;
+    border-radius: 4px;
+    padding: 8px;
+  }
+
+  .sub {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-left: 24%;
+  }
+
+
+
+  .return {
+    width: 12rem;
+    border: none;
+    border-radius: 5px;
+    // background-color: #58bb5b;
+    color: white;
+    height: 3.5rem;
+    width: 15rem;
+    margin-top: 1rem;
+    margin-left: 4rem;
+  }
+
+
+  .btn-style:hover {
+    border: none;
+    color: white;
+  }
+
+  .products {
+    margin-bottom: 2rem;
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .prod-card {
+    margin-bottom: 4rem;
+  }
+
+  .coupon {
+    // padding: 1rem;
+    border-radius: 5px;
+    height: 3.2rem;
+    width: 18rem;
+    margin-right: 12px;
+  }
+
+  .cpn-btn {
+    height: 3.2rem;
+    width: 10rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #DB4444;
+    color: white;
+  }
+
+  .cpn-btn:hover {
+    background-color: #ec2424;
+  }
+
+  .bill-box {
+    height: 17rem;
+    width: 26rem;
+    border: 2px solid black;
+    padding: 18px 22px 18px 18px;
+    margin-left: 24rem;
+  }
+
+  .btns2 {
+    display: none;
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 0.9rem;
+  }
+
+  .bill-amo {
+    justify-content: space-between;
+
+    p {
+      margin-bottom: 7px;
+    }
+  }
+
+  hr {
+    margin-top: 0;
+  }
+
+  .proceed {
+    border: none;
+    border-radius: 5px;
+    background-color: #58bb5b;
+    color: white;
+    height: 3.5rem;
+    width: 15rem;
+    margin-top: 1rem;
+    margin-left: 4rem;
+  }
+
+  .proceed:hover {
+    background-color: #119417;
+  }
+
+  .bill-card {
+    margin-top: 0;
+  }
+
+
+
+}
+
+.fcol {
+  display: flex;
+  flex-direction: row;
+}
+
+
+
+.products {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.product-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  max-width: 100%;
+}
+
+.product-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.prod-img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.prod-name {
+  font-size: 0.9rem;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.quantity-field {
+  width: 6rem;
+  margin-left: 24%;
+  margin-top: 1%;
+}
+
+.sub {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #444;
+  margin-top: 0.5rem;
+}
+
+mat-form-field {
+  font-size: 0.9rem;
+}
+
+mat-card-content {
+  padding: 0.75rem;
+}
+
+.frow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .product-card {
+    padding: 0.5rem;
+  }
+
+  .prod-name {
+    font-size: 0.8rem;
+  }
+
+  .price, .sub {
+    font-size: 0.9rem;
+  }
+
+  .quantity-field input {
+    font-size: 0.9rem;
+  }
+}
+
+
+
+// mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+
+@media screen and (max-width: 450px) {
+
+
+
+  .fcol {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-div {
+    padding: 1rem 2rem 2rem 2rem;
+
+    .pm {
+      display: block;
+    }
+
+
+    .hm {
+      padding-left: 1rem;
+    }
+
+    .prod-card {
+      display: none;
+    }
+
+
+
+    .r-img {
+      width: 7rem;
+      height: 6rem;
+    }
+
+    .cart-box {
+      padding: 0 0 0 0;
+    }
+
+    .three-d-card {
+      padding-left: 3rem;
+      height: 14rem;
+    }
+
+    .plus {
+      border-radius: 3px;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .p {
+      margin-left: 2px;
+    }
+
+    .value {
+      font-size: 1.5rem;
+      margin-right: 16px;
+      margin-left: 16px;
+    }
+
+    .btns {
+      margin-top: 10px;
+    }
+
+    .disc {
+      display: block;
+      margin-top: 10px;
+      margin-left: 20px;
+    }
+
+    .text {
+      font-size: 20px;
+      margin-bottom: 0;
+    }
+
+    .btns2 {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+
+    .rbtn {
+      border-radius: 4px;
+      border: 1px solid rgb(117, 117, 117);
+      background-color: white;
+    }
+
+    .rbtn:hover {
+      border: none;
+      background-color: #DB4444;
+    }
+
+    .rbtn1 {
+      height: 2.3rem;
+      width: 9rem;
+      margin-right: 60px;
+      margin-bottom: 10px;
+    }
+
+    .rbtn2 {
+      height: 2.3rem;
+      width: 9rem;
+    }
+
+    .bill-card {
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+
+    .coupon {
+      width: 11.5rem;
+      height: 2.5rem;
+      margin-right: 26px;
+    }
+
+    .cpn-btn {
+      width: 8.6rem;
+      height: 2.5rem;
+    }
+
+    .bill-box {
+      margin-top: 20px;
+      margin-left: 0;
+      width: 21.3rem;
+      height: 17rem;
+    }
+
+    .proceed {
+      margin-left: 3.4rem;
+      margin-top: 1rem;
+      height: 2.7rem;
+      width: 12rem;
+    }
+
+  }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+// mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+
+@media screen and (max-width: 395px) {
+
+
+
+  .fcol {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-div {
+    padding: 1rem 2rem 2rem 2rem;
+
+    .pm {
+      display: block;
+    }
+
+
+    .hm {
+      padding-left: 1rem;
+    }
+
+    .prod-card {
+      display: none;
+    }
+
+
+
+    .r-img {
+      width: 7rem;
+      height: 6rem;
+    }
+
+    .cart-box {
+      padding: 0 0 0 0;
+    }
+
+    .three-d-card {
+      height: 14rem;
+    }
+
+    .plus {
+      border-radius: 3px;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .p {
+      margin-left: 2px;
+    }
+
+    .value {
+      font-size: 1.5rem;
+      margin-right: 16px;
+      margin-left: 16px;
+    }
+
+    .btns {
+      margin-top: 10px;
+    }
+
+    .disc {
+      display: block;
+      margin-top: 10px;
+      margin-left: 20px;
+    }
+
+    .text {
+      font-size: 20px;
+      margin-bottom: 0;
+    }
+
+    .btns2 {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+
+    .rbtn {
+      border-radius: 4px;
+      border: 1px solid rgb(117, 117, 117);
+      background-color: white;
+    }
+
+    .rbtn:hover {
+      border: none;
+      background-color: #DB4444;
+    }
+
+    .rbtn1 {
+      height: 2.3rem;
+      width: 9rem;
+      margin-right: 23px;
+    }
+
+    .rbtn2 {
+      height: 2.3rem;
+      width: 9rem;
+    }
+
+    .bill-card {
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+
+    .coupon {
+      width: 10rem;
+      height: 2.5rem;
+    }
+
+    .cpn-btn {
+      width: 8.6rem;
+      height: 2.5rem;
+    }
+
+    .bill-box {
+      margin-top: 20px;
+      margin-left: 0;
+      width: 19.3rem;
+      height: 17rem;
+    }
+
+    .proceed {
+      margin-left: 2.2rem;
+      margin-top: 1rem;
+      height: 2.7rem;
+      width: 12rem;
+    }
+
+  }
+
+
+
+
+}
+
+
+.cart-div {
+  padding: 15px;
+  .three-d-card {
+    box-shadow: var(--mat-elevation-z6);
+    border-radius: 8px;
+
+  }
+  .btn-style {
+    height: 2.8rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+}
+
+.cart-card{
+
+  border-radius: 10px !important;
+    overflow: hidden !important;
+    margin:  0 20px 0 20px;
+}
+
+
+.mat-mdc-card-content:last-child{
+  padding-bottom: 0 !important;
+}

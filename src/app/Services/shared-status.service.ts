@@ -24,5 +24,12 @@ export class SharedStatusService {
     return false;
   }
 
+  private elementSubject = new BehaviorSubject<any>(null);
+  public elementSubject$ = this.elementSubject.asObservable();
+
+  sendElement(element: any): void {
+    this.elementSubject.next(element);
+  }
+
 
 }

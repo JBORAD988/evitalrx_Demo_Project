@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { SharedStatusService } from '../../../Services/shared-status.service';
 import { ToastrService } from 'ngx-toastr';
@@ -6,13 +6,14 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements AfterViewInit, OnInit {
 
   isLoggedIn : Boolean = false;
 
-  cartItemsCount:string = '2';
+  cartItemsCount:string = '';
 
   constructor(private router:Router,private SharedStatusService: SharedStatusService, private toastr: ToastrService) {
 

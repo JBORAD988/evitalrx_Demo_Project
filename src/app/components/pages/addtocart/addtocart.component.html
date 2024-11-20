@@ -1,2 +1,116 @@
 
-<p>addtocart works!</p>
+
+
+<mat-card class="cart-card">
+  <mat-card-content>
+    <div class="cart-div">
+      <div class="cart-box">
+        <div class="prod-card">
+          <div class="title">
+            <mat-card>
+              <mat-card-content class="three-d-card">
+                <div class="frow heading">
+                  <h4>Product</h4>
+                  <h4>Price</h4>
+                  <h4>Quantity</h4>
+                  <h4>Subtotal</h4>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="products" *ngFor="let product of products">
+            <mat-card class="product-card">
+              <mat-card-content class="three-d-card card1">
+                <div class="frow product-content">
+                  <div class="frow product-details">
+                    <img [src]="product.data[0].medicine_image" class="prod-img" />
+                    <p class="prod-name">{{ product.data[0].medicine_name }}</p>
+                  </div>
+
+                  <p class="price">{{ product.data[0].mrp | currency }}</p>
+
+                  <mat-form-field appearance="outline" class="quantity-field">
+                    <input matInput type="number" [(ngModel)]="product.quantity" />
+                  </mat-form-field>
+
+                  <p class="sub">{{ product.data[0].mrp * product.quantity | currency }}</p>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="btn-container">
+
+            <button
+            mat-raised-button
+            color="warn"
+            class="return"
+            [routerLink]="['/']"
+          >
+          Return To Home
+          </button>
+            <button
+            mat-raised-button
+            color="warn"
+            class="proceed"
+            (click)="onClickChekcout()"
+          >
+            Proceed to Checkout
+          </button>
+
+
+          </div>
+        </div>
+
+        <!-- <div class="bill-card fcol">
+          <div class="frow">
+            <mat-form-field appearance="outline" class="coupon">
+              <mat-label>Coupon Code</mat-label>
+              <input matInput placeholder="Enter Coupon Code" [(ngModel)]="couponCode" />
+            </mat-form-field>
+            <button mat-raised-button color="warn" class="cpn-btn" (click)="applyCoupon()">
+              Apply Coupon
+            </button>
+          </div>
+
+
+          <mat-card class="bill-box">
+            <mat-card-header>
+              <mat-card-title>Cart Total</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+              <div class="frow bill-amo">
+                <p>Subtotal :</p>
+                <p>{{ calculateSubtotal() | currency }}</p>
+              </div>
+              <hr />
+              <div class="frow bill-amo">
+                <p>Shipping :</p>
+                <p>Free</p>
+              </div>
+              <hr />
+              <div class="frow bill-amo">
+                <p>Total :</p>
+                <p>{{ calculateTotal() | currency }}</p>
+              </div>
+            </mat-card-content>
+
+            <mat-card-actions>
+              <button
+                mat-raised-button
+                color="warn"
+                class="proceed"
+                [routerLink]="['/checkout']"
+              >
+                Proceed to Checkout
+              </button>
+            </mat-card-actions>
+          </mat-card>
+
+        </div> -->
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

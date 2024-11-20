@@ -1,14 +1,14 @@
 
-< class="Main-block">
+<div class="Main-block">
   <div class="Search-block">
 
     <div class="form">
-      <mat-form-field class="full-width form-field">
+      <mat-form-field class="full-width form-field" appearance="fill">
         <mat-label>Search Medicine</mat-label>
-        <input matInput placeholder="Ex. Dolo" (change)="onSearch($event)">
+        <input matInput placeholder="Ex. Dolo" [value]="selectedMedicine" (change)="onSearch($event)">
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width form-field">
+      <mat-form-field  class="full-width form-field" appearance="fill">
         <mat-label>Select Patient</mat-label>
         <mat-select (selectionChange)="onSelectionChange($event)">
           <mat-option *ngFor="let item of patient_name" [value]="item">
@@ -24,12 +24,15 @@
         </button>
       </div>
     </div>
+    </div>
 
 
 
 
   <div class="table-container">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource && dataSource.length > 0 " >
     <ng-container matColumnDef="position" class="column-position">
       <th mat-header-cell *matHeaderCellDef> No. </th>
       <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}}. </td>
@@ -68,19 +71,54 @@
 
         </button>
 
-        <button mat-raised-button class="green-button"  (click)="AddtoCart(element.id)">
+        <button mat-raised-button class="green-button"  (click)="AddtoCart(element)">
           <mat-icon>add_shopping_cart</mat-icon>
 
         </button>
       </td>
     </ng-container>
 
+
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
   </table>
-</div>
 
 </div>
+
+
+<div *ngIf="suggestions" class="empty-table-message">
+  <mat-card class="empty-table-card">
+    <mat-card-content>
+
+      <div class="suggest-medicine">Did You Mean ?</div>
+      <div class="medicine-buttons">
+        <button mat-button class="medicine-button" (click)="buttonSearch(suggestions)" >
+          {{ suggestions  }}
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div *ngIf="!dataSource || dataSource.length === 0" class="empty-table-message">
+  <mat-card class="empty-table-card">
+    <mat-card-content>
+      <div class="no-medicine">There is no data available to display. Please search for a medicine.</div>
+      <hr>
+      <div class="suggest-medicine">Most Searched Medicines</div>
+      <div class="medicine-buttons">
+        <button mat-button class="medicine-button" (click)="buttonSearch(medicine)" *ngFor="let medicine of mostSearchedMedicines">
+          {{ medicine }}
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+  </div>
+
 
 
 
