@@ -13,6 +13,7 @@ Welcome to **EvitalRx**, your trusted platform for seamless online medicine orde
   - [Why Choose EvitalRx 🌟](#why-choose-evitalrx-)
   - [How to Use the Platform 🖥️](#how-to-use-the-platform-️)
 - [Page Under Development](#page-under-development)
+  - [Evitalrx\_Clone Demo Link](#evitalrx_clone-demo-link)
   - [Demo Screenshots](#demo-screenshots)
   - [Contact Us 📞](#contact-us-)
 
@@ -102,8 +103,7 @@ Thank you for your patience and understanding. 🙏✨
 
 ---
 
-# LiveDemo-Link
-[Evitalrx_Clone Demo](https://example.com)
+[Evitalrx_Clone Demo Link](https://evitalexclonedemo.netlify.app/)
 ---
 
 ## Demo Screenshots
