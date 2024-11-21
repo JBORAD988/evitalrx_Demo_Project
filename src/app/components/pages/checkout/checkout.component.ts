@@ -16,6 +16,7 @@ import { FirestoreService } from '../../../Services/firebaseDatabase/firestore.s
 export class CheckoutComponent implements OnInit {
 
   billingForm!: FormGroup;
+  patientId: string = "";
   constructor(private shareDataService :SharedStatusService, private medicineService: MedicineService, private dialog: MatDialog ,private fb : FormBuilder , private router: Router, private toast : ToastrService, private Firestore : FirestoreService) {
     this.billingForm = this.fb.group({
       deliveryType: ['delivery', [Validators.required, Validators.pattern(/^(pickup|delivery)$/)]],
@@ -41,22 +42,9 @@ export class CheckoutComponent implements OnInit {
       chemistId: [''],
       latitude: ['12.970612'],
       longitude: ['77.6382433'],
-      patientId: ['']
+
     });
 
-
-
-    this.shareDataService.patientId$.subscribe((element) => {
-
-      if (element) {
-        this.billingForm.patchValue({
-          patientId: element
-        });
-      } else {
-        // console.error('No patient id found in the element');
-      }
-    }
-    );
   }
 
 
@@ -68,6 +56,15 @@ export class CheckoutComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.shareDataService.patientId$.subscribe((element) => {
+      if (element) {
+       this.patientId = element;
+      } else {
+        // console.error('No patient id found in the element');
+      }
+    }
+    );
+
     this.getdata();
   }
 
