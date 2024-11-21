@@ -13,7 +13,6 @@ Welcome to **EvitalRx**, your trusted platform for seamless online medicine orde
   - [Why Choose EvitalRx 🌟](#why-choose-evitalrx-)
   - [How to Use the Platform 🖥️](#how-to-use-the-platform-️)
 - [Page Under Development](#page-under-development)
-  - [Evitalrx\_Clone Demo Link](#evitalrx_clone-demo-link)
   - [Demo Screenshots](#demo-screenshots)
   - [Contact Us 📞](#contact-us-)
 
@@ -104,6 +103,8 @@ Thank you for your patience and understanding. 🙏✨
 ---
 
 [Evitalrx_Clone Demo Link](https://evitalexclonedemo.netlify.app/)
+
+- **Note**: If you are new user then don't fotgor to add Patient befour checkot without patient order not Confirm .
 ---
 
 ## Demo Screenshots
