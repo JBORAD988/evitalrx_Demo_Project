@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ViewdetailsComponent } from '../viewdetails/viewdetails.component';
 import { SharedStatusService } from '../../../Services/shared-status.service';
 import { MedicineService } from '../../../Services/medicine.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orderconfirmation',
@@ -13,6 +14,7 @@ export class OrderconfirmationComponent {
 
 
   constructor(
+    private router: Router,
     private SharedStatusService : SharedStatusService,
     private MedicineService : MedicineService,
     public dialogRef: MatDialogRef<ViewdetailsComponent>,
@@ -23,15 +25,11 @@ export class OrderconfirmationComponent {
       if (element) {
         this.data.patientId = element;
         this.MedicineService.viewPatient(element).subscribe((response) => {
-// console.log('Response:', response);
-
           this.data = {
             ...this.data , patientName : response.data[0].firstname + ' ' + response.data[0].lastname
           }
         }
         );
-      } else {
-        // console.error('No patient id found in the element');
       }
 
     });
@@ -40,8 +38,13 @@ export class OrderconfirmationComponent {
     }
 
   closePopup(): void {
+    this.SharedStatusService.ClearCart();
+    this.SharedStatusService.clearCartCheckoutResponse();
     this.dialogRef.close();
+    this.router.navigate(['/pages/dashboard']);
   }
+
+
 
 
   }
