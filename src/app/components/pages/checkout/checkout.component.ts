@@ -55,17 +55,8 @@ export class CheckoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.shareDataService.patientId$.subscribe((element) => {
-      if (element) {
-       this.patientId = element;
-       console.log("patientId",this.patientId);
 
-      } else {
-        // console.error('No patient id found in the element');
-      }
-    }
-    );
-
+    this.patientId = localStorage.getItem('patientId') || "";
     this.getdata();
   }
 
