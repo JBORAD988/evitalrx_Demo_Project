@@ -42,7 +42,6 @@ export class CheckoutComponent implements OnInit {
       chemistId: [''],
       latitude: ['12.970612'],
       longitude: ['77.6382433'],
-
     });
 
   }
@@ -59,6 +58,8 @@ export class CheckoutComponent implements OnInit {
     this.shareDataService.patientId$.subscribe((element) => {
       if (element) {
        this.patientId = element;
+       console.log("patientId",this.patientId);
+
       } else {
         // console.error('No patient id found in the element');
       }
@@ -155,7 +156,7 @@ export class CheckoutComponent implements OnInit {
           chemist_id: this.billingForm.get('chemistId')?.value || null,
           latitude: +this.billingForm.get('latitude')?.value || 12.970612,
           longitude: +this.billingForm.get('longitude')?.value || 77.6382433,
-          patient_id: this.billingForm.get('patientId')?.value
+          patient_id: this.patientId
         };
 
         this.medicineService.placeOrder(data).subscribe({

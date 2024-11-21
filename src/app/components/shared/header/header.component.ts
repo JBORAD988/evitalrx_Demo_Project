@@ -86,7 +86,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     localStorage.removeItem('cartCheckoutResponse');
     localStorage.removeItem('patientId');
     localStorage.removeItem('saveSubtotal');
-    // console.log('Logged Out Successfully! ')
     this.toastr.warning('Logged Out!');
     this.router.navigate(['/auth/login']);
 

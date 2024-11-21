@@ -153,7 +153,6 @@ return
         }
       },
       error: (err) => {
-        // console.error('Error fetching medicine info:', err);
         this.toastr.error('Failed to add to cart. Please try again.');
       },
     });
@@ -167,32 +166,39 @@ return
 
   onSelectionChange(event: any): void {
     const patientid = event.value.patient_id;
-    // console.log('Patient ID:', patientid);
-
     this.sharedStatusService.sendPatientId(patientid);
   }
 
   addPatient(): void {
-    // console.log('Add Patient option clicked');
     const dialogRef = this.dialog.open(PatientFormComponent, {
     });
   }
 
-  getPatients(): void {
-    this.fireStroreService.getPatientIds().then((data) => {
-      data.forEach((element: any) => {
-        this.medicineService.viewPatient(element).subscribe((res) => {
-          // console.log("res-----",res);
-          let data = {
-            patient_id: res.data[0].patient_id,
-            patient_name: res.data[0].firstname
-          }
-          this.patient_name.push(data);
-        } );
+  async getPatients(): Promise<void> {
+    try {
+      const patientIds = await this.fireStroreService.getPatientIds();
+        const patientPromises = patientIds.map((element: any) =>
+        this.medicineService.viewPatient(element).toPromise()
+      );
+        const patientResponses = await Promise.all(patientPromises);
+
+      this.patient_name = patientResponses.map((res: any) => ({
+        patient_id: res.data[0].patient_id,
+        patient_name: res.data[0].firstname,
+      }));
+        this.firstLoad();
+    } catch (error) {
+      console.error('Error fetching patients:', error);
+    }
+  }
+
+  firstLoad(): void {
+    if (this.patient_name.length > 0) {
+      this.patientForm.patchValue({
+        patientName: this.patient_name[0],
       });
-    } ).catch((error) => {
-      // console.error('Error fetching patient IDs:', error);
-    });
+        this.sharedStatusService.sendPatientId(this.patient_name[0].patient_id);
+    }
   }
 
 
