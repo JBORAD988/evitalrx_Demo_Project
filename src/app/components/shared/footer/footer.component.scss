@@ -32,7 +32,6 @@ hr {
 }
 
 .f-sec1 {
-
   h6 {
     font-size: 15px;
   }
@@ -75,7 +74,6 @@ hr {
 }
 
 .f-sec2 {
-
   .add {
     font-size: 13px;
     word-wrap: break-word;
@@ -86,11 +84,9 @@ hr {
     font-size: 20px;
     margin-bottom: 20px;
   }
-
 }
 
 .f-sec3 {
-
   p {
     font-size: 13px;
   }
@@ -102,7 +98,6 @@ hr {
 }
 
 .f-sec4 {
-
   margin-left: 236px;
 
   p {
@@ -116,7 +111,6 @@ hr {
 }
 
 .f-sec5 {
-
   p {
     margin-left: 10px;
     font-size: 13px;
@@ -155,7 +149,6 @@ hr {
   }
 
   .icon {
-
     margin-top: 5px;
     justify-content: space-around;
 
@@ -164,7 +157,6 @@ hr {
       width: 25px;
     }
   }
-
 }
 
 .copy {
@@ -174,9 +166,7 @@ hr {
   padding-bottom: 20px;
 }
 
-
 @media screen and (max-width: 450px) {
-
   .f-sec5 {
     display: none;
   }
@@ -196,7 +186,6 @@ hr {
   }
 
   .f-sec1 {
-
     h4 {
       margin-top: 15px;
       display: flex;
@@ -234,7 +223,6 @@ hr {
     .input-field span {
       margin-top: 2px;
     }
-
   }
 
   .fcol {
@@ -243,7 +231,6 @@ hr {
   }
 
   .f-sec3 {
-
     h6 {
       margin-left: 90px;
       font-size: 12px;
@@ -253,11 +240,9 @@ hr {
       font-size: 10px;
       margin-left: 40px;
     }
-
   }
 
   .f-sec4 {
-
     margin-left: 0;
 
     h6 {
@@ -268,7 +253,6 @@ hr {
     p {
       font-size: 10px;
     }
-
   }
 
   .mhr {
@@ -281,7 +265,6 @@ hr {
     display: block;
     border-color: rgb(255, 255, 255);
     padding: 0;
-    // margin-bottom: 50px;
   }
 
   .ele2 {
@@ -289,7 +272,6 @@ hr {
   }
 
   .f-sec2 {
-
     h6 {
       display: flex;
       justify-content: center;
@@ -307,16 +289,14 @@ hr {
       margin-bottom: 5px;
 
       br {
-      display: none;
+        display: none;
       }
-
     }
 
     .ctr {
       display: flex;
       justify-content: center;
     }
-
   }
 
   .copy {
@@ -326,12 +306,9 @@ hr {
   .chr {
     margin-top: 4rem;
   }
-
-
 }
 
 @media screen and (max-width: 395px) {
-
   .space {
     padding: 0;
     justify-content: unset;
@@ -347,7 +324,6 @@ hr {
   }
 
   .f-sec1 {
-
     h4 {
       margin-top: 15px;
       display: flex;
@@ -385,7 +361,6 @@ hr {
     .input-field span {
       margin-top: 2px;
     }
-
   }
 
   .fcol {
@@ -394,7 +369,6 @@ hr {
   }
 
   .f-sec3 {
-
     h6 {
       margin-left: 80px;
       font-size: 12px;
@@ -408,11 +382,9 @@ hr {
     .ele {
       margin-right: 8px;
     }
-
   }
 
   .f-sec4 {
-
     h6 {
       margin-left: 20px;
       font-size: 12px;
@@ -421,7 +393,6 @@ hr {
     p {
       font-size: 10px;
     }
-
   }
 
   .mhr {
@@ -439,7 +410,6 @@ hr {
   }
 
   .f-sec2 {
-
     h6 {
       display: flex;
       justify-content: center;
@@ -457,16 +427,14 @@ hr {
       margin-bottom: 5px;
 
       br {
-      display: none;
+        display: none;
       }
-
     }
 
     .ctr {
       display: flex;
       justify-content: center;
     }
-
   }
 
   .copy {
@@ -476,6 +444,4 @@ hr {
   .f-sec5 {
     display: none;
   }
-
-
 }

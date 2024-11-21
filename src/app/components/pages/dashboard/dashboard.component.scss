@@ -1,13 +1,11 @@
 .green-button {
   background-color: #58bb5b !important;
-
   margin-left: 2%;
 }
 
 .green-button:hover {
   background-color: #119417 !important;
-  color:  white;
-
+  color: white;
 }
 
 .info-button {
@@ -18,9 +16,8 @@
 
 .info-button:hover {
   background-color: #0d47a1 !important;
-  color:  white;
+  color: white;
   width: 10%;
-
 }
 
 .mat-form-field .mat-input-element,
@@ -33,21 +30,19 @@ button {
   border-radius: 20px;
   padding: 8px 16px;
 }
+
 button:hover {
   background-color: #34449f !important;
 }
 
-.form{
+.form {
   display: flex;
   flex-direction: row;
   gap: 2%;
   width: 100%;
-
-
 }
 
-
-.full-width{
+.full-width {
   width: 100%;
 }
 
@@ -57,30 +52,27 @@ button:hover {
   justify-content: flex-start;
 }
 
-.icon-size-Patient{
+.icon-size-Patient {
   font-size: 13px;
 }
-
-
-
 
 .mat-table {
   min-width: 800px;
 }
 
-.mat-header-cell, .mat-cell {
+.mat-header-cell,
+.mat-cell {
   white-space: nowrap;
 }
 
-.Search-block{
+.Search-block {
   margin: 16px 20px 16px 20px;
 }
 
-.mat-icon{
+.mat-icon {
   font-size: 19px !important;
   margin: 0 5px 0 5px !important;
 }
-
 
 .table-container {
   max-height: 500px;
@@ -90,39 +82,32 @@ button:hover {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-.empty-table-message{
+.empty-table-message {
   text-align: center;
-
   font-size: 20px;
   font-weight: bold;
   background-color: #f1f1f1;
 }
 
-
-
 table {
   width: 100%;
   table-layout: fixed;
-
   border-radius: 10px;
   border-collapse: collapse;
-
 }
 
-.mat-header-cell, .mat-cell {
+.mat-header-cell,
+.mat-cell {
   text-align: left;
 }
 
-.mat-header-cell{
+.mat-header-cell {
   font-weight: bold;
 }
 
 tr:hover {
   background-color: #f1f1f1 !important;
 }
-
-
 
 .column-position {
   width: 50px;
@@ -159,51 +144,33 @@ tr:hover {
   min-width: 200px;
 }
 
-.mdc-data-table__cell{
+.mdc-data-table__cell {
   text-align: center !important;
 }
 
-.mdc-data-table__header-cell  {
+.mdc-data-table__header-cell {
   text-align: center !important;
 }
-
-
-
-
-
 
 .empty-table-message {
- border-radius: 10px !important;
+  border-radius: 10px !important;
   text-align: center;
-    overflow: hidden !important;
-    margin:  0 20px 0 20px;
+  overflow: hidden !important;
+  margin: 0 20px 0 20px;
 }
-
-// .empty-table-card {
-//   border-radius: 10px;
-//   background-color: #f5f5f5; /* Light background */
-//   color: #333; /* Dark text for contrast */
-//   padding: 20px;
-//   width: 100%;
-//   max-width: 600px;
-//   margin: 0 auto;
-// }
 
 .suggest-medicine {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
-
-
 }
 
-.no-medicine{
+.no-medicine {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
   text-align: center;
 }
-
 
 .medicine-buttons {
   display: flex;
@@ -227,4 +194,3 @@ tr:hover {
   background-color: #479efa;
   color: white !important;
 }
-
