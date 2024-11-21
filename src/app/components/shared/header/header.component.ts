@@ -83,6 +83,9 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     this.SharedStatusService.setLoginStatus(false);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('cartCheckoutResponse');
+    localStorage.removeItem('patientId');
+    localStorage.removeItem('saveSubtotal');
     // console.log('Logged Out Successfully! ')
     this.toastr.warning('Logged Out!');
     this.router.navigate(['/auth/login']);
