@@ -131,7 +131,7 @@ Thank you for your patience and understanding. 🙏✨
    ![Add Patient](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/Screenshot%202024-11-20%20at%2010.47.32%E2%80%AFPM.png)
 
 7. **Cart**  
-   ![Cart](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/9.png)
+   ![Cart](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/refactor.png)
 
 8. **Checkout**  
    ![Checkout](https://github.com/JBORAD988/evitalrx_Demo_Project/blob/cc656bb8755ab70c7989701e9a953cd5004c5f52/src/assets/screenshorts/screencapture-localhost-4200-pages-checkout-2024-11-20-22_56_30.png)
