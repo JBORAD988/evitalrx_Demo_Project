@@ -15,6 +15,7 @@
 
 .mat-toolbar.mat-primary {
   transition: position 0.3s ease-in-out, top 0.3s ease-in-out;
+  z-index: 9999 !important;
 }
 
 .spacer{
@@ -25,6 +26,7 @@ mat-toolbar {
   display: flex;
   justify-content: space-between;
   position: sticky !important;
+
 }
 
 mat-menu {
