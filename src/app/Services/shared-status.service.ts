@@ -151,6 +151,12 @@ export class SharedStatusService {
 
 
 
+  private patient = new BehaviorSubject<any>(null);
+  public patient$ = this.patient.asObservable();
+
+  sendPatient(data: any): void {
+    this.patient.next(data);
+  }
 
 
 }

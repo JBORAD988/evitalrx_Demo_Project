@@ -1,4 +1,4 @@
-import { Component , OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component , OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MedicineService } from 'src/app/Services/medicine.service';
 import { ViewdetailsComponent } from '../viewdetails/viewdetails.component';
@@ -35,7 +35,8 @@ export class DashboardComponent implements OnInit {
     private fireStroreService: FirestoreService,
     private toastr: ToastrService,
     private sharedStatusService: SharedStatusService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
 
     this.patientForm = this.fb.group({
@@ -48,6 +49,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPatients();
+    this.sharedStatusService.patient$.subscribe(res => {
+      setTimeout(() => {
+        this.getPatients();
+      }, 1000);
+    })
   }
 
   onSearch(event: any): void {
@@ -172,6 +178,8 @@ return
   addPatient(): void {
     const dialogRef = this.dialog.open(PatientFormComponent, {
     });
+
+    this.cdr.detectChanges();
   }
 
   async getPatients(): Promise<void> {
@@ -187,6 +195,8 @@ return
         patient_name: res.data[0].firstname,
       }));
         this.firstLoad();
+        console.log("patient", this.patient_name);
+
     } catch (error) {
       console.error('Error fetching patients:', error);
     }

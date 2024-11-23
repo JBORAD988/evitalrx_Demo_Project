@@ -96,5 +96,10 @@ ClearAlldata(){
     console.log('Updated productPrice:', this.productPrice);
   }
 
+  preventNegative(event: KeyboardEvent): void {
+    if (event.key === '-' || event.key === '+' || event.key === 'e') {
+      event.preventDefault();
+    }
+  }
 
 }

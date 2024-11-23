@@ -5,6 +5,7 @@ import { MedicineService } from 'src/app/Services/medicine.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ViewdetailsComponent } from '../../pages/viewdetails/viewdetails.component';
 import { ToastrService } from 'ngx-toastr';
+import { SharedStatusService } from 'src/app/Services/shared-status.service';
 
 @Component({
   selector: 'app-patient-form',
@@ -17,6 +18,7 @@ export class PatientFormComponent {
     private fb: FormBuilder,
     private medicineService: MedicineService,
     private toster: ToastrService,
+    private sharedService: SharedStatusService,
     private firestoreService: FirestoreService,
     public dialogRef: MatDialogRef<ViewdetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -42,6 +44,7 @@ export class PatientFormComponent {
       this.medicineService.addPatient(this.patientForm.value).subscribe((response) => {
         console.log('Response:', response);
         this.firestoreService.addPatient(response.data.patient_id);
+        this.sharedService.sendPatient(true);
       })
 
       this.onCancel()

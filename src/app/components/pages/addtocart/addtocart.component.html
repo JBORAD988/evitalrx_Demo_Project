@@ -32,7 +32,7 @@
                   <div class="price">{{ product.data[0].mrp | currency : 'INR':'symbol'}}</div>
 
                   <mat-form-field appearance="outline" class="quantity-field">
-                    <input matInput type="number" [(ngModel)]="product.quantity" (change)="quantityChange(product.data[0].mrp * product.quantity, product.data[0].id)"/>
+                    <input matInput type="number" [min]="1" (keypress)="preventNegative($event)" [(ngModel)]="product.quantity" (change)="quantityChange(product.data[0].mrp * product.quantity, product.data[0].id)"/>
                   </mat-form-field>
 
                   <p class="sub">{{ product.data[0].mrp * product.quantity | currency : 'INR':'symbol'}}</p>
