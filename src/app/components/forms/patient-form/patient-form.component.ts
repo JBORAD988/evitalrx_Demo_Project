@@ -46,13 +46,14 @@ export class PatientFormComponent {
         console.log('Response:', response);
         this.firestoreService.addPatient(response.data.patient_id);
         this.sharedService.sendPatient(true);
+      },(error)=>{
+        this.toster.error(error.status_message)
       })
 
       this.onCancel()
 
     } else {
       this.toster.error('Form is invalid');
-
     }
   }
 
