@@ -41,12 +41,12 @@ export class PatientFormComponent {
   onSubmit(): void {
     if (this.patientForm.valid) {
 
-      this.toster.success('Patient added successfully');
       this.medicineService.addPatient(this.patientForm.value).subscribe((response) => {
-        console.log('Response:', response);
+        this.toster.info(response.status_message);
         this.firestoreService.addPatient(response.data.patient_id);
         this.sharedService.sendPatient(true);
       },(error)=>{
+        console.log('Error:', error);
         this.toster.error(error.status_message)
       })
 
