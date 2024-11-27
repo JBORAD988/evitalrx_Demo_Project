@@ -14,6 +14,7 @@ import { SharedStatusService } from 'src/app/Services/shared-status.service';
 })
 export class PatientFormComponent {
   patientForm!: FormGroup;
+  maxDate: Date = new Date();
   constructor(
     private fb: FormBuilder,
     private medicineService: MedicineService,
