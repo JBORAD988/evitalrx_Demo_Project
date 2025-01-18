@@ -1,0 +1,134 @@
+.expense-container {
+  padding: 20px;
+}
+
+
+
+.summary-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.summary-box {
+  flex: 1;
+  text-align: center;
+
+  padding: 2%;
+    text-align: center;
+    border-radius: 0;
+    color: #fff;
+    height: 45px;
+}
+
+.income { background-color: #4caf50; }
+.expense { background-color: #f44336; }
+.net-total { background-color: #2196f3; }
+
+.table-container {
+  margin-top: 20px;
+  padding: 20px;
+}
+
+
+
+.table-container {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.filter-panel {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-item {
+  width: auto;
+  min-width: 150px; /* Ensures compact size */
+}
+
+.hover-row:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+
+
+
+.expense-container {
+  width: 100%;
+  padding: 20px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.summary-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.summary-box {
+  flex: 1;
+  text-align: center;
+  padding: 15px;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.income {
+  background-color: #4CAF50; /* Green */
+}
+
+.expense {
+  background-color: #F44336; /* Red */
+}
+
+.net-total {
+  background-color: #2196F3; /* Blue */
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.action-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.filter-panel {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-item {
+  width: auto;
+  min-width: 150px;
+}
+
+.hover-row:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.mat-icon {
+  cursor: pointer;
+  margin-right: 10px;
+}

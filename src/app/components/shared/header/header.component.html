@@ -27,6 +27,10 @@
     <mat-icon>home</mat-icon>
     <span>Home</span>
   </div>
+  <div mat-menu-item *ngIf="isLoggedIn" (click)="routeThePage('expenses')">
+    <mat-icon>account_balance_wallet</mat-icon>
+    <span>Manage expenses</span>
+  </div>
   <!-- <div mat-menu-item *ngIf="isLoggedIn" (click)="routeThePage('order')">
     <mat-icon>shopping_cart</mat-icon>
     <span>Order</span>

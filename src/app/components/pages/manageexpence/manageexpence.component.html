@@ -1,0 +1,122 @@
+<div class="expense-container">
+
+     <div class="action-buttons">
+      <button mat-raised-button color="primary" (click)="addIncome()">
+        <mat-icon>attach_money</mat-icon> Income/Deposit
+      </button>
+      <button mat-raised-button color="warn" (click)="addExpense()">
+        <mat-icon>money_off</mat-icon> Expense/Withdraw
+      </button>
+      <button mat-raised-button color="accent" (click)="downloadPDF()">
+        <mat-icon>picture_as_pdf</mat-icon> Download PDF
+      </button>
+    </div>
+
+
+  <mat-card class="summary-row">
+    <div class="summary-box income">
+      <mat-icon>trending_up</mat-icon>
+      <span>Total Income</span>
+      <h3>₹{{ totalIncome }}</h3>
+    </div>
+
+    <div class="summary-box expense">
+      <mat-icon>trending_down</mat-icon>
+      <span>Total Expense</span>
+      <h3>₹{{ totalExpense }}</h3>
+    </div>
+
+    <div class="summary-box net-total">
+      <mat-icon>account_balance_wallet</mat-icon>
+      <span>Net Total</span>
+      <h3>₹{{ totalIncome - totalExpense }}</h3>
+    </div>
+  </mat-card>
+
+  <mat-card class="table-container">
+    <div class="filter-panel">
+      <mat-form-field appearance="outline" class="filter-item">
+        <mat-label>Date Range</mat-label>
+        <mat-select [(ngModel)]="selectedDateRange" (selectionChange)="onDateFilterChange($event)">
+          <mat-option *ngFor="let option of dateFilterOptions" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-item">
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange($event)">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="filter-item" (click)="toggleFilterSidebar()">
+        <mat-icon>filter_list</mat-icon> More Filters
+      </button>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <ng-container matColumnDef="entryDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.entryDate | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+        <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="transactionType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Transaction Type</th>
+        <td mat-cell *matCellDef="let element">{{ element.transactionType }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="paymentMode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Mode</th>
+        <td mat-cell *matCellDef="let element">{{ element.paymentMode }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+        <td mat-cell *matCellDef="let element">₹{{ element.amount }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="gst">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
+        <td mat-cell *matCellDef="let element">{{ element.gst }}%</td>
+      </ng-container>
+
+      <ng-container matColumnDef="remarks">
+        <th mat-header-cell *matHeaderCellDef>Remarks</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-icon matTooltip="View Remarks" (click)="showRemark(element.remarks)">info</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-icon matTooltip="Delete" (click)="deleteRow(element)">delete</mat-icon>
+          <mat-icon matTooltip="Download" (click)="downloadRow(element)">download</mat-icon>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row"></tr>
+    </table>
+  </mat-card>
+
+
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" position="end">
+      <h3>More Filters</h3>
+      <button mat-icon-button (click)="toggleFilterSidebar()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <p>Filter options go here...</p>
+    </mat-sidenav>
+  </mat-sidenav-container>
+</div>

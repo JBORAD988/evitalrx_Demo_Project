@@ -12,6 +12,7 @@ import { AddtocartComponent } from './addtocart/addtocart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ToastrModule } from 'ngx-toastr';
 import { OrderconfirmationComponent } from './orderconfirmation/orderconfirmation.component';
+import { ManageexpenceComponent } from './manageexpence/manageexpence.component';
 
 
 
@@ -25,6 +26,7 @@ import { OrderconfirmationComponent } from './orderconfirmation/orderconfirmatio
     AddtocartComponent,
     CheckoutComponent,
     OrderconfirmationComponent,
+    ManageexpenceComponent,
 
 
   ],

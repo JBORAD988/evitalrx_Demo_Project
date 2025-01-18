@@ -17,7 +17,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
-
+import { MatSortModule } from '@angular/material/sort';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 @NgModule({
@@ -44,6 +45,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatRadioModule,
     MatCheckboxModule,
     MatDividerModule,
+    MatSortModule,
+    MatSidenavModule
 
   ],
 })

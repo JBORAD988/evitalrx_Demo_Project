@@ -53,6 +53,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       this.router.navigate(['/auth/login']);
     } else if (page === 'signup') {
       this.router.navigate(['/auth/signup']);
+    } else if(page === 'expenses'){
+      this.router.navigate(['/pages/expenses']);
     }else if (page === 'cart') {
 
 
