@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
@@ -37,6 +37,9 @@ import { ManageexpenceComponent } from './manageexpence/manageexpence.component'
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class PagesModule { }

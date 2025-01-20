@@ -1,37 +1,69 @@
 <div class="expense-container">
-
-     <div class="action-buttons">
-      <button mat-raised-button color="primary" (click)="addIncome()">
-        <mat-icon>attach_money</mat-icon> Income/Deposit
+  <div class="action-buttons">
+    <button mat-raised-button color="primary" (click)="addIncome()">
+      <mat-icon>attach_money</mat-icon> Income/Deposit
+    </button>
+    <button mat-raised-button color="warn" (click)="addExpense()">
+      <mat-icon>money_off</mat-icon> Expense/Withdraw
+    </button>
+    <div class="download-group">
+      <button mat-raised-button [matMenuTriggerFor]="downloadMenu">
+        <mat-icon>file_download</mat-icon> Download
       </button>
-      <button mat-raised-button color="warn" (click)="addExpense()">
-        <mat-icon>money_off</mat-icon> Expense/Withdraw
-      </button>
-      <button mat-raised-button color="accent" (click)="downloadPDF()">
-        <mat-icon>picture_as_pdf</mat-icon> Download PDF
-      </button>
+      <mat-menu #downloadMenu="matMenu">
+        <button mat-menu-item (click)="downloadDocument('pdf')">
+          <mat-icon>picture_as_pdf</mat-icon> PDF
+        </button>
+        <button mat-menu-item (click)="downloadDocument('excel')">
+          <mat-icon>table_chart</mat-icon> Excel
+        </button>
+        <button mat-menu-item (click)="downloadDocument('csv')">
+          <mat-icon>grid_on</mat-icon> CSV
+        </button>
+      </mat-menu>
     </div>
+  </div>
 
+  <div class="dashboard-summary">
+    <mat-card class="summary-card">
+      <div class="summary-content income-summary">
+        <div class="summary-icon">
+          <mat-icon>account_balance</mat-icon>
+        </div>
+        <div class="summary-details">
+          <p class="summary-label">Total Income</p>
+          <h2 class="summary-amount">₹{{ data?.data?.total_income || 0 | number:'1.0-0' }}</h2>
+          <p class="summary-change positive">+{{ calculateGrowth(data?.data?.total_income) }}% vs last month</p>
+        </div>
+      </div>
+    </mat-card>
 
-  <mat-card class="summary-row">
-    <div class="summary-box income">
-      <mat-icon>trending_up</mat-icon>
-      <span>Total Income</span>
-      <h3>₹{{ totalIncome }}</h3>
-    </div>
+    <mat-card class="summary-card">
+      <div class="summary-content expense-summary">
+        <div class="summary-icon">
+          <mat-icon>payments</mat-icon>
+        </div>
+        <div class="summary-details">
+          <p class="summary-label">Total Expense</p>
+          <h2 class="summary-amount">₹{{ data?.data?.total_expense || 0 | number:'1.0-0' }}</h2>
+          <p class="summary-change negative">{{ calculateGrowth(data?.data?.total_expense) }}% vs last month</p>
+        </div>
+      </div>
+    </mat-card>
 
-    <div class="summary-box expense">
-      <mat-icon>trending_down</mat-icon>
-      <span>Total Expense</span>
-      <h3>₹{{ totalExpense }}</h3>
-    </div>
-
-    <div class="summary-box net-total">
-      <mat-icon>account_balance_wallet</mat-icon>
-      <span>Net Total</span>
-      <h3>₹{{ totalIncome - totalExpense }}</h3>
-    </div>
-  </mat-card>
+    <mat-card class="summary-card">
+      <div class="summary-content balance-summary">
+        <div class="summary-icon">
+          <mat-icon>savings</mat-icon>
+        </div>
+        <div class="summary-details">
+          <p class="summary-label">Net Balance</p>
+          <h2 class="summary-amount">₹{{ data?.data?.total_amount || 0 | number:'1.0-0' }}</h2>
+          <p class="summary-change" [ngClass]="data?.data?.total_amount >= 0 ? 'positive' : 'negative'">Current Month Balance</p>
+        </div>
+      </div>
+    </mat-card>
+  </div>
 
   <mat-card class="table-container">
     <div class="filter-panel">
@@ -44,79 +76,235 @@
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field appearance="outline" class="filter-item" *ngIf="isCustomDateRange">
+        <mat-label>Custom Range</mat-label>
+        <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="Start date">
+          <input matEndDate formControlName="end" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
       <mat-form-field appearance="outline" class="filter-item">
         <mat-label>Category</mat-label>
-        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange($event)">
-          <mat-option *ngFor="let category of categories" [value]="category">
-            {{ category }}
+        <mat-select [(ngModel)]="selectedCategory">
+          <mat-option *ngFor="let category of data?.data?.expense_categories" [value]="category.id">
+            {{ category.category }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" class="filter-item" (click)="toggleFilterSidebar()">
+      <button mat-raised-button color="primary" class="filter-item" (click)="openFilterDialog()">
         <mat-icon>filter_list</mat-icon> More Filters
       </button>
     </div>
 
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-      <ng-container matColumnDef="entryDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Date</th>
-        <td mat-cell *matCellDef="let element">{{ element.entryDate | date }}</td>
-      </ng-container>
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="entryDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.expense_date | date }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-        <td mat-cell *matCellDef="let element">{{ element.category }}</td>
-      </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="transactionType">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Transaction Type</th>
-        <td mat-cell *matCellDef="let element">{{ element.transactionType }}</td>
-      </ng-container>
+        <ng-container matColumnDef="transactionType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Transaction Type</th>
+          <td mat-cell *matCellDef="let element">{{ element.transaction_type }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="paymentMode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Mode</th>
-        <td mat-cell *matCellDef="let element">{{ element.paymentMode }}</td>
-      </ng-container>
+        <ng-container matColumnDef="paymentMode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Mode</th>
+          <td mat-cell *matCellDef="let element">{{ element.payment_mode }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
-        <td mat-cell *matCellDef="let element">₹{{ element.amount }}</td>
-      </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+          <td mat-cell *matCellDef="let element">₹{{ element.amount }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="gst">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
-        <td mat-cell *matCellDef="let element">{{ element.gst }}%</td>
-      </ng-container>
+        <ng-container matColumnDef="gst">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
+          <td mat-cell *matCellDef="let element">{{ element.gst_percentage }}%</td>
+        </ng-container>
 
-      <ng-container matColumnDef="remarks">
-        <th mat-header-cell *matHeaderCellDef>Remarks</th>
-        <td mat-cell *matCellDef="let element">
-          <mat-icon matTooltip="View Remarks" (click)="showRemark(element.remarks)">info</mat-icon>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="remarks">
+          <th mat-header-cell *matHeaderCellDef>Remarks</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon [matTooltip]="element.description">info</mat-icon>
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let element">
-          <mat-icon matTooltip="Delete" (click)="deleteRow(element)">delete</mat-icon>
-          <mat-icon matTooltip="Download" (click)="downloadRow(element)">download</mat-icon>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="actionMenu" aria-label="Actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #actionMenu="matMenu">
+              <button mat-menu-item (click)="editTransaction(element)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+              <button mat-menu-item (click)="deleteTransaction(element)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item *ngIf="element.invoice_photo" (click)="downloadInvoice(element)">
+                <mat-icon>cloud_download</mat-icon>
+                <span>Download Invoice</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row"></tr>
-    </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row"></tr>
+      </table>
+    </div>
   </mat-card>
-
-
-  <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="side" position="end">
-      <h3>More Filters</h3>
-      <button mat-icon-button (click)="toggleFilterSidebar()">
-        <mat-icon>close</mat-icon>
-      </button>
-      <p>Filter options go here...</p>
-    </mat-sidenav>
-  </mat-sidenav-container>
 </div>
+
+<ng-template #filterDialogTemplate>
+  <div class="filter-dialog">
+    <h2 mat-dialog-title>Additional Filters</h2>
+    <mat-dialog-content>
+      <form [formGroup]="filterForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Select Staff</mat-label>
+          <mat-select formControlName="staff">
+            <mat-option *ngFor="let staff of data?.data?.staff_list" [value]="staff.id">
+              {{ staff.fullname }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Transaction Type</mat-label>
+          <mat-select formControlName="transactionType">
+            <mat-option value="income">Income</mat-option>
+            <mat-option value="expense">Expense</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Payment Mode</mat-label>
+          <mat-select formControlName="paymentMode">
+            <mat-option *ngFor="let mode of data?.data?.payment_methods" [value]="mode.id">
+              {{ mode.method_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="resetFilters()">Reset</button>
+      <button mat-raised-button color="primary" (click)="applyFilters()">Apply</button>
+    </mat-dialog-actions>
+  </div>
+</ng-template>
+
+<ng-template #transactionFormTemplate>
+  <div class="transaction-form">
+    <h2 mat-dialog-title>{{ selectedTransactionType === 'income' ? 'Add Income' : 'Add Expense' }}</h2>
+    <mat-dialog-content>
+      <form [formGroup]="transactionForm">
+        <div class="form-section">
+          <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category">
+              <mat-option *ngFor="let cat of selectedTransactionType === 'income' ? data?.data?.income_categories : data?.data?.expense_categories"
+                [value]="cat.id">
+                {{ cat.category }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="gst-section">
+            <mat-slide-toggle (change)="onGSTToggle($event)">With GST</mat-slide-toggle>
+
+            <div class="gst-fields" *ngIf="showGSTFields">
+              <mat-form-field appearance="outline">
+                <mat-label>GST (%)</mat-label>
+                <input matInput type="number" formControlName="gstPercentage">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>GSTN Number</mat-label>
+                <input matInput formControlName="gstnNumber">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Party Name</mat-label>
+                <input matInput formControlName="partyName">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>HSN/SAC Code</mat-label>
+                <input matInput formControlName="hsnCode">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Amount (excluding GST)</mat-label>
+            <input matInput type="number" formControlName="amount">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Payment Mode</mat-label>
+            <mat-select formControlName="paymentMode">
+              <mat-option *ngFor="let mode of data?.data?.payment_methods" [value]="mode.id">
+                {{ mode.method_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Reference No</mat-label>
+            <input matInput formControlName="referenceNo">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Remarks</mat-label>
+            <textarea matInput formControlName="remarks"></textarea>
+          </mat-form-field>
+
+          <div class="date-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ selectedTransactionType === 'income' ? 'Income Date' : 'Expense Date' }}</mat-label>
+              <input matInput [matDatepicker]="transactionPicker" formControlName="transactionDate">
+              <mat-datepicker-toggle matSuffix [for]="transactionPicker"></mat-datepicker-toggle>
+              <mat-datepicker #transactionPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" *ngIf="selectedTransactionType === 'expense'">
+              <mat-label>Payment Date</mat-label>
+              <input matInput [matDatepicker]="paymentPicker" formControlName="paymentDate">
+              <mat-datepicker-toggle matSuffix [for]="paymentPicker"></mat-datepicker-toggle>
+              <mat-datepicker #paymentPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="document-upload">
+            <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/*">
+            <button mat-stroked-button type="button" (click)="fileInput.click()">
+              <mat-icon>cloud_upload</mat-icon> Upload Document
+            </button>
+            <span class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+          </div>
+        </div>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="dialog.closeAll()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="submitTransaction()" [disabled]="transactionForm.invalid">
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </div>
+</ng-template>

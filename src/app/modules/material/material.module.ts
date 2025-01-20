@@ -14,12 +14,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSidenavModule } from '@angular/material/sidenav';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [],
@@ -27,14 +29,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     CommonModule
   ],
   exports: [
-
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
     MatInputModule,
     MatCardModule,
     MatFormFieldModule,
-    MatMenuModule,
     MatSelectModule,
     MatAutocompleteModule,
     MatTableModule,
@@ -46,8 +46,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatCheckboxModule,
     MatDividerModule,
     MatSortModule,
-    MatSidenavModule
-
+    MatSidenavModule,
+    MatSnackBarModule,
+    MatSlideToggleModule,
+    MatMenuModule,
+    MatTooltipModule
   ],
 })
 export class MaterialModule { }
