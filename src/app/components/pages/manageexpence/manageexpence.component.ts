@@ -9,6 +9,16 @@ import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 
+interface Category {
+  key: number;
+  value: string;
+  type: 'ex' | 'in' | 'both';
+}
+
+interface PaymentMethod {
+  key: number | null;
+  value: string;
+}
 @Component({
   selector: 'app-manageexpence',
   templateUrl: './manageexpence.component.html',
@@ -17,6 +27,35 @@ import Swal from 'sweetalert2';
 export class ManageexpenceComponent implements OnInit, OnDestroy {
   @ViewChild('filterDialogTemplate') filterDialogTemplate!: TemplateRef<any>;
   @ViewChild('transactionFormTemplate') transactionFormTemplate!: TemplateRef<any>;
+
+
+  categories: Category[] = [
+    { key: 1, value: 'Bank fee and charges', type: 'ex' },
+    { key: 2, value: 'Employee salaries & Advances', type: 'ex' },
+    { key: 3, value: 'Printing and stationery', type: 'ex' },
+    { key: 4, value: 'Raw material', type: 'ex' },
+    { key: 5, value: 'Rent or mortgage payments', type: 'ex' },
+    { key: 6, value: 'Repair & maintenances', type: 'ex' },
+    { key: 7, value: 'Utilities & phone', type: 'ex' },
+    { key: 8, value: 'Taxes / licenses / fees', type: 'ex' },
+    { key: 9, value: 'Food & Beverage', type: 'ex' },
+    { key: 15, value: 'Missing cash(cash loss)', type: 'ex' },
+    { key: 10, value: 'Other', type: 'both' },
+    { key: 16, value: 'Extra cash', type: 'in' },
+    { key: 18, value: 'Advertisement', type: 'in' },
+    { key: 19, value: 'Scrap material', type: 'in' },
+    { key: 20, value: 'Any rental income', type: 'in' },
+    { key: 21, value: 'Interest income', type: 'in' }
+  ];
+
+  paymentMethods: PaymentMethod[] = [
+    { key: 1, value: 'Cash' },
+    { key: 3, value: 'UPI' },
+    { key: null, value: 'Cheque' },
+    { key: 5, value: 'Paytm' },
+    { key: 6, value: 'CC/DC' },
+    { key: null, value: 'RTGS/NEFT' }
+  ];
 
   data: any;
   selectedTransactionType: 'income' | 'expense' = 'income';
@@ -41,13 +80,21 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<any>([]);
 
   selectedDateRange = 'last7days';
-  selectedCategory: string | null = null;
+  selectedCategory: number | null = null;
   dateFilterOptions = [
     { label: 'Last 7 Days', value: 'last7days' },
     { label: 'Current Fiscal Year', value: 'currentFiscal' },
     { label: 'Previous Fiscal Year', value: 'previousFiscal' },
     { label: 'Custom Range', value: 'custom' }
   ];
+
+  get filteredCategories(): Category[] {
+    return this.categories.filter(category =>
+      category.type === 'both' ||
+      (this.selectedTransactionType === 'income' && category.type === 'in') ||
+      (this.selectedTransactionType === 'expense' && category.type === 'ex')
+    );
+  }
 
   constructor(
     private expenseService: ExpenseService,
@@ -61,7 +108,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadData();
+    this.loadData(1);
     this.setupSubscriptions();
   }
 
@@ -98,6 +145,41 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     });
   }
 
+  getCategoryValue(key: number): string {
+    const category = this.categories.find(cat => cat.key === key);
+    return category ? category.value : '';
+  }
+
+  getPaymentMethodValue(key: number | null): string {
+    const method = this.paymentMethods.find(method => method.key === key);
+    return method ? method.value : '';
+  }
+
+  getFilteredCategories(): Category[] {
+    return this.categories.filter(category =>
+      category.type === 'both' ||
+      (this.selectedTransactionType === 'income' && category.type === 'in') ||
+      (this.selectedTransactionType === 'expense' && category.type === 'ex')
+    );
+  }
+
+
+  applyCategoryFilter(): void {
+    if (!this.data?.data?.results) return;
+
+    const filteredData = this.selectedCategory !== null
+      ? this.data.data.results.filter((item: any) => item.category_id === this.selectedCategory)
+      : this.data.data.results; // If "All" is selected, show all data
+
+    this.dataSource.data = filteredData;
+
+    const categoryName = this.selectedCategory !== null
+      ? this.categories.find(c => c.key === this.selectedCategory)?.value
+      : 'All';
+
+    this.showNotification(`Showing data for category: ${categoryName}`, 'info');
+  }
+
   private setupSubscriptions(): void {
     const gstSubscription = this.transactionForm.get('hasGST')?.valueChanges.subscribe(hasGST => {
       this.showGSTFields = hasGST;
@@ -114,22 +196,23 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
       }
     });
 
+    if (gstSubscription) {
+      this.subscriptions.push(gstSubscription);
+    }
+
     const dateRangeSubscription = this.dateRange.valueChanges.subscribe(range => {
       if (range.start && range.end) {
         this.filterDataByDateRange(new Date(range.start), new Date(range.end));
       }
     });
 
-    if (gstSubscription) {
-      this.subscriptions.push(gstSubscription);
-    }
     if (dateRangeSubscription) {
       this.subscriptions.push(dateRangeSubscription);
     }
   }
 
-  private loadData(): void {
-    const dataSubscription = this.expenseService.getdata().subscribe({
+  private loadData(page:number): void {
+    const dataSubscription = this.expenseService.getdata(page).subscribe({
       next: (response) => {
         this.data = response;
         this.updateDisplayData();
@@ -141,6 +224,30 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.push(dataSubscription);
   }
+
+  addIncome(): void {
+    this.selectedTransactionType = 'income';
+    this.resetTransactionForm();
+    this.dialog.open(this.transactionFormTemplate, {
+      width: '90%',
+      maxWidth: '600px',
+      position: { top: '60px' },
+      maxHeight: '90vh'
+    });
+  }
+
+  addExpense(): void {
+    this.selectedTransactionType = 'expense';
+    this.resetTransactionForm();
+    this.dialog.open(this.transactionFormTemplate, {
+      width: '90%',
+      maxWidth: '600px',
+      position: { top: '60px' },
+      maxHeight: '90vh'
+    });
+  }
+
+
 
   private updateDisplayData(): void {
     if (this.data?.data?.results) {
@@ -210,27 +317,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     });
   }
 
-  addIncome(): void {
-    this.selectedTransactionType = 'income';
-    this.resetTransactionForm();
-    this.dialog.open(this.transactionFormTemplate, {
-      width: '90%',
-      maxWidth: '600px',
-      position: { top: '60px' },
-      maxHeight: '90vh'
-    });
-  }
 
-  addExpense(): void {
-    this.selectedTransactionType = 'expense';
-    this.resetTransactionForm();
-    this.dialog.open(this.transactionFormTemplate, {
-      width: '90%',
-      maxWidth: '600px',
-      position: { top: '60px' },
-      maxHeight: '90vh'
-    });
-  }
 
   resetTransactionForm(): void {
     this.transactionForm.reset({
@@ -253,6 +340,20 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  currentPage: number = 1;
+
+loadPage(page: number): void {
+  if (page < 1) return;
+
+  this.currentPage = page;
+  this.loadData(page);
+}
+
+
+
+
+
   applyFilters(): void {
     const filters = this.filterForm.value;
     let filteredData = [...this.data.data.results];
@@ -264,7 +365,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
       filteredData = filteredData.filter(item => item.transaction_type === filters.transactionType);
     }
     if (filters.paymentMode) {
-      filteredData = filteredData.filter(item => item.payment_mode === filters.paymentMode);
+      filteredData = filteredData.filter(item => item.payment_status === filters.paymentMode);
     }
 
     this.dataSource.data = filteredData;
@@ -283,9 +384,15 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
       const formData = new FormData();
       const formValue = this.transactionForm.value;
 
+      formData.append('transaction_type', this.selectedTransactionType);
+
       Object.keys(formValue).forEach(key => {
         if (key !== 'document') {
-          formData.append(key, formValue[key]);
+          let value = formValue[key];
+          if (key === 'category' || key === 'paymentMode') {
+            value = value.toString(); // Ensure numbers are converted to strings
+          }
+          formData.append(key, value);
         }
       });
 
@@ -293,32 +400,20 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
         formData.append('document', this.selectedFile);
       }
 
-      console.log('Transaction data:', formValue);
-      this.showNotification('Transaction saved', 'success');
-      this.dialog.closeAll();
-      this.loadData();
+      this.expenseService.addData(formData).subscribe({
+        next: () => {
+          this.showNotification('Transaction saved successfully', 'success');
+          this.dialog.closeAll();
+          this.loadData(1);
+        },
+        error: (error) => {
+          this.showNotification('Error saving transaction', 'error');
+        }
+      });
     }
   }
 
-  editTransaction(transaction: any): void {
-    this.selectedTransactionType = transaction.transaction_type;
-    this.transactionForm.patchValue({
-      category: transaction.category_id,
-      amount: transaction.amount,
-      hasGST: transaction.gst_percentage > 0,
-      gstPercentage: transaction.gst_percentage,
-      remarks: transaction.description,
-      transactionDate: new Date(transaction.expense_date),
-      paymentMode: transaction.payment_status
-    });
 
-    this.dialog.open(this.transactionFormTemplate, {
-      width: '90%',
-      maxWidth: '600px',
-      position: { top: '60px' },
-      maxHeight: '90vh'
-    });
-  }
 
   deleteTransaction(transaction: any): void {
     Swal.fire({
@@ -336,7 +431,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
         this.expenseService.deleteData(transaction.id).subscribe({
           next: () => {
             this.toast.success('Transaction deleted successfully!', 'Success');
-            this.loadData();
+            this.loadData(1);
           },
           error: () => {
             this.toast.error('Error deleting transaction', 'Error');

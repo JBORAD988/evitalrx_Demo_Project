@@ -18,29 +18,34 @@ export class ExpenseService {
 
 
 
-  listdata:any = {
-      "page": 2,
+
+
+
+
+
+  getdata(page: number, startDate?: Date, endDate?: Date): Observable<any> {
+    const today = new Date();
+    const defaultStartDate = startDate ? startDate.toISOString().split('T')[0] : today.toISOString().split('T')[0];
+    const defaultEndDate = endDate ? endDate.toISOString().split('T')[0] : today.toISOString().split('T')[0];
+
+    const listdata: any = {
+      "page": page,
       "orderby": "",
       "order": "",
       "search_by_entity_id": 0,
       "transaction_type": "",
       "payment_method_id": "",
-      "start_date": "2025-1-18",
-      "end_date": "2025-1-20",
+      "start_date": defaultStartDate,
+      "end_date": defaultEndDate,
       "export": 0,
       "chemist_id": this.chemist_id,
       "login_parent_id": this.login_parent_id,
       "accesstoken": this.accesstoken,
       "device_id": this.deviceId
-  }
-
-
-
-
-  getdata(): Observable<any> {
+    }
     const headers = { 'Content-Type': 'application/json' };
-    return this.https.post('https://staging.evitalrx.in:3000/v3/expenses/list', this.listdata, { headers });
-}
+    return this.https.post('https://staging.evitalrx.in:3000/v3/expenses/list', listdata, { headers });
+  }
 
 
 

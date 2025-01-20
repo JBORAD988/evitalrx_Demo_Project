@@ -86,11 +86,13 @@
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
 
+
       <mat-form-field appearance="outline" class="filter-item">
         <mat-label>Category</mat-label>
-        <mat-select [(ngModel)]="selectedCategory">
-          <mat-option *ngFor="let category of data?.data?.expense_categories" [value]="category.id">
-            {{ category.category }}
+        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="applyCategoryFilter()">
+          <mat-option [value]="null">All</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.key">
+            {{ category.value }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -109,7 +111,7 @@
 
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-          <td mat-cell *matCellDef="let element">{{ element.category_id }}</td>
+          <td mat-cell *matCellDef="let element">{{ getCategoryValue(element.category_id) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="transactionType">
@@ -119,7 +121,7 @@
 
         <ng-container matColumnDef="paymentMode">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Mode</th>
-          <td mat-cell *matCellDef="let element">{{ element.payment_status }}</td>
+          <td mat-cell *matCellDef="let element">{{ getPaymentMethodValue(element.payment_status) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="amount">
@@ -129,7 +131,7 @@
 
         <ng-container matColumnDef="gst">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
-          <td mat-cell *matCellDef="let element">{{ element.gst_percentag }}%</td>
+          <td mat-cell *matCellDef="let element">{{ element.gst_percentage }}%</td>
         </ng-container>
 
         <ng-container matColumnDef="remarks">
@@ -146,10 +148,7 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #actionMenu="matMenu">
-              <button mat-menu-item (click)="editTransaction(element)">
-                <mat-icon>edit</mat-icon>
-                <span>Edit</span>
-              </button>
+
               <button mat-menu-item (click)="deleteTransaction(element)">
                 <mat-icon>delete</mat-icon>
                 <span>Delete</span>
@@ -167,6 +166,19 @@
       </table>
     </div>
   </mat-card>
+
+  <div class="pagination-container">
+    <button mat-raised-button color="primary" (click)="loadPage(currentPage - 1)" [disabled]="currentPage === 1">
+      <mat-icon>navigate_before</mat-icon> Previous
+    </button>
+
+    <span class="page-number">Page {{ currentPage }}</span>
+
+    <button mat-raised-button color="primary" (click)="loadPage(currentPage + 1)">
+      Next <mat-icon>navigate_next</mat-icon>
+    </button>
+  </div>
+
 </div>
 
 <ng-template #filterDialogTemplate>
@@ -194,8 +206,8 @@
         <mat-form-field appearance="outline">
           <mat-label>Payment Mode</mat-label>
           <mat-select formControlName="paymentMode">
-            <mat-option *ngFor="let mode of data?.data?.payment_methods" [value]="mode.id">
-              {{ mode.method_name }}
+            <mat-option *ngFor="let mode of paymentMethods" [value]="mode.key">
+              {{ mode.value }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -217,9 +229,8 @@
           <mat-form-field appearance="outline">
             <mat-label>Category</mat-label>
             <mat-select formControlName="category">
-              <mat-option *ngFor="let cat of selectedTransactionType === 'income' ? data?.data?.income_categories : data?.data?.expense_categories"
-                [value]="cat.id">
-                {{ cat.category }}
+              <mat-option *ngFor="let category of getFilteredCategories()" [value]="category.key">
+                {{ category.value }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -258,8 +269,8 @@
           <mat-form-field appearance="outline">
             <mat-label>Payment Mode</mat-label>
             <mat-select formControlName="paymentMode">
-              <mat-option *ngFor="let mode of data?.data?.payment_methods" [value]="mode.id">
-                {{ mode.method_name }}
+              <mat-option *ngFor="let mode of paymentMethods" [value]="mode.key">
+                {{ mode.value }}
               </mat-option>
             </mat-select>
           </mat-form-field>
