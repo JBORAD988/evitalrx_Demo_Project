@@ -25,7 +25,10 @@ export class ExpenseService {
 
   getdata(page: number, startDate?: Date, endDate?: Date): Observable<any> {
     const today = new Date();
+    console.log(today);
+
     const defaultStartDate = startDate ? startDate.toISOString().split('T')[0] : today.toISOString().split('T')[0];
+    console.log(defaultStartDate);
     const defaultEndDate = endDate ? endDate.toISOString().split('T')[0] : today.toISOString().split('T')[0];
 
     const listdata: any = {
@@ -66,6 +69,12 @@ export class ExpenseService {
       formData.append('chemist_id', data.chemist_id);
       formData.append('device_id', this.deviceId);
       formData.append('login_parent_id', data.chemist_id);
+
+      if (data.hasGST) {
+        formData.append('gstn_number', data.gstnNumber);
+        formData.append('gst_percentage', data.gstPercentage);
+        formData.append('hsn_sac_code', data.hsnCode);
+      }
 
       return this.https.post(this.expenseUrladd, formData);
     }

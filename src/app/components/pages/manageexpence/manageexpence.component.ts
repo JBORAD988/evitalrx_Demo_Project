@@ -79,9 +79,10 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   ];
   dataSource = new MatTableDataSource<any>([]);
 
-  selectedDateRange = 'last7days';
+  selectedDateRange = 'today';
   selectedCategory: number | null = null;
   dateFilterOptions = [
+    { label: 'Today', value: 'today' },
     { label: 'Last 7 Days', value: 'last7days' },
     { label: 'Current Fiscal Year', value: 'currentFiscal' },
     { label: 'Previous Fiscal Year', value: 'previousFiscal' },
@@ -216,7 +217,6 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
       next: (response) => {
         this.data = response;
         this.updateDisplayData();
-        this.applyDefaultFilters();
       },
       error: (error) => {
         this.showNotification('Error loading data', 'error');
@@ -224,6 +224,23 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.push(dataSubscription);
   }
+
+
+  private loadCustomeData(page: number, startDate?: Date, endDate?: Date): void {
+    const dataSubscription = this.expenseService.getdata(page, startDate, endDate).subscribe({
+      next: (response) => {
+        this.data = response;
+        this.updateDisplayData();
+        this.applyDefaultFilters();
+      },
+      error: () => {
+        this.showNotification('Error loading data', 'error');
+      }
+    });
+    this.subscriptions.push(dataSubscription);
+  }
+
+
 
   addIncome(): void {
     this.selectedTransactionType = 'income';
@@ -270,11 +287,16 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   applyDateFilter(filterType: string): void {
     const today = new Date();
     let startDate: Date;
-    let endDate = today;
+    let endDate: Date;
 
     switch (filterType) {
+      case 'today':
+        startDate = new Date(today.setHours(0, 0, 0, 0));
+        endDate = new Date(today.setHours(23, 59, 59, 999));
+        break;
       case 'last7days':
         startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        endDate = today;
         break;
       case 'currentFiscal':
         const currentYear = today.getMonth() >= 3 ? today.getFullYear() : today.getFullYear() - 1;
@@ -293,17 +315,14 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     this.filterDataByDateRange(startDate, endDate);
   }
 
+
   filterDataByDateRange(start: Date, end: Date): void {
     if (this.data?.data?.results) {
       const startDate = new Date(start.setHours(0, 0, 0, 0));
       const endDate = new Date(end.setHours(23, 59, 59, 999));
 
-      const filteredData = this.data.data.results.filter((item: any) => {
-        const itemDate = new Date(item.expense_date);
-        return itemDate >= startDate && itemDate <= endDate;
-      });
+      this.loadCustomeData(1, startDate, endDate);
 
-      this.dataSource.data = filteredData;
       this.showNotification(`Showing data from ${this.datePipe.transform(startDate, 'mediumDate')} to ${this.datePipe.transform(endDate, 'mediumDate')}`, 'info');
     }
   }
@@ -468,6 +487,6 @@ loadPage(page: number): void {
   }
 
   private applyDefaultFilters(): void {
-    this.applyDateFilter('last7days');
+    // this.applyDateFilter('today');
   }
 }
