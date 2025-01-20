@@ -19,14 +19,14 @@ export class ExpenseService {
 
 
   listdata:any = {
-      "page": 1,
+      "page": 2,
       "orderby": "",
       "order": "",
       "search_by_entity_id": 0,
       "transaction_type": "",
       "payment_method_id": "",
       "start_date": "2025-1-18",
-      "end_date": "2025-1-18",
+      "end_date": "2025-1-20",
       "export": 0,
       "chemist_id": this.chemist_id,
       "login_parent_id": this.login_parent_id,
@@ -63,6 +63,24 @@ export class ExpenseService {
       formData.append('login_parent_id', data.chemist_id);
 
       return this.https.post(this.expenseUrladd, formData);
+    }
+
+    deleteData(id: number): Observable<any> {
+      debugger;
+      const requestBody = {
+        accesstoken: this.accesstoken,
+        device_id: this.deviceId,
+        login_parent_id: this.login_parent_id,
+        chemist_id: this.chemist_id,
+        expense_id: id
+      };
+      const headers = { 'Content-Type': 'application/json' };
+
+      return this.https.post(
+        'https://staging.evitalrx.in:3000/v3/expenses/delete',
+        requestBody,
+        { headers }
+      );
     }
 }
 

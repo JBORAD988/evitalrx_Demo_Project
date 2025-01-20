@@ -33,7 +33,7 @@
         <div class="summary-details">
           <p class="summary-label">Total Income</p>
           <h2 class="summary-amount">₹{{ data?.data?.total_income || 0 | number:'1.0-0' }}</h2>
-          <p class="summary-change positive">+{{ calculateGrowth(data?.data?.total_income) }}% vs last month</p>
+          <p class="summary-change positive">+2% vs last month</p>
         </div>
       </div>
     </mat-card>
@@ -46,7 +46,7 @@
         <div class="summary-details">
           <p class="summary-label">Total Expense</p>
           <h2 class="summary-amount">₹{{ data?.data?.total_expense || 0 | number:'1.0-0' }}</h2>
-          <p class="summary-change negative">{{ calculateGrowth(data?.data?.total_expense) }}% vs last month</p>
+          <p class="summary-change negative">3% vs last month</p>
         </div>
       </div>
     </mat-card>
@@ -109,7 +109,7 @@
 
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-          <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.category_id }}</td>
         </ng-container>
 
         <ng-container matColumnDef="transactionType">
@@ -119,7 +119,7 @@
 
         <ng-container matColumnDef="paymentMode">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Mode</th>
-          <td mat-cell *matCellDef="let element">{{ element.payment_mode }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.payment_status }}</td>
         </ng-container>
 
         <ng-container matColumnDef="amount">
@@ -129,7 +129,7 @@
 
         <ng-container matColumnDef="gst">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
-          <td mat-cell *matCellDef="let element">{{ element.gst_percentage }}%</td>
+          <td mat-cell *matCellDef="let element">{{ element.gst_percentag }}%</td>
         </ng-container>
 
         <ng-container matColumnDef="remarks">

@@ -1,17 +1,20 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { ExpenseService } from 'src/app/Services/expensesManagment/expense.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manageexpence',
   templateUrl: './manageexpence.component.html',
   styleUrls: ['./manageexpence.component.scss']
 })
-export class ManageexpenceComponent implements OnInit {
+export class ManageexpenceComponent implements OnInit, OnDestroy {
   @ViewChild('filterDialogTemplate') filterDialogTemplate!: TemplateRef<any>;
   @ViewChild('transactionFormTemplate') transactionFormTemplate!: TemplateRef<any>;
 
@@ -23,6 +26,7 @@ export class ManageexpenceComponent implements OnInit {
   transactionForm!: FormGroup;
   filterForm!: FormGroup;
   dateRange!: FormGroup;
+  private subscriptions: Subscription[] = [];
 
   displayedColumns: string[] = [
     'entryDate',
@@ -50,13 +54,19 @@ export class ManageexpenceComponent implements OnInit {
     public dialog: MatDialog,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private toast: ToastrService,
   ) {
     this.initializeForms();
   }
 
   ngOnInit(): void {
     this.loadData();
+    this.setupSubscriptions();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   private initializeForms(): void {
@@ -86,8 +96,10 @@ export class ManageexpenceComponent implements OnInit {
       start: [''],
       end: ['']
     });
+  }
 
-    this.transactionForm.get('hasGST')?.valueChanges.subscribe(hasGST => {
+  private setupSubscriptions(): void {
+    const gstSubscription = this.transactionForm.get('hasGST')?.valueChanges.subscribe(hasGST => {
       this.showGSTFields = hasGST;
       const gstControls = ['gstPercentage', 'gstnNumber', 'partyName', 'hsnCode'];
       if (hasGST) {
@@ -101,10 +113,23 @@ export class ManageexpenceComponent implements OnInit {
         });
       }
     });
+
+    const dateRangeSubscription = this.dateRange.valueChanges.subscribe(range => {
+      if (range.start && range.end) {
+        this.filterDataByDateRange(new Date(range.start), new Date(range.end));
+      }
+    });
+
+    if (gstSubscription) {
+      this.subscriptions.push(gstSubscription);
+    }
+    if (dateRangeSubscription) {
+      this.subscriptions.push(dateRangeSubscription);
+    }
   }
 
   private loadData(): void {
-    this.expenseService.getdata().subscribe({
+    const dataSubscription = this.expenseService.getdata().subscribe({
       next: (response) => {
         this.data = response;
         this.updateDisplayData();
@@ -114,6 +139,7 @@ export class ManageexpenceComponent implements OnInit {
         this.showNotification('Error loading data', 'error');
       }
     });
+    this.subscriptions.push(dataSubscription);
   }
 
   private updateDisplayData(): void {
@@ -122,6 +148,56 @@ export class ManageexpenceComponent implements OnInit {
         ...item,
         formattedDate: this.datePipe.transform(item.expense_date, 'medium')
       }));
+    }
+  }
+
+  onDateFilterChange(event: any): void {
+    this.isCustomDateRange = event.value === 'custom';
+    if (!this.isCustomDateRange) {
+      this.applyDateFilter(event.value);
+    } else {
+      this.dateRange.reset();
+    }
+  }
+
+  applyDateFilter(filterType: string): void {
+    const today = new Date();
+    let startDate: Date;
+    let endDate = today;
+
+    switch (filterType) {
+      case 'last7days':
+        startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case 'currentFiscal':
+        const currentYear = today.getMonth() >= 3 ? today.getFullYear() : today.getFullYear() - 1;
+        startDate = new Date(currentYear, 3, 1);
+        endDate = new Date(currentYear + 1, 2, 31);
+        break;
+      case 'previousFiscal':
+        const prevYear = today.getMonth() >= 3 ? today.getFullYear() - 1 : today.getFullYear() - 2;
+        startDate = new Date(prevYear, 3, 1);
+        endDate = new Date(prevYear + 1, 2, 31);
+        break;
+      default:
+        return;
+    }
+
+    this.filterDataByDateRange(startDate, endDate);
+  }
+
+  filterDataByDateRange(start: Date, end: Date): void {
+    if (this.data?.data?.results) {
+      const startDate = new Date(start.setHours(0, 0, 0, 0));
+      const endDate = new Date(end.setHours(23, 59, 59, 999));
+
+      const filteredData = this.data.data.results.filter((item: any) => {
+        const itemDate = new Date(item.expense_date);
+        return itemDate >= startDate && itemDate <= endDate;
+      });
+
+      this.dataSource.data = filteredData;
+      this.showNotification(`Showing data from ${this.datePipe.transform(startDate, 'mediumDate')} to ${this.datePipe.transform(endDate, 'mediumDate')}`, 'info');
     }
   }
 
@@ -174,46 +250,6 @@ export class ManageexpenceComponent implements OnInit {
     if (file) {
       this.selectedFile = file;
       this.transactionForm.patchValue({ document: file.name });
-    }
-  }
-
-  onDateFilterChange(event: any): void {
-    this.isCustomDateRange = event.value === 'custom';
-    if (!this.isCustomDateRange) {
-      this.applyDateFilter(event.value);
-    }
-  }
-
-  applyDateFilter(filterType: string): void {
-    const today = new Date();
-    let startDate: Date;
-    let endDate = today;
-
-    switch (filterType) {
-      case 'last7days':
-        startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        break;
-      case 'currentFiscal':
-        startDate = new Date(today.getFullYear(), 3, 1);
-        break;
-      case 'previousFiscal':
-        startDate = new Date(today.getFullYear() - 1, 3, 1);
-        endDate = new Date(today.getFullYear(), 2, 31);
-        break;
-      default:
-        return;
-    }
-
-    this.filterDataByDateRange(startDate, endDate);
-  }
-
-  filterDataByDateRange(start: Date, end: Date): void {
-    if (this.data?.data?.results) {
-      const filteredData = this.data.data.results.filter((item: any) => {
-        const itemDate = new Date(item.expense_date);
-        return itemDate >= start && itemDate <= end;
-      });
-      this.dataSource.data = filteredData;
     }
   }
 
@@ -285,11 +321,29 @@ export class ManageexpenceComponent implements OnInit {
   }
 
   deleteTransaction(transaction: any): void {
-    if (confirm('Delete this transaction?')) {
-      console.log('Deleting:', transaction);
-      this.showNotification('Transaction deleted', 'success');
-      this.loadData();
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This transaction will be deleted permanently',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.toast.info('Deleting transaction...', 'Info');
+
+        this.expenseService.deleteData(transaction.id).subscribe({
+          next: () => {
+            this.toast.success('Transaction deleted successfully!', 'Success');
+            this.loadData();
+          },
+          error: () => {
+            this.toast.error('Error deleting transaction', 'Error');
+          }
+        });
+      }
+    });
   }
 
   downloadInvoice(transaction: any): void {
@@ -305,9 +359,9 @@ export class ManageexpenceComponent implements OnInit {
   }
 
   downloadDocument(format: string): void {
-    console.log('Downloading:', format);
     this.showNotification(`Downloading ${format.toUpperCase()}`, 'info');
   }
+
 
   private showNotification(message: string, type: 'success' | 'error' | 'info'): void {
     this.snackBar.open(message, 'Close', {
@@ -320,9 +374,5 @@ export class ManageexpenceComponent implements OnInit {
 
   private applyDefaultFilters(): void {
     this.applyDateFilter('last7days');
-  }
-
-  calculateGrowth(value: number): number {
-    return Math.round(Math.random() * 10);
   }
 }
