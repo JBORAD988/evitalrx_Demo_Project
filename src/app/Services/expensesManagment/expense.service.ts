@@ -17,18 +17,10 @@ export class ExpenseService {
   private login_parent_id = 1185;
 
 
-
-
-
-
-
-
   getdata(page: number, startDate?: Date, endDate?: Date): Observable<any> {
     const today = new Date();
-    console.log(today);
 
     const defaultStartDate = startDate ? startDate.toISOString().split('T')[0] : today.toISOString().split('T')[0];
-    console.log(defaultStartDate);
     const defaultEndDate = endDate ? endDate.toISOString().split('T')[0] : today.toISOString().split('T')[0];
 
     const listdata: any = {
@@ -52,32 +44,37 @@ export class ExpenseService {
 
 
 
-    addData(data: any): Observable<any> {
-      const formData = new FormData();
-      formData.append('accesstoken', this.accesstoken);
-      formData.append('category_id', data.category_id);
-      formData.append('expense_date', data.expense_date);
-      formData.append('payment_method_id', data.payment_method_id);
-      formData.append('amount', data.amount);
-      formData.append('remark', data.remark);
-      formData.append('account_id', data.account_id);
-      formData.append('cheque_date', data.cheque_date);
-      formData.append('reference_no', data.reference_no);
-      formData.append('payment_date', data.payment_date);
-      formData.append('transaction_type', data.transaction_type);
-      formData.append('party_name', data.party_name);
-      formData.append('chemist_id', data.chemist_id);
-      formData.append('device_id', this.deviceId);
-      formData.append('login_parent_id', data.chemist_id);
+  addData(data: any): Observable<any> {
+    const transactionDate = data.transactionDate.toISOString().split('T')[0];
+    const paymentDate = data.paymentDate
+      ? data.paymentDate.toISOString().split('T')[0]
+      : transactionDate;
+    const formData = new FormData();
+    formData.append('accesstoken', this.accesstoken);
+    formData.append('category_id', data.category);
+    formData.append('expense_date', transactionDate);
+    formData.append('payment_method_id', data.paymentMode);
+    formData.append('amount', data.amount);
+    formData.append('remark', data.remarks);
+    formData.append('account_id', data.account_id);
+    formData.append('cheque_date', data.cheque_date);
+    formData.append('reference_no', data.referenceNo);
+    formData.append('payment_date', paymentDate);
+    formData.append('transaction_type', data.transaction_type);
+    formData.append('party_name', data.party_name);
+    formData.append('chemist_id', this.chemist_id.toString());
+    formData.append('device_id', this.deviceId);
+    formData.append('login_parent_id', this.login_parent_id.toString());
 
-      if (data.hasGST) {
-        formData.append('gstn_number', data.gstnNumber);
-        formData.append('gst_percentage', data.gstPercentage);
-        formData.append('hsn_sac_code', data.hsnCode);
-      }
-
-      return this.https.post(this.expenseUrladd, formData);
+    if (data.hasGST) {
+      formData.append('gstn_number', data.gstnNumber);
+      formData.append('gst_percentage', data.gstPercentage);
+      formData.append('hsn_sac_code', data.hsnCode);
     }
+
+    return this.https.post(this.expenseUrladd, formData);
+  }
+
 
     deleteData(id: number): Observable<any> {
       debugger;

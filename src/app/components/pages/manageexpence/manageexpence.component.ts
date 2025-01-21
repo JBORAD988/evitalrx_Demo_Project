@@ -8,6 +8,9 @@ import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 interface Category {
   key: number;
@@ -71,9 +74,12 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     'entryDate',
     'category',
     'transactionType',
+    'expenseBy',
     'paymentMode',
+    'refNo',
     'amount',
     'gst',
+    'total',
     'remarks',
     'actions'
   ];
@@ -400,33 +406,33 @@ loadPage(page: number): void {
 
   submitTransaction(): void {
     if (this.transactionForm.valid) {
-      const formData = new FormData();
       const formValue = this.transactionForm.value;
 
-      formData.append('transaction_type', this.selectedTransactionType);
-
-      Object.keys(formValue).forEach(key => {
-        if (key !== 'document') {
-          let value = formValue[key];
-          if (key === 'category' || key === 'paymentMode') {
-            value = value.toString(); // Ensure numbers are converted to strings
-          }
-          formData.append(key, value);
-        }
-      });
+      const transactionData = {
+        transaction_type: this.selectedTransactionType,
+        category: formValue.category,
+        paymentMode: formValue.paymentMode,
+        ...formValue
+      };
 
       if (this.selectedFile) {
-        formData.append('document', this.selectedFile);
+        transactionData['document'] = this.selectedFile;
       }
 
-      this.expenseService.addData(formData).subscribe({
-        next: () => {
-          this.showNotification('Transaction saved successfully', 'success');
+      console.log('Transaction Data:', transactionData);
+
+      this.expenseService.addData(transactionData).subscribe({
+        next: (res) => {
+          if(res.status_code === "1") {
+            this.toast.success(res.status_message, 'Success');
+        } else {
+            this.toast.error(res.status_message, 'Error');
+        }
           this.dialog.closeAll();
           this.loadData(1);
         },
         error: (error) => {
-          this.showNotification('Error saving transaction', 'error');
+          this.toast.error(`Error saving transaction`, 'Error');
         }
       });
     }
@@ -472,9 +478,92 @@ loadPage(page: number): void {
     }
   }
 
+
+  //download table functions  ---- start
   downloadDocument(format: string): void {
     this.showNotification(`Downloading ${format.toUpperCase()}`, 'info');
+    switch (format) {
+      case 'pdf':
+        this.downloadPDF();
+        break;
+      case 'excel':
+        this.downloadExcel();
+        break;
+      case 'csv':
+        this.downloadCSV();
+        break;
+      default:
+        this.showNotification('Invalid format selected', 'error');
+    }
+
   }
+
+
+   // Function to download PDF
+   downloadPDF(): void {
+    const doc = new jsPDF();
+    const tableData = this.dataSource.data.map(item => [
+      item.expense_date,
+      this.getCategoryValue(item.category_id),
+      item.transaction_type,
+      item.expense_by_name,
+      this.getPaymentMethodValue(item.payment_status),
+      item.reference_no,
+      item.amount,
+      item.gst_percentage,
+      item.total,
+      item.description
+    ]);
+
+    // Add table to PDF
+    autoTable(doc, {
+      head: [['Entry Date', 'Category', 'Transaction Type', 'Entry By', 'Payment Mode', 'Ref. No', 'Amount', 'GST (%)', 'Total', 'Remarks']],
+      body: tableData
+    });
+
+    // Save PDF
+    doc.save('transactions.pdf');
+  }
+
+  // Function to download Excel
+  downloadExcel(): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataSource.data);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Transactions');
+    XLSX.writeFile(wb, 'transactions.xlsx');
+  }
+
+  // Function to download CSV
+  downloadCSV(): void {
+    const header = ['Entry Date', 'Category', 'Transaction Type', 'Entry By', 'Payment Mode', 'Ref. No', 'Amount', 'GST (%)', 'Total', 'Remarks'];
+    const rows = this.dataSource.data.map((item: any) => [
+      item.expense_date,
+      this.getCategoryValue(item.category_id),
+      item.transaction_type,
+      item.expense_by_name,
+      this.getPaymentMethodValue(item.payment_status),
+      item.reference_no,
+      item.amount,
+      item.gst_percentage,
+      item.total,
+      item.description
+    ]);
+
+    let csvContent = 'data:text/csv;charset=utf-8,' + header.join(',') + '\n';
+
+    rows.forEach((row:any) => {
+      csvContent += row.join(',') + '\n';
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'transactions.csv');
+    link.click();
+  }
+
+
+//download table functions  ---- end
 
 
   private showNotification(message: string, type: 'success' | 'error' | 'info'): void {
