@@ -11,7 +11,7 @@ export class ExpenseService {
 
   private expenseUrladd = "https://staging.evitalrx.in:3000/v3/expenses/add";
 
-  private accesstoken = 'bjuz67a813oyx8rr';
+  private accesstoken = 'hh29odfyf46o6tfh';
   private deviceId = 'bf17deab-7b9c-46bc-b948-7c048c78d723'
   private chemist_id = 1185;
   private login_parent_id = 1185;
@@ -51,6 +51,7 @@ export class ExpenseService {
       : transactionDate;
     const formData = new FormData();
     formData.append('accesstoken', this.accesstoken);
+    formData.append('invoice_photo', data.document);
     formData.append('category_id', data.category);
     formData.append('expense_date', transactionDate);
     formData.append('payment_method_id', data.paymentMode);
@@ -77,7 +78,7 @@ export class ExpenseService {
 
 
     deleteData(id: number): Observable<any> {
-      debugger;
+
       const requestBody = {
         accesstoken: this.accesstoken,
         device_id: this.deviceId,

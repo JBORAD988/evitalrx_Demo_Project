@@ -1,3 +1,22 @@
+.mat-column-amount,
+.mat-column-gst,
+.mat-column-total {
+  text-align: right !important;
+}
+
+::ng-deep .mat-sort-header-container {
+  justify-content: flex-end !important;
+  margin-left: auto !important;
+}
+
+
+::ng-deep th.mat-header-cell.mat-column-amount,
+::ng-deep th.mat-header-cell.mat-column-gst,
+::ng-deep th.mat-header-cell.mat-column-total {
+  text-align: right !important;
+}
+
+
 .expense-container {
   padding: 16px;
   max-width: 1400px;
@@ -297,25 +316,7 @@ mat-dialog-actions {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.table-numbers{
-  // text-align: end !important;
-}
 
-.mat-column-remarks{
-  text-align: center !important;
-}
-
-.mat-column-amount{
-  text-align: end !important;
-}
-
-.mat-column-gst{
-  text-align: end !important;
-}
-
-.mat-column-total{
-  text-align: end !important;
-}
 
 
 

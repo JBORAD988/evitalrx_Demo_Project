@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef, OnDestroy } from '@angular/c
 import { ExpenseService } from 'src/app/Services/expensesManagment/expense.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+import { IndianCurrencyFormatPipe } from 'src/app/pipes/indian-currency-format.pipe';
+
 
 interface Category {
   key: number;
@@ -26,13 +28,14 @@ interface PaymentMethod {
   selector: 'app-manageexpence',
   templateUrl: './manageexpence.component.html',
   styleUrls: ['./manageexpence.component.scss']
+
 })
 export class ManageexpenceComponent implements OnInit, OnDestroy {
   @ViewChild('filterDialogTemplate') filterDialogTemplate!: TemplateRef<any>;
   @ViewChild('transactionFormTemplate') transactionFormTemplate!: TemplateRef<any>;
 
 
-  categories: Category[] = [
+   categories: Category[] = [
     { key: 1, value: 'Bank fee and charges', type: 'ex' },
     { key: 2, value: 'Employee salaries & Advances', type: 'ex' },
     { key: 3, value: 'Printing and stationery', type: 'ex' },
@@ -61,7 +64,8 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   ];
 
   data: any;
-  selectedTransactionType: 'income' | 'expense' = 'income';
+  private allowedGSTRates = [0, 5, 12, 18, 28];
+   selectedTransactionType: 'income' | 'expense' = 'income';
   isCustomDateRange = false;
   showGSTFields = false;
   selectedFile: File | null = null;
@@ -117,21 +121,38 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadData(1);
     this.setupSubscriptions();
+
+    this.transactionForm.get('amount')?.valueChanges.subscribe(() => {
+      this.calculateTotal();
+    });
+
+    this.transactionForm.get('gstPercentage')?.valueChanges.subscribe(() => {
+      this.calculateTotal();
+    });
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  private initializeForms(): void {
+   initializeForms(): void {
     this.transactionForm = this.fb.group({
+      img: [''],
       category: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(0)]],
       hasGST: [false],
-      gstPercentage: [''],
-      gstnNumber: [''],
+      gstPercentage: ['', [
+        Validators.pattern('^[0-9]*$'),
+        Validators.max(99),
+        this.gstRateValidator()
+      ]],
+      gstnNumber: ['', [
+        Validators.pattern('^[0-9A-Z]{15}$')
+      ]],
       partyName: [''],
-      hsnCode: [''],
+      hsnCode: ['', [
+        Validators.pattern('^[0-9]*$')
+      ]],
       paymentMode: ['', Validators.required],
       referenceNo: [''],
       remarks: [''],
@@ -150,6 +171,13 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
       start: [''],
       end: ['']
     });
+  }
+
+  calculateTotal(): number {
+    const amount = this.transactionForm.get('amount')?.value || 0;
+    const gstPercentage = this.transactionForm.get('gstPercentage')?.value || 0;
+    const gstAmount = (amount * gstPercentage) / 100;
+    return amount + gstAmount;
   }
 
   getCategoryValue(key: number): string {
@@ -187,7 +215,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     this.showNotification(`Showing data for category: ${categoryName}`, 'info');
   }
 
-  private setupSubscriptions(): void {
+   setupSubscriptions(): void {
     const gstSubscription = this.transactionForm.get('hasGST')?.valueChanges.subscribe(hasGST => {
       this.showGSTFields = hasGST;
       const gstControls = ['gstPercentage', 'gstnNumber', 'partyName', 'hsnCode'];
@@ -218,7 +246,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadData(page:number): void {
+   loadData(page:number): void {
     const dataSubscription = this.expenseService.getdata(page).subscribe({
       next: (response) => {
         this.data = response;
@@ -232,12 +260,12 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   }
 
 
-  private loadCustomeData(page: number, startDate?: Date, endDate?: Date): void {
+   loadCustomeData(page: number, startDate?: Date, endDate?: Date): void {
     const dataSubscription = this.expenseService.getdata(page, startDate, endDate).subscribe({
       next: (response) => {
         this.data = response;
         this.updateDisplayData();
-        this.applyDefaultFilters();
+
       },
       error: () => {
         this.showNotification('Error loading data', 'error');
@@ -272,7 +300,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
 
 
 
-  private updateDisplayData(): void {
+   updateDisplayData(): void {
     if (this.data?.data?.results) {
       this.dataSource.data = this.data.data.results.map((item: any) => ({
         ...item,
@@ -297,28 +325,30 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
 
     switch (filterType) {
       case 'today':
-        startDate = new Date(today.setHours(0, 0, 0, 0));
-        endDate = new Date(today.setHours(23, 59, 59, 999));
+        this.loadData(1);
         break;
       case 'last7days':
         startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
         endDate = today;
+        this.filterDataByDateRange(startDate, endDate);
         break;
       case 'currentFiscal':
         const currentYear = today.getMonth() >= 3 ? today.getFullYear() : today.getFullYear() - 1;
         startDate = new Date(currentYear, 3, 1);
         endDate = new Date(currentYear + 1, 2, 31);
+        this.filterDataByDateRange(startDate, endDate);
         break;
       case 'previousFiscal':
         const prevYear = today.getMonth() >= 3 ? today.getFullYear() - 1 : today.getFullYear() - 2;
         startDate = new Date(prevYear, 3, 1);
         endDate = new Date(prevYear + 1, 2, 31);
+        this.filterDataByDateRange(startDate, endDate);
         break;
       default:
         return;
     }
 
-    this.filterDataByDateRange(startDate, endDate);
+
   }
 
 
@@ -357,11 +387,31 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     this.transactionForm.patchValue({ hasGST: event.checked });
   }
 
+  preventNegative(event: KeyboardEvent): void {
+    if (event.key === '-' || event.key === '+' || event.key === 'e') {
+      event.preventDefault();
+    }
+  }
+
   onFileSelected(event: any): void {
     const file = event.target.files[0];
+    console.log('Selected File:', file);
+
     if (file) {
       this.selectedFile = file;
       this.transactionForm.patchValue({ document: file.name });
+
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+
+      reader.onload = () => {
+        this.transactionForm.patchValue({ img: reader.result });
+        console.log('Binary Data (ArrayBuffer):', reader.result);
+      };
+
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+      };
     }
   }
 
@@ -566,7 +616,7 @@ loadPage(page: number): void {
 //download table functions  ---- end
 
 
-  private showNotification(message: string, type: 'success' | 'error' | 'info'): void {
+   showNotification(message: string, type: 'success' | 'error' | 'info'): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'end',
@@ -575,7 +625,50 @@ loadPage(page: number): void {
     });
   }
 
-  private applyDefaultFilters(): void {
-    // this.applyDateFilter('today');
+
+   gstRateValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+      const isValid = this.allowedGSTRates.includes(Number(control.value));
+      return isValid ? null : { invalidGSTRate: true };
+    };
+  }
+
+  calculateTotalAmount(): number {
+    const amount = this.transactionForm.get('amount')?.value || 0;
+    const gstPercentage = this.transactionForm.get('gstPercentage')?.value || 0;
+    const gstAmount = (amount * gstPercentage) / 100;
+    return amount + gstAmount;
+  }
+
+  onGSTNInput(event: any) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.toUpperCase();
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.transactionForm.get(controlName);
+    if (!control) return '';
+
+    if (controlName === 'gstPercentage') {
+      if (control.hasError('invalidGSTRate')) {
+        return 'GST rate must be one of: 0, 5, 12, 18, or 28';
+      }
+      if (control.hasError('pattern')) {
+        return 'Only numbers are allowed';
+      }
+    }
+
+    if (controlName === 'gstnNumber' && control.hasError('pattern')) {
+      return 'Invalid GSTN format';
+    }
+
+    if (controlName === 'hsnCode' && control.hasError('pattern')) {
+      return 'Only numbers are allowed';
+    }
+
+    return '';
   }
 }

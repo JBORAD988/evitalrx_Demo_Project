@@ -13,6 +13,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { ToastrModule } from 'ngx-toastr';
 import { OrderconfirmationComponent } from './orderconfirmation/orderconfirmation.component';
 import { ManageexpenceComponent } from './manageexpence/manageexpence.component';
+import { IndianCurrencyFormatPipe } from 'src/app/pipes/indian-currency-format.pipe';
 
 
 
@@ -27,6 +28,7 @@ import { ManageexpenceComponent } from './manageexpence/manageexpence.component'
     CheckoutComponent,
     OrderconfirmationComponent,
     ManageexpenceComponent,
+    IndianCurrencyFormatPipe
 
 
   ],
@@ -37,9 +39,11 @@ import { ManageexpenceComponent } from './manageexpence/manageexpence.component'
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+
   ],
   providers: [
     DatePipe
+
   ]
 })
 export class PagesModule { }

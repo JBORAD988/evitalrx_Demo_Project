@@ -12,10 +12,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ToastrModule } from 'ngx-toastr';
+import { PipesPipe } from './pipes.pipe';
+import { IndianCurrencyFormatPipe } from './pipes/indian-currency-format.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
+    PipesPipe,
+
 
   ],
   imports: [

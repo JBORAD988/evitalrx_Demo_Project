@@ -109,27 +109,27 @@
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="dataSource.data.length > 0">
 
         <ng-container matColumnDef="entryDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.expense_date | date }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-header>Entry Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.expense_date | date:'dd-MM-yyyy hh:mm a'  }}</td>
         </ng-container>
 
         <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <th mat-header-cell *matHeaderCellDef mat-header sticky>Category</th>
           <td mat-cell *matCellDef="let element">{{ getCategoryValue(element.category_id) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="transactionType">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Transaction Type</th>
-          <td mat-cell *matCellDef="let element">{{ element.transaction_type }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.transaction_type | titlecase  }}</td>
         </ng-container>
 
         <ng-container matColumnDef="expenseBy">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sticky>Entry By</th>
+          <th mat-header-cell *matHeaderCellDef mat-header sticky>Entry By</th>
           <td mat-cell *matCellDef="let element" sticky>{{ element.expense_by_name }}</td>
         </ng-container>
 
         <ng-container matColumnDef="paymentMode">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Mode</th>
+          <th mat-header-cell *matHeaderCellDef mat-header>Payment Mode</th>
           <td mat-cell *matCellDef="let element">{{ getPaymentMethodValue(element.payment_status) }}</td>
         </ng-container>
 
@@ -139,20 +139,26 @@
         </ng-container>
 
         <ng-container matColumnDef="amount">
-          <th mat-header-cell  *matHeaderCellDef mat-sort-header header-align-right>Amount</th>
-          <td mat-cell *matCellDef="let element" >₹{{ element.amount }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-header disableClear>
+            <div style="width: 100%; text-align: right;">Amount</div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.amount | indianCurrencyFormat }}</td>
         </ng-container>
 
         <ng-container matColumnDef="gst">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>GST(%)</th>
-          <td mat-cell *matCellDef="let element">{{ element.gst_percentage }}%</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            <div style="width: 100%; text-align: right;">GST(%)</div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.gst_percentage }}</td>
         </ng-container>
-
 
         <ng-container matColumnDef="total">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sticky>Total</th>
-          <td mat-cell *matCellDef="let element">₹{{ element.total }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear sticky>
+            <div style="width: 100%; text-align: right;">Total</div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.total | indianCurrencyFormat }}</td>
         </ng-container>
+
 
         <ng-container matColumnDef="remarks">
           <th mat-header-cell *matHeaderCellDef>Remarks</th>
@@ -262,29 +268,45 @@
             <div class="gst-fields" *ngIf="showGSTFields">
               <mat-form-field appearance="outline">
                 <mat-label>GST (%)</mat-label>
-                <input matInput type="number" formControlName="gstPercentage">
+                <input matInput type="number"
+                       formControlName="gstPercentage"
+                       [min]="0"
+                       [max]="99">
+                <mat-error *ngIf="transactionForm.get('gstPercentage')?.invalid">
+                  {{ getErrorMessage('gstPercentage') }}
+                </mat-error>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>GSTN Number</mat-label>
-                <input matInput formControlName="gstnNumber">
+                <input matInput
+                       formControlName="gstnNumber"
+                       (input)="onGSTNInput($event)">
+                <mat-error *ngIf="transactionForm.get('gstnNumber')?.invalid">
+                  {{ getErrorMessage('gstnNumber') }}
+                </mat-error>
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Party Name</mat-label>
-                <input matInput formControlName="partyName">
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" *ngIf="selectedTransactionType === 'income'">
                 <mat-label>HSN/SAC Code</mat-label>
-                <input matInput formControlName="hsnCode">
+                <input matInput
+                       formControlName="hsnCode"
+                       type="number"  [min]="0">
+                <mat-error *ngIf="transactionForm.get('hsnCode')?.invalid">
+                  {{ getErrorMessage('hsnCode') }}
+                </mat-error>
               </mat-form-field>
             </div>
           </div>
 
           <mat-form-field appearance="outline">
             <mat-label>Amount (excluding GST)</mat-label>
-            <input matInput type="number" formControlName="amount">
+            <input matInput type="number" formControlName="amount"  [min]="1" (keypress)="preventNegative($event)" >
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Total Amount (including GST)</mat-label>
+            <input matInput [value]="calculateTotal()" readonly>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -298,7 +320,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Reference No</mat-label>
-            <input matInput formControlName="referenceNo">
+            <input matInput formControlName="referenceNo"  [min]="1" (keypress)="preventNegative($event)" >
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="table-center">
