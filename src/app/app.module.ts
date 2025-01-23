@@ -34,7 +34,7 @@ import { IndianCurrencyFormatPipe } from './pipes/indian-currency-format.pipe';
     AngularFirestoreModule,
 
     ToastrModule.forRoot( {
-      timeOut: 1000,
+      timeOut: 3000,
       positionClass: 'toast-top-center',
       preventDuplicates: true,
     }),

@@ -250,7 +250,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   }
 
    loadData(page:number): void {
-    const dataSubscription = this.expenseService.getdata(page).subscribe({
+    const dataSubscription = this.expenseService.postData(page).subscribe({
       next: (response) => {
         this.data = response;
         this.updateDisplayData();
@@ -264,7 +264,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
 
 
    loadCustomeData(page: number, startDate?: Date, endDate?: Date): void {
-    const dataSubscription = this.expenseService.getdata(page, startDate, endDate).subscribe({
+    const dataSubscription = this.expenseService.postData(page, startDate, endDate).subscribe({
       next: (response) => {
         this.data = response;
         this.updateDisplayData();
@@ -327,24 +327,28 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
 
     switch (filterType) {
       case 'today':
-        this.loadData(1);
+      this.startDate = today;
+      this.endDate = today;
+        this.filterDataByDateRange(this.startDate, this.endDate);
         break;
       case 'last7days':
         this.startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
         this.endDate = today;
 
-        this.filterDataByDateRange(this.startDate, this.endDate);0
+        this.filterDataByDateRange(this.startDate, this.endDate);
         break;
       case 'currentFiscal':
         const currentYear = today.getMonth() >= 3 ? today.getFullYear() : today.getFullYear() - 1;
         this.startDate = new Date(currentYear, 3, 1);
         this.endDate = new Date(currentYear + 1, 2, 31);
+
         this.filterDataByDateRange(this.startDate, this.endDate);
         break;
       case 'previousFiscal':
         const prevYear = today.getMonth() >= 3 ? today.getFullYear() - 1 : today.getFullYear() - 2;
         this.startDate = new Date(prevYear, 3, 1);
         this.endDate = new Date(prevYear + 1, 2, 31);
+
         this.filterDataByDateRange(this.startDate, this.endDate);
         break;
       default:
@@ -359,9 +363,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     if (this.data?.data?.results) {
       const startDate = new Date(start.setHours(0, 0, 0, 0));
       const endDate = new Date(end.setHours(23, 59, 59, 999));
-
-      this.loadCustomeData(1, startDate, endDate);
-
+      this.loadCustomeData(this.currentPage, startDate, endDate);
       this.showNotification(`Showing data from ${this.datePipe.transform(startDate, 'mediumDate')} to ${this.datePipe.transform(endDate, 'mediumDate')}`, 'info');
     }
   }
@@ -498,7 +500,7 @@ loadPage(page: number): void {
 
       console.log('Transaction Data:', transactionData);
 
-      this.expenseService.addData(transactionData).subscribe({
+      this.expenseService.postData(undefined, undefined, undefined,transactionData, undefined).subscribe({
         next: (res) => {
           if(res.status_code === "1") {
             this.toast.success(res.status_message, 'Success');
@@ -530,7 +532,7 @@ loadPage(page: number): void {
       if (result.isConfirmed) {
         this.toast.info('Deleting transaction...', 'Info');
 
-        this.expenseService.deleteData(transaction.id).subscribe({
+        this.expenseService.postData(undefined, undefined, undefined, undefined, transaction.id).subscribe({
           next: () => {
             this.toast.success('Transaction deleted successfully!', 'Success');
             this.loadData(1);
