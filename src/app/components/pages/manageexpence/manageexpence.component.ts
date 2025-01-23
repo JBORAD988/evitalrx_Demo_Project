@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
-import { IndianCurrencyFormatPipe } from 'src/app/pipes/indian-currency-format.pipe';
 
 
 interface Category {
@@ -57,10 +56,10 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   paymentMethods: PaymentMethod[] = [
     { key: 1, value: 'Cash' },
     { key: 3, value: 'UPI' },
-    { key: null, value: 'Cheque' },
+    { key: 4, value: 'Cheque' },
     { key: 5, value: 'Paytm' },
     { key: 6, value: 'CC/DC' },
-    { key: null, value: 'RTGS/NEFT' }
+    { key: 2, value: 'RTGS/NEFT' }
   ];
 
   data: any;
@@ -90,6 +89,9 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<any>([]);
 
   selectedDateRange = 'today';
+  private startDate: Date = new Date();
+  private endDate: Date = new Date();
+  maxDate: Date = new Date();
   selectedCategory: number | null = null;
   dateFilterOptions = [
     { label: 'Today', value: 'today' },
@@ -144,7 +146,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
       gstPercentage: ['', [
         Validators.pattern('^[0-9]*$'),
         Validators.max(99),
-        this.gstRateValidator()
+        this.gstValidator.bind(this)
       ]],
       gstnNumber: ['', [
         Validators.pattern('^[0-9A-Z]{15}$')
@@ -158,6 +160,7 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
       remarks: [''],
       transactionDate: [new Date(), Validators.required],
       paymentDate: [''],
+      chequeDate: [''],
       document: ['']
     });
 
@@ -320,29 +323,29 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
 
   applyDateFilter(filterType: string): void {
     const today = new Date();
-    let startDate: Date;
-    let endDate: Date;
+
 
     switch (filterType) {
       case 'today':
         this.loadData(1);
         break;
       case 'last7days':
-        startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        endDate = today;
-        this.filterDataByDateRange(startDate, endDate);
+        this.startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        this.endDate = today;
+
+        this.filterDataByDateRange(this.startDate, this.endDate);0
         break;
       case 'currentFiscal':
         const currentYear = today.getMonth() >= 3 ? today.getFullYear() : today.getFullYear() - 1;
-        startDate = new Date(currentYear, 3, 1);
-        endDate = new Date(currentYear + 1, 2, 31);
-        this.filterDataByDateRange(startDate, endDate);
+        this.startDate = new Date(currentYear, 3, 1);
+        this.endDate = new Date(currentYear + 1, 2, 31);
+        this.filterDataByDateRange(this.startDate, this.endDate);
         break;
       case 'previousFiscal':
         const prevYear = today.getMonth() >= 3 ? today.getFullYear() - 1 : today.getFullYear() - 2;
-        startDate = new Date(prevYear, 3, 1);
-        endDate = new Date(prevYear + 1, 2, 31);
-        this.filterDataByDateRange(startDate, endDate);
+        this.startDate = new Date(prevYear, 3, 1);
+        this.endDate = new Date(prevYear + 1, 2, 31);
+        this.filterDataByDateRange(this.startDate, this.endDate);
         break;
       default:
         return;
@@ -393,6 +396,31 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
     }
   }
 
+  GSTLimit(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    if (input.value.length >= 2) {
+      event.preventDefault();
+    }
+  }
+
+
+  gstValidator(control: AbstractControl): ValidationErrors | null {
+    if (!this.allowedGSTRates.includes(control.value)) {
+      return { invalidGst: true }; // Return error object if value is not allowed
+    }
+    return null;
+  }
+
+  getErrorMessage(field: string): string {
+    if (this.transactionForm.get(field)?.hasError('required')) {
+      return 'GST Percentage is required';
+    }
+    if (this.transactionForm.get(field)?.hasError('invalidGst')) {
+      return 'Invalid GST Percentage. Allowed values: 0, 5, 12, 18, 28';
+    }
+    return '';
+  }
+
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     console.log('Selected File:', file);
@@ -420,9 +448,8 @@ export class ManageexpenceComponent implements OnInit, OnDestroy {
 
 loadPage(page: number): void {
   if (page < 1) return;
-
   this.currentPage = page;
-  this.loadData(page);
+  this.loadCustomeData(page, this.startDate, this.endDate)
 }
 
 
@@ -626,15 +653,7 @@ loadPage(page: number): void {
   }
 
 
-   gstRateValidator() {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value) {
-        return null;
-      }
-      const isValid = this.allowedGSTRates.includes(Number(control.value));
-      return isValid ? null : { invalidGSTRate: true };
-    };
-  }
+
 
   calculateTotalAmount(): number {
     const amount = this.transactionForm.get('amount')?.value || 0;
@@ -648,27 +667,5 @@ loadPage(page: number): void {
     input.value = input.value.toUpperCase();
   }
 
-  getErrorMessage(controlName: string): string {
-    const control = this.transactionForm.get(controlName);
-    if (!control) return '';
 
-    if (controlName === 'gstPercentage') {
-      if (control.hasError('invalidGSTRate')) {
-        return 'GST rate must be one of: 0, 5, 12, 18, or 28';
-      }
-      if (control.hasError('pattern')) {
-        return 'Only numbers are allowed';
-      }
-    }
-
-    if (controlName === 'gstnNumber' && control.hasError('pattern')) {
-      return 'Invalid GSTN format';
-    }
-
-    if (controlName === 'hsnCode' && control.hasError('pattern')) {
-      return 'Only numbers are allowed';
-    }
-
-    return '';
-  }
 }

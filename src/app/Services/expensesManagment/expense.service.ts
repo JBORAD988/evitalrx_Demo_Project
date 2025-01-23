@@ -45,10 +45,18 @@ export class ExpenseService {
 
 
   addData(data: any): Observable<any> {
+    console.log('data', data.chequeDate);
+
     const transactionDate = data.transactionDate.toISOString().split('T')[0];
     const paymentDate = data.paymentDate
       ? data.paymentDate.toISOString().split('T')[0]
       : transactionDate;
+
+      let chequeDate = data.chequeDate
+      ? data.chequeDate.toISOString().split('T')[0]
+      : transactionDate;
+
+
     const formData = new FormData();
     formData.append('accesstoken', this.accesstoken);
     formData.append('invoice_photo', data.document);
@@ -57,8 +65,8 @@ export class ExpenseService {
     formData.append('payment_method_id', data.paymentMode);
     formData.append('amount', data.amount);
     formData.append('remark', data.remarks);
-    formData.append('account_id', data.account_id);
-    formData.append('cheque_date', data.cheque_date);
+    formData.append('account_id', data.account_id ? data.account_id : 0);
+    formData.append('cheque_date', chequeDate);
     formData.append('reference_no', data.referenceNo);
     formData.append('payment_date', paymentDate);
     formData.append('transaction_type', data.transaction_type);
@@ -70,7 +78,11 @@ export class ExpenseService {
     if (data.hasGST) {
       formData.append('gstn_number', data.gstnNumber);
       formData.append('gst_percentage', data.gstPercentage);
-      formData.append('hsn_sac_code', data.hsnCode);
+      if(data.hsnCode){
+        formData.append('hsn_sac_code', data.hsnCode);
+      }else{
+        formData.append('hsn_sac_code', '123456');
+      }
     }
 
     return this.https.post(this.expenseUrladd, formData);

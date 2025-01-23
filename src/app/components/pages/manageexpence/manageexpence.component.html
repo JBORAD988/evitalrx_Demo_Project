@@ -119,7 +119,7 @@
         </ng-container>
 
         <ng-container matColumnDef="transactionType">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Transaction Type</th>
+          <th mat-header-cell *matHeaderCellDef mat-header>Transaction Type</th>
           <td mat-cell *matCellDef="let element">{{ element.transaction_type | titlecase  }}</td>
         </ng-container>
 
@@ -134,7 +134,7 @@
         </ng-container>
 
         <ng-container matColumnDef="refNo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sticky>Ref. No</th>
+          <th mat-header-cell *matHeaderCellDef mat-header sticky>Ref. No</th>
           <td mat-cell *matCellDef="let element" sticky>{{ element.reference_no }}</td>
         </ng-container>
 
@@ -146,14 +146,14 @@
         </ng-container>
 
         <ng-container matColumnDef="gst">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          <th mat-header-cell *matHeaderCellDef mat-header disableClear>
             <div style="width: 100%; text-align: right;">GST(%)</div>
           </th>
           <td mat-cell *matCellDef="let element">{{ element.gst_percentage }}</td>
         </ng-container>
 
         <ng-container matColumnDef="total">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear sticky>
+          <th mat-header-cell *matHeaderCellDef mat-header disableClear sticky>
             <div style="width: 100%; text-align: right;">Total</div>
           </th>
           <td mat-cell *matCellDef="let element">{{ element.total | indianCurrencyFormat }}</td>
@@ -271,27 +271,28 @@
                 <input matInput type="number"
                        formControlName="gstPercentage"
                        [min]="0"
-                       [max]="99">
-                <mat-error *ngIf="transactionForm.get('gstPercentage')?.invalid">
-                  {{ getErrorMessage('gstPercentage') }}
-                </mat-error>
+                       [max]="99" (keypress)="preventNegative($event)"  (keypress)="GSTLimit($event)">
+                       <mat-hint>eg. 0, 5, 12, 18, 28 </mat-hint>
+                       <mat-error *ngIf="transactionForm.get('gstnNumber')?.invalid">
+                        {{ getErrorMessage('gstPercentage') }}
+                      </mat-error>
+
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>GSTN Number</mat-label>
                 <input matInput
                        formControlName="gstnNumber"
-                       (input)="onGSTNInput($event)">
-                <mat-error *ngIf="transactionForm.get('gstnNumber')?.invalid">
-                  {{ getErrorMessage('gstnNumber') }}
-                </mat-error>
+                       (input)="onGSTNInput($event)" (keypress)="preventNegative($event)">
+                       <mat-hint>eg. 22AAAAA0000A1Z5 </mat-hint>
               </mat-form-field>
 
               <mat-form-field appearance="outline" *ngIf="selectedTransactionType === 'income'">
                 <mat-label>HSN/SAC Code</mat-label>
                 <input matInput
                        formControlName="hsnCode"
-                       type="number"  [min]="0">
+                       type="number"  [min]="0" (keypress)="preventNegative($event)">
+                       <mat-hint>eg. 5423 </mat-hint>
                 <mat-error *ngIf="transactionForm.get('hsnCode')?.invalid">
                   {{ getErrorMessage('hsnCode') }}
                 </mat-error>
@@ -318,27 +319,46 @@
             </mat-select>
           </mat-form-field>
 
+          <div class="bank-details-section" *ngIf="transactionForm.value.paymentMode === 4 || transactionForm.value.paymentMode === 2">
+            <h3 class="section-title">Bank Details</h3>
+            <div class="bank-fields">
+              <mat-form-field appearance="outline">
+                <mat-label>Cheque Date</mat-label>
+                <input matInput [matDatepicker]="chequePicker" formControlName="chequeDate">
+                <mat-datepicker-toggle matSuffix [for]="chequePicker"></mat-datepicker-toggle>
+                <mat-datepicker #chequePicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Bank Account</mat-label>
+                <input matInput >
+              </mat-form-field>
+            </div>
+          </div>
+
           <mat-form-field appearance="outline">
             <mat-label>Reference No</mat-label>
             <input matInput formControlName="referenceNo"  [min]="1" (keypress)="preventNegative($event)" >
+            <mat-hint>eg. 11 ,22  </mat-hint>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="table-center">
             <mat-label >Remarks</mat-label>
             <textarea matInput formControlName="remarks"></textarea>
+            <mat-hint>eg. rental , intrest </mat-hint>
           </mat-form-field>
 
           <div class="date-fields">
             <mat-form-field appearance="outline">
               <mat-label>{{ selectedTransactionType === 'income' ? 'Income Date' : 'Expense Date' }}</mat-label>
-              <input matInput [matDatepicker]="transactionPicker" formControlName="transactionDate">
+              <input matInput [matDatepicker]="transactionPicker" formControlName="transactionDate" [max]="maxDate">
               <mat-datepicker-toggle matSuffix [for]="transactionPicker"></mat-datepicker-toggle>
               <mat-datepicker #transactionPicker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="outline" *ngIf="selectedTransactionType === 'expense'">
               <mat-label>Payment Date</mat-label>
-              <input matInput [matDatepicker]="paymentPicker" formControlName="paymentDate">
+              <input matInput [matDatepicker]="paymentPicker" formControlName="paymentDate" [min]="maxDate">
               <mat-datepicker-toggle matSuffix [for]="paymentPicker"></mat-datepicker-toggle>
               <mat-datepicker #paymentPicker></mat-datepicker>
             </mat-form-field>

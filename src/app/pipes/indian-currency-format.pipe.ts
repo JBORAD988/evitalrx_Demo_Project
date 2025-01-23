@@ -17,11 +17,16 @@ export class IndianCurrencyFormatPipe implements PipeTransform {
     let y = x[0]; // Whole number part
     let z = x[1]; // Decimal part
 
-    // Step 1: Format the first 3 digits before commas (thousands, lakhs, crores)
+    // Step 1: Check if the whole number part is less than 1000, if so, no comma is needed
+    if (y.length <= 3) {
+      return '₹' + y + '.' + z;
+    }
+
+    // Step 2: Format the first part of the number (thousands, lakhs, crores)
     let firstGroup = y.slice(0, y.length - 3);
     let lastThreeDigits = y.slice(y.length - 3);
 
-    // Step 2: Add commas in the first part (for grouping lakhs and crores)
+    // Step 3: Add commas to the first part (for grouping lakhs and crores)
     let rgx = /(\d+)(\d{2})/;
     while (rgx.test(firstGroup)) {
       firstGroup = firstGroup.replace(rgx, '$1' + ',' + '$2');

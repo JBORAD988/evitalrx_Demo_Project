@@ -317,6 +317,42 @@ mat-dialog-actions {
 }
 
 
+.bank-details-section {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.section-title {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+.bank-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.gst-fields {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.mat-column-remarks{
+  text-align: center !important;
+
+}
+
+.mat-column-refNo{
+  width: 20px;
+}
+
 
 
 
